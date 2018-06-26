@@ -17,6 +17,8 @@
         <module>admin-service</module>
         <module>individual-data-service</module>
         <module>statistics-data-service</module>
+        <module>core</module>
+        <module>allinone-data-service</module>
     </modules>
 
     <!-- properties -->
