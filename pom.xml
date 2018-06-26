@@ -12,6 +12,7 @@
 
     <modules>
         <module>common</module>
+        <module>front-service</module>
     </modules>
 
     <!-- properties -->
