@@ -10,17 +10,6 @@
 
     <version>1.0-SNAPSHOT</version>
 
-    <modules>
-        <module>common</module>
-        <module>front-service</module>
-        <module>group-data-service</module>
-        <module>admin-service</module>
-        <module>individual-data-service</module>
-        <module>statistics-data-service</module>
-        <module>core</module>
-        <module>allinone-data-service</module>
-    </modules>
-
     <!-- properties -->
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -30,33 +19,16 @@
         <log4j2.version>2.8.2</log4j2.version>
     </properties>
 
-    <!-- dependencies -->
-    <dependencies>
+    <modules>
+        <module>common</module>
+        <module>core</module>
+        <module>crawler</module>
+        <module>front-service</module>
+        <module>group-data-service</module>
+        <module>admin-service</module>
+        <module>individual-data-service</module>
+        <module>statistics-data-service</module>
+        <module>allinone-data-service</module>
+    </modules>
 
-        <!-- log4j related -->
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-api</artifactId>
-            <version>${log4j2.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
-            <version>${log4j2.version}</version>
-        </dependency>
-
-        <!-- lombok related -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.16.16</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>19.0</version>
-        </dependency>
-    </dependencies>
 </project>

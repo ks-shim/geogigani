@@ -1,0 +1,85 @@
+<response>
+    <header>
+        <resultCode>0000</resultCode>
+        <resultMsg>OK</resultMsg>
+    </header>
+    <body>
+        <items>
+            <item>
+                <addr1>대구광역시 동구 동화사1길 1</addr1>
+                <addr2>(도학동)</addr2>
+                <areacode>4</areacode>
+                <cat1>A02</cat1>
+                <cat2>A0207</cat2>
+                <cat3>A02070200</cat3>
+                <contentid>2034152</contentid>
+                <contenttypeid>15</contenttypeid>
+                <createdtime>20151019152356</createdtime>
+                <firstimage>
+                    http://tong.visitkorea.or.kr/cms/resource/80/1574180_image2_1.jpg
+                </firstimage>
+                <firstimage2>
+                    http://tong.visitkorea.or.kr/cms/resource/80/1574180_image3_1.jpg
+                </firstimage2>
+                <mapx>128.7044413599</mapx>
+                <mapy>35.9906472258</mapy>
+                <mlevel>6</mlevel>
+                <modifiedtime>20171017135805</modifiedtime>
+                <readcount>4632</readcount>
+                <sigungucode>4</sigungucode>
+                <tel>053-980-7900</tel>
+                <title>동화사 승시 국화축제 2017</title>
+                <zipcode>41007</zipcode>
+            </item>
+            <item>
+                <addr1>대구광역시 동구 팔공산로199길 6-1</addr1>
+                <addr2>(용수동)</addr2>
+                <areacode>4</areacode>
+                <cat1>A02</cat1>
+                <cat2>A0207</cat2>
+                <cat3>A02070200</cat3>
+                <contentid>1578702</contentid>
+                <contenttypeid>15</contenttypeid>
+                <createdtime>20120326172255</createdtime>
+                <firstimage>
+                    http://tong.visitkorea.or.kr/cms/resource/94/2375194_image2_1.JPG
+                </firstimage>
+                <firstimage2>
+                    http://tong.visitkorea.or.kr/cms/resource/94/2375194_image2_1.JPG
+                </firstimage2>
+                <mapx>128.7005138885</mapx>
+                <mapy>35.9920608818</mapy>
+                <mlevel>6</mlevel>
+                <modifiedtime>20180329103805</modifiedtime>
+                <readcount>77746</readcount>
+                <sigungucode>4</sigungucode>
+                <tel>010-3814-0402</tel>
+                <title>팔공산 벚꽃축제 2018</title>
+                <zipcode>41007</zipcode>
+            </item>
+            <item>
+                <addr1>대구광역시 동구 동화사1길 1</addr1>
+                <addr2>(도학동)</addr2>
+                <areacode>4</areacode>
+                <cat1>A02</cat1>
+                <cat2>A0207</cat2>
+                <cat3>A02070200</cat3>
+                <contentid>1842092</contentid>
+                <contenttypeid>15</contenttypeid>
+                <createdtime>20130904095756</createdtime>
+                <mapx>128.7022944448</mapx>
+                <mapy>35.9864587718</mapy>
+                <mlevel>6</mlevel>
+                <modifiedtime>20170907152018</modifiedtime>
+                <readcount>29878</readcount>
+                <sigungucode>4</sigungucode>
+                <tel>053-980-7956</tel>
+                <title>팔공산 산중전통장터 승시축제 2017</title>
+                <zipcode>41007</zipcode>
+            </item>
+        </items>
+        <numOfRows>10</numOfRows>
+        <pageNo>1</pageNo>
+        <totalCount>3</totalCount>
+    </body>
+</response>
