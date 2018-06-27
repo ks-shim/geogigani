@@ -24,14 +24,17 @@ public class Main {
                 sb.append(line);
             }
         }
-        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+
+
+
+                DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
         Document doc = dBuilder.parse(new InputSource(new StringReader(sb.toString())));
         //doc.getDocumentElement().normalize();
         NodeList nodeList = doc.getElementsByTagName("item");
         for(int i=0; i<nodeList.getLength(); i++) {
             Element element = (Element)nodeList.item(i);
-            //System.out.println(element.getElementsByTagName("addr1").);
+            System.out.println(element.getElementsByTagName("addr1").item(0).getTextContent());
         }
 
 
