@@ -3,6 +3,7 @@ package dwayne.shim.geogigani.crawler;
 import dwayne.shim.geogigani.crawler.apicaller.ApiCaller;
 import dwayne.shim.geogigani.crawler.apicaller.DefaultGetApiCaller;
 import lombok.extern.log4j.Log4j2;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -116,6 +117,7 @@ public class TravelDataCrawler {
         RestApiInfo detailCommonApi = buildDetailCommonApiInfo(authKey, appName, osName);
 
         // 5. call areaBasedList api & detailCommon api sequentially ...
+        ObjectMapper objectMapper = new ObjectMapper();
         Map<ParameterKey, String> parameters = new HashMap<>();
         boolean keepCrawling = true;
         int pageNo = 0;
@@ -136,11 +138,23 @@ public class TravelDataCrawler {
                     apiCaller, dBuilder);
 
             // 5-3. write to files ...
+            writeToFile(travelDataMap, objectMapper, outDir);
 
-            //if(pageNo >= 1) break;
+            if(pageNo >= 1) break;
         }
     }
 
+    private void writeToFile(Map<String, Map<String, String>> travelDataMap,
+                             ObjectMapper objectMapper,
+                             File outDir) throws Exception {
+
+        for(String contentId : travelDataMap.keySet()) {
+            Map<String, String> contentValues = travelDataMap.get(contentId);
+            if(contentValues == null) continue;
+
+            objectMapper.writeValue(new File(outDir, contentId), contentValues);
+        }
+    }
 
     private void readDetailedTravelData(Map<String, Map<String, String>> travelDataMap,
                                         RestApiInfo detailCommonApi,
