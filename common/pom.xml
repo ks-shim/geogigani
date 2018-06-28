@@ -2,11 +2,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>dwayne.shim.geogigani</groupId>
+        <artifactId>dwayne-shim-geogigani</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>dwayne.shim.geogigani</groupId>
     <artifactId>dwayne-shim-geogigani-common</artifactId>
-    <version>1.0-SNAPSHOT</version>
 
     <!-- properties -->
     <properties>
@@ -16,34 +19,5 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <log4j2.version>2.8.2</log4j2.version>
     </properties>
-    
-    <!-- dependencies -->
-    <dependencies>
 
-        <!-- log4j related -->
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-api</artifactId>
-            <version>${log4j2.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
-            <version>${log4j2.version}</version>
-        </dependency>
-
-        <!-- lombok related -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.16.16</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>19.0</version>
-        </dependency>
-    </dependencies>
 </project>

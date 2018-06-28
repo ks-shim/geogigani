@@ -1,10 +1,24 @@
 package dwayne.shim.geogigani.crawler;
 
+import dwayne.shim.geogigani.crawler.apicaller.ApiCaller;
+import dwayne.shim.geogigani.crawler.apicaller.DefaultGetApiCaller;
+import lombok.extern.log4j.Log4j2;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
 import static dwayne.shim.geogigani.crawler.TravelDataCrawler.ParameterKey.*;
 
 import java.io.File;
+import java.io.StringReader;
 import java.util.*;
+import java.util.stream.Collectors;
 
+@Log4j2
 public class TravelDataCrawler {
 
     enum ParameterKey {
@@ -47,38 +61,158 @@ public class TravelDataCrawler {
         }
     }
 
+    enum XMLNode {
+        ITEM("item"),
+
+        ADDR1("addr1"),
+        ADDR2("addr2"),
+        AREA_CODE("areacode"),
+        CAT1("cat1"),
+        CAT2("cat2"),
+        CAT3("cat3"),
+        CONTENT_ID("contentid"),
+        CONTENT_TYPE_ID("contenttypeid"),
+        CREATED_TIME("createdtime"),
+        FIRST_IMAGE("firstimage"),
+        FIRST_IMAGE2("firstimage2"),
+        MAP_X("mapx"),
+        MAP_Y("mapy"),
+        MLEVEL("mlevel"),
+        MODIFIED_TIME("modifiedtime"),
+        SIGUNGU_CODE("sigungucode"),
+        TEL("tel"),
+        TEL_NAME("telname"),
+        TITLE("title"),
+        ZIPCODE("zipcode"),
+        OVERVIEW("overview");
+
+        private final String label;
+        private XMLNode(String _label) {
+            label = _label;
+        }
+
+        public String labe() {
+            return label;
+        }
+    }
+
     public void execute(String authKey,
                         String appName,
                         String osName,
                         File outDir) throws Exception {
 
+        // 1. declare data store (map)
+        Map<String, Map<String, String>> travelDataMap = new HashMap<>();
+        // 2. api caller
+        ApiCaller apiCaller = new DefaultGetApiCaller();
+        // 3. xml parser
+        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+
+        RestApiInfo areaBaseListApi = buildAreaBasedListApiInfo(authKey, appName, osName);
+        Map<ParameterKey, String> parameters = new HashMap<>();
+        boolean keepCrawling = true;
+        int pageNo = 0;
+        while(keepCrawling) {
+            parameters.clear();
+            parameters.put(PAGE_NO, String.valueOf(++pageNo));
+            String url = areaBaseListApi.asUrlStringWith(parameters);
+            System.out.println(url);
+
+            String xml = apiCaller.call(url);
+            keepCrawling = putDataInfoInto(travelDataMap, dBuilder.parse(new InputSource(new StringReader(xml))));
+
+            //if(pageNo >= 1) break;
+        }
     }
 
-    private List<RestApiInfo> buildApiInfos(String authKey,
-                                            String appName,
-                                            String osName) {
-        List<RestApiInfo> apiInfoList = new ArrayList<>();
+    private boolean putDataInfoInto(Map<String, Map<String, String>> travelDataMap,
+                                    Document doc) {
 
-        // 1. make area-based-list restapi info ...
-        RestApiInfo apiInfo = new RestApiInfo("http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList");
-        apiInfo.addParameter(SERVICE_KEY, authKey);
-        apiInfo.addParameter(PAGE_NO, 1);
-        apiInfo.addParameter(START_PAGE, 1);
-        apiInfo.addParameter(NUM_OF_ROWS, 50);
-        apiInfo.addParameter(MOBILE_APP, appName);
-        apiInfo.addParameter(MOBILE_OS, osName);
-        apiInfo.addParameter(ARRANGE, "R");
-        apiInfo.addParameter(CAT1, "");
-        apiInfo.addParameter(CAT2, "");
-        apiInfo.addParameter(CAT3, "");
-        apiInfo.addParameter(AREA_CODE, "");
-        apiInfo.addParameter(SIGUNGU_CODE, "");
-        apiInfo.addParameter(LIST_YN, "Y");
-        apiInfoList.add(apiInfo);
+        // 1. get all item list ...
+        NodeList nodeList = doc.getElementsByTagName(XMLNode.ITEM.label);
+        int nodeLen = nodeList.getLength();
+        if(nodeLen <= 0) return false;
 
-        // 2. make detail-common restapi info ...
-        apiInfo = new RestApiInfo("http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon");
-        return apiInfoList;
+        // 2. traverse all item nodes ...
+        for(int i=0; i<nodeLen; i++) {
+            Element element = (Element)nodeList.item(i);
+
+            // 2-1. read all data for a item ...
+            Map<String, String> newItemValueMap = new HashMap<>();
+            for(XMLNode xmlNode : XMLNode.values()) {
+                NodeList subNodeList = element.getElementsByTagName(xmlNode.label);
+                if(subNodeList.getLength() <= 0) continue;
+
+                newItemValueMap.put(xmlNode.label, subNodeList.item(0).getTextContent());
+            }
+
+            // 2-2. get content id if exists ...
+            String contentId = newItemValueMap.get(XMLNode.CONTENT_ID.label);
+            if(contentId == null) continue;
+
+            // 2-3. add newly or merge with old value map ...
+            Map<String, String> oldItemValueMap = travelDataMap.get(contentId);
+            if(oldItemValueMap == null) {
+                travelDataMap.put(contentId, newItemValueMap);
+                continue;
+            }
+
+            oldItemValueMap.putAll(newItemValueMap);
+        }
+
+        return true;
+    }
+
+    private RestApiInfo buildAreaBasedListApiInfo(String authKey,
+                                                  String appName,
+                                                  String osName) {
+
+        // make area-based-list restapi info ...
+        Map<ParameterKey, String> parameters = new HashMap<>();
+        parameters.put(SERVICE_KEY, authKey);
+        parameters.put(PAGE_NO, "1");
+        parameters.put(START_PAGE, "1");
+        parameters.put(NUM_OF_ROWS, "1000");
+        parameters.put(MOBILE_APP, appName);
+        parameters.put(MOBILE_OS, osName);
+        parameters.put(ARRANGE, "R");
+        parameters.put(CAT1, "");
+        parameters.put(CAT2, "");
+        parameters.put(CAT3, "");
+        parameters.put(AREA_CODE, "");
+        parameters.put(SIGUNGU_CODE, "");
+        parameters.put(LIST_YN, "Y");
+
+        RestApiInfo apiInfo = new RestApiInfo(
+                "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList", Collections.unmodifiableMap(parameters));
+
+        return apiInfo;
+    }
+
+    private RestApiInfo buildDetailCommonApiInfo(String authKey,
+                                                 String appName,
+                                                 String osName) {
+
+        // make detail-common restapi info ...
+        Map<ParameterKey, String> parameters = new HashMap<>();
+        parameters.put(SERVICE_KEY, authKey);
+        parameters.put(MOBILE_APP, appName);
+        parameters.put(MOBILE_OS, osName);
+        parameters.put(CONTENT_ID, "");
+        parameters.put(CONTENT_TYPE_ID, "");
+        parameters.put(DEFAULT_YN, "Y");
+        parameters.put(FIRST_IMAGE_YN, "Y");
+        parameters.put(AREA_CODE_YN, "Y");
+        parameters.put(CAT_CODE_YN, "Y");
+        parameters.put(ADDR_INFO_YN, "Y");
+        parameters.put(MAP_INFO_YN, "Y");
+        parameters.put(OVERVIEW_YN, "Y");
+
+        RestApiInfo apiInfo = new RestApiInfo(
+                "http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon", Collections.unmodifiableMap(parameters));
+
+        return apiInfo;
     }
 
     public static void main(String[] args) throws Exception {
@@ -89,6 +223,7 @@ public class TravelDataCrawler {
 
         final String outDirectory = "D:/TravelData";
 
+        new TravelDataCrawler().execute(authKey, appName, osName, new File(outDirectory));
         // 1. make api info list ...
 
     }
@@ -96,19 +231,33 @@ public class TravelDataCrawler {
     private static class RestApiInfo {
 
         private final String baseUrl;
-        private final Map<String, String> parameters;
+        private final Map<ParameterKey, String> parameters;
 
-        public RestApiInfo(String baseUrl) {
+        public RestApiInfo(String baseUrl,
+                           Map<ParameterKey, String> parameters) {
             this.baseUrl = baseUrl;
-            this.parameters = new HashMap<>();
+            this.parameters = parameters;
         }
 
-        public <T> void addParameter(ParameterKey key, T value) {
-            addParameter(key.label, String.valueOf(value));
-        }
+        public String asUrlStringWith(Map<ParameterKey, String> newParams) {
 
-        public void addParameter(String key, String value) {
-            parameters.put(key, value);
+            // 1. put pre-existing parameters into newParams ...
+            for(ParameterKey key : parameters.keySet())
+                newParams.putIfAbsent(key, parameters.get(key));
+
+            // 2. make url (baseUrl + parameters)
+            StringBuilder sb = new StringBuilder();
+            sb.append(baseUrl).append('?');
+
+            boolean isFirst = true;
+            for(ParameterKey key : newParams.keySet()) {
+                if(!isFirst) sb.append('&');
+                else isFirst = false;
+
+                sb.append(key.label).append('=').append(newParams.get(key));
+            }
+
+            return sb.toString();
         }
     }
 }
