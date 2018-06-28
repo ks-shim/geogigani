@@ -101,6 +101,9 @@ public class TravelDataCrawler {
                         String osName,
                         File outDir) throws Exception {
 
+        // 0. ready to write the results ...
+        outDir.mkdirs();
+
         // 1. declare data store (map)
         Map<String, Map<String, String>> travelDataMap = new HashMap<>();
         // 2. api caller
@@ -108,22 +111,53 @@ public class TravelDataCrawler {
         // 3. xml parser
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-
+        // 4. api info
         RestApiInfo areaBaseListApi = buildAreaBasedListApiInfo(authKey, appName, osName);
+        RestApiInfo detailCommonApi = buildDetailCommonApiInfo(authKey, appName, osName);
+
+        // 5. call areaBasedList api & detailCommon api sequentially ...
         Map<ParameterKey, String> parameters = new HashMap<>();
         boolean keepCrawling = true;
         int pageNo = 0;
-        while(keepCrawling) {
+        while(true) {
+
+            // 5-1. call areaBasedList and extract data ...
             parameters.clear();
             parameters.put(PAGE_NO, String.valueOf(++pageNo));
             String url = areaBaseListApi.asUrlStringWith(parameters);
-            System.out.println(url);
+            log.info(url);
 
             String xml = apiCaller.call(url);
             keepCrawling = putDataInfoInto(travelDataMap, dBuilder.parse(new InputSource(new StringReader(xml))));
+            if(!keepCrawling) break;
+
+            // 5-2. call detailCommon and extract data ...
+            readDetailedTravelData(travelDataMap, detailCommonApi, parameters,
+                    apiCaller, dBuilder);
+
+            // 5-3. write to files ...
 
             //if(pageNo >= 1) break;
         }
+    }
+
+
+    private void readDetailedTravelData(Map<String, Map<String, String>> travelDataMap,
+                                        RestApiInfo detailCommonApi,
+                                        Map<ParameterKey, String> parameters,
+                                        ApiCaller apiCaller,
+                                        DocumentBuilder dBuilder) throws Exception {
+
+        for(String contentId : travelDataMap.keySet()) {
+            parameters.clear();
+            parameters.put(CONTENT_ID, contentId);
+            String url = detailCommonApi.asUrlStringWith(parameters);
+            log.info(url);
+
+            String xml = apiCaller.call(url);
+            putDataInfoInto(travelDataMap, dBuilder.parse(new InputSource(new StringReader(xml))));
+        }
+
     }
 
     private boolean putDataInfoInto(Map<String, Map<String, String>> travelDataMap,
