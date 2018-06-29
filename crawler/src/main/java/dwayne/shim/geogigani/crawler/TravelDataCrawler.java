@@ -2,6 +2,7 @@ package dwayne.shim.geogigani.crawler;
 
 import dwayne.shim.geogigani.crawler.apicaller.ApiCaller;
 import dwayne.shim.geogigani.crawler.apicaller.DefaultGetApiCaller;
+import dwayne.shim.geogigani.crawler.exception.OutOfAuthKeyException;
 import lombok.extern.log4j.Log4j2;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.w3c.dom.Document;
@@ -98,9 +99,12 @@ public class TravelDataCrawler {
     }
 
     public void execute(String authKey,
+                        int numOfRows,
                         String appName,
                         String osName,
-                        File outDir) throws Exception {
+                        File outDir,
+                        int startPage,
+                        int endPage) throws Exception {
 
         // 0. ready to write the results ...
         outDir.mkdirs();
@@ -112,26 +116,28 @@ public class TravelDataCrawler {
         // 3. xml parser
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-        // 4. api info
-        RestApiInfo areaBaseListApi = buildAreaBasedListApiInfo(authKey, appName, osName);
-        RestApiInfo detailCommonApi = buildDetailCommonApiInfo(authKey, appName, osName);
-
-        // 5. call areaBasedList api & detailCommon api sequentially ...
+        // 4. etc
         ObjectMapper objectMapper = new ObjectMapper();
         Map<ParameterKey, String> parameters = new HashMap<>();
+
+        // 5. api info
+        RestApiInfo areaBaseListApi = buildAreaBasedListApiInfo(authKey, numOfRows, appName, osName);
+        RestApiInfo detailCommonApi = buildDetailCommonApiInfo(authKey, appName, osName);
+
+        // 6. call areaBasedList api & detailCommon api sequentially ...
         boolean keepCrawling = true;
         int pageNo = 0;
         while(true) {
 
-            // 5-1. call areaBasedList and extract data ...
-            parameters.clear();
-            parameters.put(PAGE_NO, String.valueOf(++pageNo));
-            String url = areaBaseListApi.asUrlStringWith(parameters);
-            log.info(url);
+            ++pageNo;
+            if(pageNo < startPage) continue;
+            else if (pageNo > endPage) break;
 
-            String xml = apiCaller.call(url);
-            keepCrawling = putDataInfoInto(travelDataMap, dBuilder.parse(new InputSource(new StringReader(xml))));
+            // 5-1. call areaBasedList and extract data ...
+            keepCrawling = readAreaBasedListTravelData(travelDataMap, areaBaseListApi, parameters, apiCaller, dBuilder, pageNo);
             if(!keepCrawling) break;
+
+            //if(pageNo <= 1) continue;
 
             // 5-2. call detailCommon and extract data ...
             readDetailedTravelData(travelDataMap, detailCommonApi, parameters,
@@ -140,10 +146,14 @@ public class TravelDataCrawler {
             // 5-3. write to files ...
             writeToFile(travelDataMap, objectMapper, outDir);
 
-            if(pageNo >= 1) break;
+            // 5-4. empty travel data map
+            travelDataMap.clear();
         }
     }
 
+    //******************************************************************************************
+    // Data writing methods ...
+    //******************************************************************************************
     private void writeToFile(Map<String, Map<String, String>> travelDataMap,
                              ObjectMapper objectMapper,
                              File outDir) throws Exception {
@@ -156,6 +166,20 @@ public class TravelDataCrawler {
         }
     }
 
+    //******************************************************************************************
+    // Data reading methods ...
+    //******************************************************************************************
+    private boolean readAreaBasedListTravelData(Map<String, Map<String, String>> travelDataMap,
+                                                RestApiInfo areaBaseListApi,
+                                                Map<ParameterKey, String> parameters,
+                                                ApiCaller apiCaller,
+                                                DocumentBuilder dBuilder,
+                                                int pageNo) throws Exception {
+        parameters.clear();
+        parameters.put(PAGE_NO, String.valueOf(pageNo));
+        return readTravelData(travelDataMap, areaBaseListApi, parameters, apiCaller, dBuilder);
+    }
+
     private void readDetailedTravelData(Map<String, Map<String, String>> travelDataMap,
                                         RestApiInfo detailCommonApi,
                                         Map<ParameterKey, String> parameters,
@@ -165,13 +189,21 @@ public class TravelDataCrawler {
         for(String contentId : travelDataMap.keySet()) {
             parameters.clear();
             parameters.put(CONTENT_ID, contentId);
-            String url = detailCommonApi.asUrlStringWith(parameters);
-            log.info(url);
-
-            String xml = apiCaller.call(url);
-            putDataInfoInto(travelDataMap, dBuilder.parse(new InputSource(new StringReader(xml))));
+            readTravelData(travelDataMap, detailCommonApi, parameters, apiCaller, dBuilder);
+            //Thread.sleep(500);
         }
+    }
 
+    private boolean readTravelData(Map<String, Map<String, String>> travelDataMap,
+                                   RestApiInfo apiInfo,
+                                   Map<ParameterKey, String> parameters,
+                                   ApiCaller apiCaller,
+                                   DocumentBuilder dBuilder) throws Exception {
+        String url = apiInfo.asUrlStringWith(parameters);
+        log.info(url);
+
+        String xml = apiCaller.call(url);
+        return putDataInfoInto(travelDataMap, dBuilder.parse(new InputSource(new StringReader(xml))));
     }
 
     private boolean putDataInfoInto(Map<String, Map<String, String>> travelDataMap,
@@ -213,6 +245,7 @@ public class TravelDataCrawler {
     }
 
     private RestApiInfo buildAreaBasedListApiInfo(String authKey,
+                                                  int numOfRows,
                                                   String appName,
                                                   String osName) {
 
@@ -221,7 +254,7 @@ public class TravelDataCrawler {
         parameters.put(SERVICE_KEY, authKey);
         parameters.put(PAGE_NO, "1");
         parameters.put(START_PAGE, "1");
-        parameters.put(NUM_OF_ROWS, "1000");
+        parameters.put(NUM_OF_ROWS, String.valueOf(numOfRows));
         parameters.put(MOBILE_APP, appName);
         parameters.put(MOBILE_OS, osName);
         parameters.put(ARRANGE, "R");
@@ -265,15 +298,22 @@ public class TravelDataCrawler {
 
     public static void main(String[] args) throws Exception {
 
-        final String authKey = "yUZKBeVTETcH8r9aE%2FHv1uNYXav0MmW%2B37mxGP5A%2FR2fMtWVbGPiKue9KAYV16WKfjiiqmYcOljfYSgpzMdylw%3D%3D";
+        // 1. reading related variables ...
+        final String[] authKeys = {
+                "yUZKBeVTETcH8r9aE%2FHv1uNYXav0MmW%2B37mxGP5A%2FR2fMtWVbGPiKue9KAYV16WKfjiiqmYcOljfYSgpzMdylw%3D%3D",
+                "F7YBdXZHx6vqnUZ9woYUfR%2BB9Te%2Fzsx%2BhZLZ5txWbFzjSGgVM8fSgmEb8%2F7fRf1TSXE8MAE98rXn%2Bqy8tHY64w%3D%3D",
+                "bESXjwhur523SfTeKHpjpmmU4gDJ4ynWR7YlMC4BfcQagWP%2FkMNQmYiEU%2BiaZ40LtAHMJm%2FaBv0jXOmFLb5dYA%3D%3D"
+        };
+
+        final int numOfRows = 1000;
         final String appName = "geogigani";
         final String osName = "AND";
 
+        // 2. writing related variables ...
         final String outDirectory = "D:/TravelData";
 
-        new TravelDataCrawler().execute(authKey, appName, osName, new File(outDirectory));
-        // 1. make api info list ...
-
+        // 3. processing ..
+        new TravelDataCrawler().execute(authKeys[2], numOfRows, appName, osName, new File(outDirectory), 3,3);
     }
 
     private static class RestApiInfo {
