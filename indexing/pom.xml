@@ -12,6 +12,14 @@
     <artifactId>dwayne-shim-geogigani-indexing</artifactId>
 
     <dependencies>
+
+        <dependency>
+            <groupId>dwayne.shim.geogigani</groupId>
+            <artifactId>dwayne-shim-geogigani-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <!-- lucene -->
         <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-analyzers-common</artifactId>
