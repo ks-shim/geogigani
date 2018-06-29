@@ -29,6 +29,7 @@
         <module>individual-data-service</module>
         <module>statistics-data-service</module>
         <module>allinone-data-service</module>
+        <module>indexing</module>
     </modules>
 
 
