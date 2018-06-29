@@ -1,5 +1,6 @@
 package dwayne.shim.geogigani.indexing;
 
+import dwayne.shim.geogigani.common.indexing.TravelDataIndexField;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -19,9 +20,13 @@ import java.util.Map;
 public class BatchIndexer implements Closeable {
 
     private final IndexWriter writer;
+    private final Map<String, TravelDataIndexField> fieldMap;
 
     public BatchIndexer(String outDirectory,
                         double bufferSize) {
+
+        fieldMap = TravelDataIndexField.map();
+
         try {
             Directory directory = FSDirectory.open(Paths.get(outDirectory));
             IndexWriterConfig config = new IndexWriterConfig(new StandardAnalyzer());
@@ -50,7 +55,8 @@ public class BatchIndexer implements Closeable {
             String value = documentMap.get(key);
             if(value == null) continue;
 
-            Field field = new TextField(key, value, Field.Store.YES);
+            TravelDataIndexField tdiField = fieldMap.get(key);
+            Field field = (tdiField == null) ? new TextField(key, value, Field.Store.YES) : tdiField.buildField(value);
             document.add(field);
         }
         return document;
