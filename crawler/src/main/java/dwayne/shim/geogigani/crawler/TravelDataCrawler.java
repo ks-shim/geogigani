@@ -313,7 +313,10 @@ public class TravelDataCrawler {
         final String outDirectory = "D:/TravelData";
 
         // 3. processing ..
-        new TravelDataCrawler().execute(authKeys[2], numOfRows, appName, osName, new File(outDirectory), 3,3);
+        TravelDataCrawler tdc = new TravelDataCrawler();
+        int startPage = 4;
+        for(int i=0; i<authKeys.length; i++)
+            tdc.execute(authKeys[i], numOfRows, appName, osName, new File(outDirectory), startPage+i, startPage+i);
     }
 
     private static class RestApiInfo {

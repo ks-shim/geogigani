@@ -49,6 +49,7 @@ public class IndexingExecutor {
         }
 
         log.info("allowed doc count : {}", allowedDocCount);
+        batchIndexer.forceMerge(1);
         batchIndexer.close();
     }
 

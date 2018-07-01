@@ -49,6 +49,10 @@ public class BatchIndexer implements Closeable {
         writer.flush();
     }
 
+    public void forceMerge(int nSegments) throws Exception {
+        writer.forceMerge(nSegments);
+    }
+
     private Document mapToDocument(Map<String, String> documentMap,
                                    Document document) {
         for(String key : documentMap.keySet()) {
