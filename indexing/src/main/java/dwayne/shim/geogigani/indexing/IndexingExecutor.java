@@ -1,6 +1,8 @@
 package dwayne.shim.geogigani.indexing;
 
 import dwayne.shim.geogigani.common.indexing.TravelDataIndexField;
+import dwayne.shim.geogigani.core.keyword.KeywordExtractor;
+import dwayne.shim.geogigani.indexing.tfidf.DFCalculator;
 import lombok.extern.java.Log;
 import lombok.extern.log4j.Log4j2;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -11,6 +13,11 @@ import java.util.*;
 @Log4j2
 public class IndexingExecutor {
 
+    private final KeywordExtractor keywordExtractor;
+    public IndexingExecutor(KeywordExtractor keywordExtractor) {
+        this.keywordExtractor = keywordExtractor;
+    }
+
     public void execute(String inDirLocation,
                         int docSizeLimit,
                         Set<String> allowedContentTypes,
@@ -20,9 +27,24 @@ public class IndexingExecutor {
         new File(outDirLocation).mkdirs();
         BatchIndexer batchIndexer = new BatchIndexer(outDirLocation, 1024.0);
 
-        // 2. read from the source directory ...
+        // 2. ** start calculate idf ...
         ObjectMapper objectMapper = new ObjectMapper();
         File[] docFiles = new File(inDirLocation).listFiles();
+
+        /*DFCalculator dfc = new DFCalculator(keywordExtractor);
+        for(File docFile : docFiles) {
+            Map<String, String> docMap = objectMapper.readValue(docFile, Map.class);
+            // 2-1. add just only allowed document in the list ...
+            if(!allowedContentType(allowedContentTypes, docMap)) continue;
+
+            dfc.df(docMap.get(TravelDataIndexField.TITLE.label()));
+            dfc.df(docMap.get(TravelDataIndexField.OVERVIEW.label()));
+        }
+
+        dfc.idf(true);
+        dfc.printSortedIDF();*/
+
+        // 3. ** start indexing ...
         List<Map<String, String>> docList = new ArrayList<>();
         int docCount = 0;
         int allowedDocCount = 0;
@@ -33,6 +55,10 @@ public class IndexingExecutor {
 
             docList.add(docMap);
             ++allowedDocCount;
+
+            // 2-2. extract keywords and put it into docMap as new fields
+            extractKeywords(docMap, TravelDataIndexField.TITLE.label(), TravelDataIndexField.TITLE_KEYWORDS.label());
+            extractKeywords(docMap, TravelDataIndexField.OVERVIEW.label(), TravelDataIndexField.OVERVIEW_KEYWORDS.label());
 
             if(++docCount % docSizeLimit != 0) continue;
 
@@ -53,6 +79,27 @@ public class IndexingExecutor {
         batchIndexer.close();
     }
 
+    private void extractKeywords(Map<String, String> docMap,
+                                 String sourceFieldName,
+                                 String targetFieldName) throws Exception {
+        String content = docMap.get(sourceFieldName);
+        docMap.put(targetFieldName, extractKeywords(content));
+    }
+
+    private String extractKeywords(String content) {
+        if(content == null) return "";
+        List<String> keywords = keywordExtractor.extract(content);
+        return asString(keywords);
+    }
+
+    private String asString(List<String> keywords) {
+        StringBuilder sb = new StringBuilder();
+        for(String keyword : keywords)
+            sb.append(keyword).append(' ');
+
+        return sb.toString().trim();
+    }
+
     private boolean allowedContentType(Set<String> allowedContentTypes,
                                        Map<String, String> docMap) {
         String contentTypeId = docMap.get(TravelDataIndexField.CONTENT_TYPE_ID.label());
@@ -63,6 +110,7 @@ public class IndexingExecutor {
 
     public static void main(String[] args) throws Exception {
 
+        final String keyExtConfigLocation = "D:/korean-analyzer/configurations/main.conf";
         final String inLocation = "D:/TravelData";
         final String outLocation = "D:/TravelIndexData";
         final int docSizeLimit = 1000;
@@ -73,6 +121,6 @@ public class IndexingExecutor {
         for(int contentType : contentTypes)
             allowedContentTypes.add(String.valueOf(contentType));
 
-        new IndexingExecutor().execute(inLocation, docSizeLimit, allowedContentTypes, outLocation);
+        new IndexingExecutor(new KeywordExtractor(keyExtConfigLocation)).execute(inLocation, docSizeLimit, allowedContentTypes, outLocation);
     }
 }

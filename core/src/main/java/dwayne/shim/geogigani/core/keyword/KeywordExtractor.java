@@ -35,9 +35,24 @@ public class KeywordExtractor {
             if(!pos.startsWith("nn") && !pos.startsWith("eng") && !pos.startsWith("unk") && !pos.startsWith("sn")) continue;
 
             String keyword = morph.getTextStr().toLowerCase();
+            if(keyword.length() <= 1) continue;
+            if(hasNumberIn(keyword)) continue;
             keywordList.add(keyword);
         }
 
         return keywordList;
+    }
+
+    private boolean hasNumberIn(String keyword) {
+        for(char ch : keyword.toCharArray())
+            if(Character.isDigit(ch)) return true;
+
+        return false;
+    }
+
+    public static void main(String[] args) throws Exception {
+        KeywordExtractor ke = new KeywordExtractor("D:/korean-analyzer/configurations/main.conf");
+        List<String> keywords = ke.extract("전주 이화호텔은 전주한옥마을 서편의 전동에 위치한 지하 1층, 지상 3층짜리 건물이다.");
+        System.out.println(keywords);
     }
 }
