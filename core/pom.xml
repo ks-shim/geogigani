@@ -19,5 +19,10 @@
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
+        <dependency>
+            <groupId>dwayne.shim.korean.analyzer</groupId>
+            <artifactId>dwayne-shim-korean-analyzer-core</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
 </project>
