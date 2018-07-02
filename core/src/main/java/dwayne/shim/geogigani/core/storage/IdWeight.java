@@ -18,7 +18,6 @@ public class IdWeight implements Comparable<IdWeight> {
     private volatile double clickWeight;
 
     private volatile double score;
-
     private volatile long lastAccessTime;
 
     public IdWeight(String id) {
@@ -52,6 +51,12 @@ public class IdWeight implements Comparable<IdWeight> {
 
     public synchronized void calculateScore() {
         this.score = impressionCount + (clickWeight * 10);
+    }
+
+    public synchronized IdWeightSnapshot snapshot() {
+        return new IdWeightSnapshot(
+                id, impressionCount, impressionWeight,
+                clickCount, clickWeight, score, lastAccessTime);
     }
 
     @Override
