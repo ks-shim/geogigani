@@ -3,6 +3,8 @@ package dwayne.shim.geogigani.core;
 import dwayne.shim.geogigani.core.storage.IdWeight;
 import dwayne.shim.geogigani.core.storage.IdWeightStorage;
 
+import java.util.Arrays;
+
 public class Main {
 
     public static void main(String[] args) throws Exception {
@@ -19,7 +21,7 @@ public class Main {
         iw.impress();
         iw.click();
         ids.addIdWeight(iw);
-        ids.sortList();
-        System.out.println(ids.snapshot(2));
+        ids.sortAndPickTopN(2);
+        System.out.println(Arrays.toString(ids.getTopNIdWeights()));
     }
 }
