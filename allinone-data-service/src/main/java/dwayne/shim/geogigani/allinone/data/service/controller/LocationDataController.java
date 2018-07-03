@@ -4,11 +4,15 @@ import dwayne.shim.geogigani.allinone.data.service.service.KeywordDataService;
 import dwayne.shim.geogigani.allinone.data.service.service.LocationDataService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @Log4j2
 @RestController
@@ -23,8 +27,14 @@ public class LocationDataController {
 
     @RequestMapping(value = {"/popular"}, produces = "application/json; charset=utf8", method = {RequestMethod.GET})
     public ResponseEntity<?> getPopularLocations() {
-        // * increment impress count !!
-        return null;
+        List<Map<String, String>> result;
+        try {
+            result = locationDataService.getPopularLocation();
+        } catch (Exception e) {
+            result = new ArrayList<>();
+        }
+
+        return new ResponseEntity(result, HttpStatus.OK);
     }
 
     @RequestMapping(value = {"/popular-by-keywords"}, produces = "application/json; charset=utf8", method = {RequestMethod.GET})

@@ -1,6 +1,7 @@
 package dwayne.shim.geogigani.allinone.data.service;
 
 import dwayne.shim.geogigani.core.storage.IdWeightStorage;
+import dwayne.shim.geogigani.searching.SearchingExecutor;
 import lombok.extern.log4j.Log4j2;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.modelmapper.ModelMapper;
@@ -51,6 +52,11 @@ public class Application extends SpringBootServletInitializer {
     @Bean
     public ModelMapper modelMapper() {
         return new ModelMapper();
+    }
+
+    @Bean
+    public SearchingExecutor searchingExecutor() {
+        return new SearchingExecutor(locationIndexDir);
     }
 
     @Bean
