@@ -63,6 +63,7 @@ public class IdWeightStorage {
 
         Collections.sort(newList);
 
+        if(topN > newList.size()) topN = newList.size();
         synchronized (snapshotLock) {
             IdWeightSnapshot[] snapshots = new IdWeightSnapshot[topN];
             for(int i=0; i<topN; i++)

@@ -111,8 +111,8 @@ public class IndexingExecutor {
     public static void main(String[] args) throws Exception {
 
         final String keyExtConfigLocation = "D:/korean-analyzer/configurations/main.conf";
-        final String inLocation = "D:/TravelData";
-        final String outLocation = "D:/TravelIndexData";
+        final String inLocation = "D:/TravelLocationData";
+        final String outLocation = "D:/TravelLocationIndexData";
         final int docSizeLimit = 1000;
 
         // 관광지, 문화시설, 숙박, 쇼핑, 음식점

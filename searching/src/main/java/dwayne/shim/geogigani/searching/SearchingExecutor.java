@@ -156,7 +156,7 @@ public class SearchingExecutor {
         return result;
     }
     public static void main(String[] args) throws Exception {
-        SearchingExecutor se = new SearchingExecutor("D:/TravelIndexData");
+        SearchingExecutor se = new SearchingExecutor("D:/TravelLocationIndexData");
 
         List<String> fieldsToGet = new ArrayList<>();
         for(TravelDataIndexField field : TravelDataIndexField.values())
@@ -167,7 +167,7 @@ public class SearchingExecutor {
                 TravelDataIndexField.OVERVIEW.label()
         };
 
-        SearchResult result = se.search(fieldsToGet.toArray(new String[fieldsToGet.size()]), fieldsToSearch, "전주 한옥", 10);
+        SearchResult result = se.search(fieldsToGet.toArray(new String[fieldsToGet.size()]), fieldsToSearch, "청송 주왕산", 10);
         System.out.println(result);
     }
 }
