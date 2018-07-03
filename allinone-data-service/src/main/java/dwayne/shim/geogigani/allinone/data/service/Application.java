@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -17,6 +18,7 @@ import java.io.FileReader;
 
 @Log4j2
 @SpringBootApplication
+@EnableScheduling
 @PropertySource("classpath:config/allinone.properties")
 public class Application extends SpringBootServletInitializer {
 

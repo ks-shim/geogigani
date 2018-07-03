@@ -108,4 +108,11 @@ public class IdWeightStorage {
         }
     }
 
+    //******************************************************************
+    // applying inertia related methods ...
+    //******************************************************************
+    public void applyInertia(double inertia) {
+        for(IdWeight iw : idWeightMap.values())
+            iw.applyInertia(inertia);
+    }
 }
