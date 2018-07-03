@@ -31,4 +31,9 @@ public class IdWeightSnapshot {
         this.score = score;
         this.lastAccessTime = lastAccessTime;
     }
+
+    public IdWeight asIdWeight() {
+        return new IdWeight(id, impressionCount, impressionWeight,
+                clickCount, clickWeight, score, lastAccessTime);
+    }
 }

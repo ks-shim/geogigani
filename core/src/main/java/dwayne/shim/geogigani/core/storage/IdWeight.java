@@ -24,6 +24,25 @@ public class IdWeight implements Comparable<IdWeight> {
         this.id = id;
     }
 
+    public IdWeight(String id,
+                    int impressionCount,
+                    double impressionWeight,
+                    int clickCount,
+                    double clickWeight,
+                    double score,
+                    long lastAccessTime) {
+        this.id = id;
+
+        this.impressionCount = impressionCount;
+        this.impressionWeight = impressionWeight;
+
+        this.clickCount = clickCount;
+        this.clickWeight = clickWeight;
+
+        this.score = score;
+        this.lastAccessTime = lastAccessTime;
+    }
+
     private void updateLastAccessTime() {
         this.lastAccessTime = System.currentTimeMillis();
     }
