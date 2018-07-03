@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -59,8 +60,14 @@ public class LocationDataController {
     @RequestMapping(value = {"/detail/{locationId}"}, produces = "application/json; charset=utf8", method = {RequestMethod.GET})
     public ResponseEntity<?> getLocationDetail(@PathVariable(value = "locationId") String locationId) {
 
-        // * increment click count !!
-        return null;
+        Map<String, String> result;
+        try {
+            result = locationDataService.getLocationDetail(locationId);
+        } catch (Exception e) {
+            result = new HashMap<>();
+        }
+
+        return new ResponseEntity(result, HttpStatus.OK);
     }
 
     @Scheduled(fixedRateString = "${common.inertia.interval}", initialDelayString = "${common.inertia.init-time}")

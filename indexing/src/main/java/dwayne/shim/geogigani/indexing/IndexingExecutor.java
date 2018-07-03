@@ -31,19 +31,6 @@ public class IndexingExecutor {
         ObjectMapper objectMapper = new ObjectMapper();
         File[] docFiles = new File(inDirLocation).listFiles();
 
-        /*DFCalculator dfc = new DFCalculator(keywordExtractor);
-        for(File docFile : docFiles) {
-            Map<String, String> docMap = objectMapper.readValue(docFile, Map.class);
-            // 2-1. add just only allowed document in the list ...
-            if(!allowedContentType(allowedContentTypes, docMap)) continue;
-
-            dfc.df(docMap.get(TravelDataIndexField.TITLE.label()));
-            dfc.df(docMap.get(TravelDataIndexField.OVERVIEW.label()));
-        }
-
-        dfc.idf(true);
-        dfc.printSortedIDF();*/
-
         // 3. ** start indexing ...
         List<Map<String, String>> docList = new ArrayList<>();
         int docCount = 0;
