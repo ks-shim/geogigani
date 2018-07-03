@@ -91,13 +91,16 @@ public class SearchingExecutor {
     private BooleanQuery.Builder buildBoolQuery(String[] fieldsToSearch,
                                                 String keywords) throws Exception {
         QueryParser parser = new MultiFieldQueryParser(fieldsToSearch, analyzer);
+        return buildBoolQuery(parser, keywords);
+    }
+
+    private BooleanQuery.Builder buildBoolQuery(QueryParser parser, String keywords) throws Exception {
         Query query = parser.parse(parser.escape(keywords));
 
         BooleanQuery.Builder boolQuery = new BooleanQuery.Builder();
         boolQuery.add(query, BooleanClause.Occur.MUST);
         return boolQuery;
     }
-
 
     //******************************************************************************************************************
     // Search and get specific fields
@@ -116,8 +119,7 @@ public class SearchingExecutor {
                                String keywords,
                                int resultLimit) throws Exception {
         QueryParser parser = new MultiFieldQueryParser(fieldsToSearch, analyzer, boostMap);
-        Query query = parser.parse(parser.escape(keywords));
-        return search(fieldsToGet, buildBoolQuery(fieldsToSearch, keywords).build(), resultLimit);
+        return search(fieldsToGet, buildBoolQuery(parser, keywords).build(), resultLimit);
     }
 
     private SearchResult search(String[] fieldsToGet,
@@ -167,7 +169,7 @@ public class SearchingExecutor {
                 TravelDataIndexField.OVERVIEW.label()
         };
 
-        SearchResult result = se.search(fieldsToGet.toArray(new String[fieldsToGet.size()]), fieldsToSearch, "청송 주왕산", 10);
+        SearchResult result = se.search(fieldsToGet.toArray(new String[fieldsToGet.size()]), fieldsToSearch, "dennis", 10);
         System.out.println(result);
     }
 }

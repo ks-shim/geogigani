@@ -32,7 +32,7 @@ public class KeywordExtractor {
 
             // use only noun and english
             String pos = morph.getPosStr();
-            if(!pos.startsWith("nn") && !pos.startsWith("eng") && !pos.startsWith("unk") && !pos.startsWith("sn")) continue;
+            if(!pos.startsWith("nn") && !pos.startsWith("unk") && !pos.startsWith("sn")) continue;
 
             String keyword = morph.getTextStr().toLowerCase();
             if(keyword.length() <= 1) continue;

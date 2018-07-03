@@ -1,7 +1,10 @@
 package dwayne.shim.geogigani.indexing.tfidf;
 
+import dwayne.shim.geogigani.common.indexing.TravelDataIndexField;
 import dwayne.shim.geogigani.core.keyword.KeywordExtractor;
+import org.codehaus.jackson.map.ObjectMapper;
 
+import java.io.File;
 import java.util.*;
 
 public class DFCalculator {
@@ -52,6 +55,30 @@ public class DFCalculator {
 
         for(IDF idf : idfList)
             System.out.println(idf);
+    }
+
+    public static void main(String[] args) throws Exception {
+
+        final String keyExtConfigLocation = "D:/korean-analyzer/configurations/main.conf";
+        final String inLocation = "D:/TravelLocationData";
+
+        // 관광지, 문화시설, 숙박, 쇼핑, 음식점
+        final int[] contentTypes = {12, 14, 32, 38, 39};
+        final Set<String> allowedContentTypes = new HashSet<>();
+        for(int contentType : contentTypes)
+            allowedContentTypes.add(String.valueOf(contentType));
+
+        DFCalculator dfc = new DFCalculator(new KeywordExtractor(keyExtConfigLocation));
+        ObjectMapper objectMapper = new ObjectMapper();
+        for(File docFile : new File(inLocation).listFiles()) {
+            Map<String, String> docMap = objectMapper.readValue(docFile, Map.class);
+
+            dfc.df(docMap.get(TravelDataIndexField.TITLE.label()));
+            dfc.df(docMap.get(TravelDataIndexField.OVERVIEW.label()));
+        }
+
+        dfc.idf(true);
+        dfc.printSortedIDF();
     }
 
     private static class IDF implements Comparable<IDF> {
