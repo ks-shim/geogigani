@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -134,6 +135,48 @@ public class LocationDataService {
         return new TravelData(locationStorage.getSnapshot(locationId), result.mapAt(0));
     }
 
+    //***************************************************************************************
+    // Searching location
+    //***************************************************************************************
+    private final String[] fieldToSearchForSearchingLocations = {
+            TravelDataIndexField.TITLE.label(),
+            TravelDataIndexField.TITLE_KEYWORDS.label(),
+            TravelDataIndexField.OVERVIEW.label(),
+            TravelDataIndexField.OVERVIEW_KEYWORDS.label()
+    };
+    private final String[] fieldToGetForSearchingLocations = {
+            TravelDataIndexField.CONTENT_ID.label(),
+            TravelDataIndexField.CONTENT_TYPE_ID.label(),
+            TravelDataIndexField.TITLE.label(),
+            TravelDataIndexField.OVERVIEW.label(),
+            TravelDataIndexField.ADDR1.label(),
+            TravelDataIndexField.FIRST_IMAGE.label(),
+    };
+
+    public List<TravelData> searchLocation(String keywords) throws Exception {
+        // 1. search location by keywords
+        SearchResult result = searchingExecutor.search(
+                fieldToGetForSearchingLocations,
+                fieldToSearchForSearchingLocations,
+                keywords,
+                topN
+        );
+
+        // 2. build travel-data list ...
+        List<TravelData> travelDataList = new ArrayList<>();
+        for(Map<String, String> docMap : result.getDocMapList()) {
+            String tmpLocationId = docMap.get(TravelDataIndexField.CONTENT_ID.label());
+            if(tmpLocationId == null) continue;
+
+            // 2-1. increment impress count !!
+            locationStorage.impress(tmpLocationId);
+            travelDataList.add(new TravelData(locationStorage.getSnapshot(tmpLocationId), docMap));
+        }
+
+        // 3. sort by score
+        Collections.sort(travelDataList);
+        return travelDataList;
+    }
 
     //***************************************************************************************
     // Similar location
@@ -159,8 +202,8 @@ public class LocationDataService {
     public List<TravelData> getSimilarLocation(String locationId) throws Exception {
         // 1. get keywords data of the location ...
         SearchResult result = searchingExecutor.search(
-                fieldToSearchForSimilarLocations1,
                 fieldToGetForSimilarLocations1,
+                fieldToSearchForSimilarLocations1,
                 locationId,
                 1);
 
@@ -173,12 +216,12 @@ public class LocationDataService {
 
         // 3. search similar location by keywords ...
         result = searchingExecutor.search(
-                fieldToSearchForSimilarLocations2,
                 fieldToGetForSimilarLocations2,
+                fieldToSearchForSimilarLocations2,
                 keywords,
                 similarLocationSize + 1);
 
-        // 4. make trave-data list ...
+        // 4. make travel-data list ...
         List<TravelData> travelDataList = new ArrayList<>();
         List<Map<String, String>> docMapList = result.getDocMapList();
         for(Map<String, String> doc : docMapList) {

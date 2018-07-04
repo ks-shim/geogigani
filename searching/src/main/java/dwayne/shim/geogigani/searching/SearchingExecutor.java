@@ -1,6 +1,7 @@
 package dwayne.shim.geogigani.searching;
 
 import dwayne.shim.geogigani.common.indexing.TravelDataIndexField;
+import dwayne.shim.geogigani.common.searching.LuceneResultField;
 import lombok.extern.log4j.Log4j2;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -146,6 +147,7 @@ public class SearchingExecutor {
             for(ScoreDoc hit : hits) {
                 Document doc = searcher.doc(hit.doc);
                 Map<String, String> docMap = new HashMap<>();
+                docMap.put(LuceneResultField.SCORE.label(), String.valueOf(hit.score));
                 result.addDocMap(docMap);
 
                 for(String fieldName : fieldsToGet)

@@ -65,13 +65,17 @@ public class IdWeight implements Comparable<IdWeight> {
     }
 
     public synchronized void calculateScore() {
-        this.score = impressionWeight + (clickWeight * 10.0);
+        this.score = calculateScoreAndGet();
+    }
+
+    private double calculateScoreAndGet() {
+        return impressionWeight + (clickWeight * 10.0);
     }
 
     public synchronized IdWeightSnapshot snapshot() {
         return new IdWeightSnapshot(
                 id, impressionCount, impressionWeight,
-                clickCount, clickWeight, score, lastAccessTime);
+                clickCount, clickWeight, calculateScoreAndGet(), lastAccessTime);
     }
 
     @Override

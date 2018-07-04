@@ -46,10 +46,15 @@ public class LocationDataController {
     }
 
     @RequestMapping(value = {"/search"}, produces = "application/json; charset=utf8", method = {RequestMethod.GET, RequestMethod.POST})
-    public ResponseEntity<?> searchLocations(@RequestParam(value = "keywords", required = true) String keywords) {
+    public ResponseEntity<List<TravelData>> searchLocations(@RequestParam(value = "keywords", required = true) String keywords) {
+        List<TravelData> result;
+        try {
+            result = locationDataService.searchLocation(keywords);
+        } catch (Exception e) {
+            result = new ArrayList<>();
+        }
 
-        // * increment impress count !!
-        return null;
+        return new ResponseEntity(result, HttpStatus.OK);
     }
 
     @RequestMapping(value = {"/similar/{locationId}"}, produces = "application/json; charset=utf8", method = {RequestMethod.GET})
