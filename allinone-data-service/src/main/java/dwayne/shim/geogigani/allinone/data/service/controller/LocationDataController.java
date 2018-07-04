@@ -28,7 +28,7 @@ public class LocationDataController {
     private LocationDataService locationDataService;
 
     @RequestMapping(value = {"/popular"}, produces = "application/json; charset=utf8", method = {RequestMethod.GET})
-    public ResponseEntity<?> getPopularLocations() {
+    public ResponseEntity<List<TravelData>> getPopularLocations() {
         List<TravelData> result;
         try {
             result = locationDataService.getPopularLocation();
@@ -53,13 +53,20 @@ public class LocationDataController {
     }
 
     @RequestMapping(value = {"/similar/{locationId}"}, produces = "application/json; charset=utf8", method = {RequestMethod.GET})
-    public ResponseEntity<?> getSimilarLocations(@PathVariable(value = "locationId") String locationId) {
-        // * increment impress count !!
-        return null;
+    public ResponseEntity<List<TravelData>> getSimilarLocations(@PathVariable(value = "locationId") String locationId) {
+
+        List<TravelData> result;
+        try {
+            result = locationDataService.getSimilarLocation(locationId);
+        } catch (Exception e) {
+            result = new ArrayList<>();
+        }
+
+        return new ResponseEntity(result, HttpStatus.OK);
     }
 
     @RequestMapping(value = {"/detail/{locationId}"}, produces = "application/json; charset=utf8", method = {RequestMethod.GET})
-    public ResponseEntity<?> getLocationDetail(@PathVariable(value = "locationId") String locationId) {
+    public ResponseEntity<TravelData> getLocationDetail(@PathVariable(value = "locationId") String locationId) {
 
         TravelData result;
         try {
