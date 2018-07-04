@@ -3,6 +3,7 @@ package dwayne.shim.geogigani.common.data;
 import dwayne.shim.geogigani.common.storage.IdWeightSnapshot;
 import lombok.Getter;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Getter
@@ -15,5 +16,11 @@ public class TravelData {
                       Map<String, String> infoMap) {
         this.idWeightSnapshot = idWeightSnapshot;
         this.infoMap = infoMap;
+    }
+
+    public static TravelData dummyTravelData(String locationId) {
+        return new TravelData(
+                new IdWeightSnapshot(locationId, 0,0,0,0,0,System.currentTimeMillis()),
+                new HashMap<>());
     }
 }

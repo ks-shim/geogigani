@@ -33,6 +33,10 @@ public class SearchResult {
         return map;
     }
 
+    public Map<String, String> mapAt(int index) {
+        return docMapList.get(index);
+    }
+
     public void clear() {
         docMapList.clear();
         docMapList = null;

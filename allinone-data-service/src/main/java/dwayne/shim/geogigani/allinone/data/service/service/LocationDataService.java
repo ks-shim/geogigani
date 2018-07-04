@@ -48,6 +48,9 @@ public class LocationDataService {
             TravelDataIndexField.FIRST_IMAGE.label(),
     };
 
+    //***************************************************************************************
+    // Popular location
+    //***************************************************************************************
     public List<TravelData> getPopularLocation() throws Exception {
         // 1. get topN id-weights
         IdWeightSnapshot[] popularLocations = locationStorage.getTopNIdWeights();
@@ -93,6 +96,9 @@ public class LocationDataService {
         return travelDataList;
     }
 
+    //***************************************************************************************
+    // Location detail
+    //***************************************************************************************
     private final String[] fieldToSearchForLocationDetail = {TravelDataIndexField.CONTENT_ID.label()};
     private final String[] fieldToGetForLocationDetail = {
             TravelDataIndexField.CONTENT_ID.label(),
@@ -111,7 +117,7 @@ public class LocationDataService {
             TravelDataIndexField.MAP_Y.label(),
     };
 
-    public Map<String, String> getLocationDetail(String locationId) throws Exception {
+    public TravelData getLocationDetail(String locationId) throws Exception {
         // 1. increment click count
         locationStorage.click(locationId);
 
@@ -122,8 +128,22 @@ public class LocationDataService {
                 1
         );
 
-        return result.getDocMapList().get(0);
+        return new TravelData(locationStorage.getSnapshot(locationId), result.mapAt(0));
     }
+
+
+    //***************************************************************************************
+    // Similar location
+    //***************************************************************************************
+    private final String[] fieldToSearchForSimilarLocations = {TravelDataIndexField.CONTENT_ID.label()};
+    private final String[] fieldToGetForSimilarLocations = {
+            TravelDataIndexField.CONTENT_ID.label(),
+            TravelDataIndexField.CONTENT_TYPE_ID.label(),
+            TravelDataIndexField.TITLE.label(),
+            TravelDataIndexField.OVERVIEW.label(),
+            TravelDataIndexField.ADDR1.label(),
+            TravelDataIndexField.FIRST_IMAGE.label(),
+    };
 
     //**********************************************************************************
     // ETC

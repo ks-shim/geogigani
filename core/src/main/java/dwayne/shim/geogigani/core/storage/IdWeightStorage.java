@@ -83,6 +83,10 @@ public class IdWeightStorage {
     //******************************************************************
     // save & read snapshots related methods ...
     //******************************************************************
+    public IdWeightSnapshot getSnapshot(String id) {
+        return idWeightMap.get(id).snapshot();
+    }
+
     public void readAllSnapshots(String inDirLocation) throws Exception {
         readAllSnapshots(new ObjectMapper(), inDirLocation);
     }

@@ -61,11 +61,11 @@ public class LocationDataController {
     @RequestMapping(value = {"/detail/{locationId}"}, produces = "application/json; charset=utf8", method = {RequestMethod.GET})
     public ResponseEntity<?> getLocationDetail(@PathVariable(value = "locationId") String locationId) {
 
-        Map<String, String> result;
+        TravelData result;
         try {
             result = locationDataService.getLocationDetail(locationId);
         } catch (Exception e) {
-            result = new HashMap<>();
+            result = TravelData.dummyTravelData(locationId);
         }
 
         return new ResponseEntity(result, HttpStatus.OK);
