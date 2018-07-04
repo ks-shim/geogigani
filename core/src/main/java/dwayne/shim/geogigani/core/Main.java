@@ -1,6 +1,6 @@
 package dwayne.shim.geogigani.core;
 
-import dwayne.shim.geogigani.core.storage.IdWeight;
+import dwayne.shim.geogigani.common.storage.IdWeight;
 import dwayne.shim.geogigani.core.storage.IdWeightStorage;
 
 import java.util.Arrays;

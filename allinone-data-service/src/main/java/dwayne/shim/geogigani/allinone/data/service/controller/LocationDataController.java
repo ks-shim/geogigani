@@ -2,6 +2,7 @@ package dwayne.shim.geogigani.allinone.data.service.controller;
 
 import dwayne.shim.geogigani.allinone.data.service.service.KeywordDataService;
 import dwayne.shim.geogigani.allinone.data.service.service.LocationDataService;
+import dwayne.shim.geogigani.common.data.TravelData;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -28,7 +29,7 @@ public class LocationDataController {
 
     @RequestMapping(value = {"/popular"}, produces = "application/json; charset=utf8", method = {RequestMethod.GET})
     public ResponseEntity<?> getPopularLocations() {
-        List<Map<String, String>> result;
+        List<TravelData> result;
         try {
             result = locationDataService.getPopularLocation();
         } catch (Exception e) {

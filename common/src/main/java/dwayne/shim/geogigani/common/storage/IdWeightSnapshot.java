@@ -1,4 +1,4 @@
-package dwayne.shim.geogigani.core.storage;
+package dwayne.shim.geogigani.common.storage;
 
 import lombok.Data;
 

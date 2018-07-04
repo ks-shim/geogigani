@@ -1,5 +1,7 @@
 package dwayne.shim.geogigani.core.storage;
 
+import dwayne.shim.geogigani.common.storage.IdWeight;
+import dwayne.shim.geogigani.common.storage.IdWeightSnapshot;
 import lombok.extern.log4j.Log4j2;
 import org.codehaus.jackson.map.ObjectMapper;
 

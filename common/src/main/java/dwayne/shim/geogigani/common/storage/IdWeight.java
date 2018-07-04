@@ -1,10 +1,6 @@
-package dwayne.shim.geogigani.core.storage;
+package dwayne.shim.geogigani.common.storage;
 
-import com.google.common.util.concurrent.AtomicDouble;
-import lombok.Data;
 import lombok.Getter;
-
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Getter
 public class IdWeight implements Comparable<IdWeight> {
@@ -69,7 +65,7 @@ public class IdWeight implements Comparable<IdWeight> {
     }
 
     public synchronized void calculateScore() {
-        this.score = impressionCount + (clickWeight * 10);
+        this.score = impressionWeight + (clickWeight * 10.0);
     }
 
     public synchronized IdWeightSnapshot snapshot() {
