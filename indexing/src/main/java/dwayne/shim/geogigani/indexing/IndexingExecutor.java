@@ -1,5 +1,6 @@
 package dwayne.shim.geogigani.indexing;
 
+import com.lyncode.jtwig.functions.util.HtmlUtils;
 import dwayne.shim.geogigani.common.indexing.TravelDataIndexField;
 import dwayne.shim.geogigani.core.keyword.KeywordExtractor;
 import dwayne.shim.geogigani.indexing.tfidf.DFCalculator;
@@ -43,9 +44,17 @@ public class IndexingExecutor {
             docList.add(docMap);
             ++allowedDocCount;
 
-            // 2-2. extract keywords and put it into docMap as new fields
+            // 2-2. remove html tags
+            removeHtmlTags(docMap, TravelDataIndexField.TITLE.label());
+            removeHtmlTags(docMap, TravelDataIndexField.OVERVIEW.label());
+
+            // 2-3. extract keywords and put it into docMap as new fields
             extractKeywords(docMap, TravelDataIndexField.TITLE.label(), TravelDataIndexField.TITLE_KEYWORDS.label());
             extractKeywords(docMap, TravelDataIndexField.OVERVIEW.label(), TravelDataIndexField.OVERVIEW_KEYWORDS.label());
+
+            // 2-4. shorten contents (title and overview)
+            shortenContent(docMap, TravelDataIndexField.TITLE.label(), TravelDataIndexField.TITLE_SHORT.label(), 10);
+            shortenContent(docMap, TravelDataIndexField.OVERVIEW.label(), TravelDataIndexField.OVERVIEW_SHORT.label(), 50);
 
             if(++docCount % docSizeLimit != 0) continue;
 
@@ -66,11 +75,26 @@ public class IndexingExecutor {
         batchIndexer.close();
     }
 
+    private void removeHtmlTags(Map<String, String> docMap,
+                                String fieldName) throws Exception {
+        String content = docMap.get(fieldName);
+        docMap.put(fieldName, HtmlUtils.stripTags(content));
+    }
+
     private void extractKeywords(Map<String, String> docMap,
                                  String sourceFieldName,
                                  String targetFieldName) throws Exception {
         String content = docMap.get(sourceFieldName);
         docMap.put(targetFieldName, extractKeywords(content));
+    }
+
+    private void shortenContent(Map<String, String> docMap,
+                                String sourceFieldName,
+                                String targetFieldName,
+                                int contentLengthLimit) throws Exception {
+        String content = docMap.get(sourceFieldName);
+        if(content.length() > contentLengthLimit) content = content.substring(0, contentLengthLimit-3) + " ...";
+        docMap.put(targetFieldName, content);
     }
 
     private String extractKeywords(String content) {

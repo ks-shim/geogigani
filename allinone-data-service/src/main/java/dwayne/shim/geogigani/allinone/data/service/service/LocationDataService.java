@@ -47,7 +47,9 @@ public class LocationDataService {
             TravelDataIndexField.CONTENT_ID.label(),
             TravelDataIndexField.CONTENT_TYPE_ID.label(),
             TravelDataIndexField.TITLE.label(),
+            TravelDataIndexField.TITLE_SHORT.label(),
             TravelDataIndexField.OVERVIEW.label(),
+            TravelDataIndexField.OVERVIEW_SHORT.label(),
             TravelDataIndexField.ADDR1.label(),
             TravelDataIndexField.FIRST_IMAGE.label(),
     };
@@ -63,7 +65,7 @@ public class LocationDataService {
         StringBuilder sb = new StringBuilder();
         for(IdWeightSnapshot location : popularLocations) {
             // 2-1. increment impress count  ...
-            locationStorage.impress(location.getId());
+            //locationStorage.impress(location.getId());
             // 2-2. append keyword
             sb.append(location.getId()).append(' ');
         }

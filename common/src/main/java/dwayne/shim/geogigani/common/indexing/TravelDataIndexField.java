@@ -32,6 +32,12 @@ public enum TravelDataIndexField {
             return new TextField(label(), value, Field.Store.YES);
         }
     },
+    TITLE_SHORT("titleshort") {
+        @Override
+        public Field buildField(String value) {
+            return new TextField(label(), value, Field.Store.YES);
+        }
+    },
     ADDR1("addr1") {
         @Override
         public Field buildField(String value) {
@@ -69,6 +75,12 @@ public enum TravelDataIndexField {
         }
     },
     OVERVIEW_KEYWORDS("overviewkeywords") {
+        @Override
+        public Field buildField(String value) {
+            return new TextField(label(), value, Field.Store.YES);
+        }
+    },
+    OVERVIEW_SHORT("overviewshort") {
         @Override
         public Field buildField(String value) {
             return new TextField(label(), value, Field.Store.YES);
