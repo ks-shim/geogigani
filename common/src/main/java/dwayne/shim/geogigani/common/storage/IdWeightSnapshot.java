@@ -2,19 +2,23 @@ package dwayne.shim.geogigani.common.storage;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public class IdWeightSnapshot {
+public class IdWeightSnapshot implements Serializable {
 
-    private final String id;
+    private String id;
 
-    private final int impressionCount;
-    private final double impressionWeight;
+    private int impressionCount;
+    private double impressionWeight;
 
-    private final int clickCount;
-    private final double clickWeight;
+    private int clickCount;
+    private double clickWeight;
 
-    private final double score;
-    private final long lastAccessTime;
+    private double score;
+    private long lastAccessTime;
+
+    public IdWeightSnapshot() {}
 
     public IdWeightSnapshot(String id,
                             int impressionCount,

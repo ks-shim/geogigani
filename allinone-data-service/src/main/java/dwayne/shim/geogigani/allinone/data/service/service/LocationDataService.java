@@ -126,8 +126,8 @@ public class LocationDataService {
         locationStorage.click(locationId);
 
         SearchResult result = searchingExecutor.search(
-                fieldToGetForPopularLocations,
-                fieldToSearchForPopularLocations,
+                fieldToGetForLocationDetail,
+                fieldToSearchForLocationDetail,
                 locationId,
                 1
         );

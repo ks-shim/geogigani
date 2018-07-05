@@ -2,16 +2,20 @@ package dwayne.shim.geogigani.common.data;
 
 import dwayne.shim.geogigani.common.searching.LuceneResultField;
 import dwayne.shim.geogigani.common.storage.IdWeightSnapshot;
+import lombok.Data;
 import lombok.Getter;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-@Getter
-public class TravelData implements Comparable<TravelData> {
+@Data
+public class TravelData implements Comparable<TravelData>, Serializable {
 
-    private final IdWeightSnapshot idWeightSnapshot;
-    private final Map<String, String> infoMap;
+    private IdWeightSnapshot idWeightSnapshot;
+    private Map<String, String> infoMap;
+
+    public TravelData() {}
 
     public TravelData(IdWeightSnapshot idWeightSnapshot,
                       Map<String, String> infoMap) {
