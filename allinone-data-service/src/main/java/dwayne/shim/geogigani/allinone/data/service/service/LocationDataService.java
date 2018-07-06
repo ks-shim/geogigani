@@ -150,7 +150,9 @@ public class LocationDataService {
             TravelDataIndexField.CONTENT_ID.label(),
             TravelDataIndexField.CONTENT_TYPE_ID.label(),
             TravelDataIndexField.TITLE.label(),
+            TravelDataIndexField.TITLE_SHORT.label(),
             TravelDataIndexField.OVERVIEW.label(),
+            TravelDataIndexField.OVERVIEW_SHORT.label(),
             TravelDataIndexField.ADDR1.label(),
             TravelDataIndexField.FIRST_IMAGE.label(),
     };
@@ -196,7 +198,9 @@ public class LocationDataService {
             TravelDataIndexField.CONTENT_ID.label(),
             TravelDataIndexField.CONTENT_TYPE_ID.label(),
             TravelDataIndexField.TITLE.label(),
+            TravelDataIndexField.TITLE_SHORT.label(),
             TravelDataIndexField.OVERVIEW.label(),
+            TravelDataIndexField.OVERVIEW_SHORT.label(),
             TravelDataIndexField.ADDR1.label(),
             TravelDataIndexField.FIRST_IMAGE.label(),
     };

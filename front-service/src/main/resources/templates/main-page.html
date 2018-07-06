@@ -90,7 +90,7 @@
                     <i class="fa fa-plus fa-3x"></i>
                   </div>
                 </div>
-                <img class="img-fluid" th:src="${doc.firstimage}" th:alt="${doc.title}">
+                <img class="img-fluid" th:src="${(doc.firstimage != null) ? doc.firstimage : '/img/no_image_available.png'}" th:alt="${doc.title}">
               </a>
               <div class="portfolio-caption">
                 <h4 th:text="${doc.titleshort}"></h4>

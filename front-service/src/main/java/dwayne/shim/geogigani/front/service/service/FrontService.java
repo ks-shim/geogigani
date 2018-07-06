@@ -42,6 +42,14 @@ public class FrontService {
         return asMap(result);
     }
 
+    public List<Map<String, String>> getSimilarDestinations(String destId) {
+        TravelData[] result = restTemplate.getForObject(restSimilar + '/' + destId, TravelData[].class);
+        return asMapList(result);
+    }
+
+    //****************************************************************************
+    // Common methods ...
+    //****************************************************************************
     private List<Map<String, String>> asMapList(TravelData[] travelDatas) {
         List<Map<String, String>> mapList = new ArrayList<>();
         for(TravelData td : travelDatas)
