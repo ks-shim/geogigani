@@ -32,27 +32,36 @@ public class FrontService {
     @Autowired
     private RestTemplate restTemplate;
 
-    public List<Map<String, String>> getPopularLocations() {
+    public List<Map<String, String>> getPopularDestinations() {
         TravelData[] result = restTemplate.getForObject(restPopular, TravelData[].class);
         return asMapList(result);
     }
 
+    public Map<String, String> getDestinationDetail(String destId) {
+        TravelData result = restTemplate.getForObject(restDetail + '/' + destId, TravelData.class);
+        return asMap(result);
+    }
+
     private List<Map<String, String>> asMapList(TravelData[] travelDatas) {
         List<Map<String, String>> mapList = new ArrayList<>();
-        for(TravelData td : travelDatas) {
-            Map<String, String> map = new HashMap<>();
-            mapList.add(map);
-
-            // 1. get info from snapshot
-            IdWeightSnapshot snapshot = td.getIdWeightSnapshot();
-            map.put(DetinationInfoField.IMPRESSION_COUNT.label(), String.valueOf(snapshot.getImpressionCount()));
-            map.put(DetinationInfoField.CLICK_COUNT.label(), String.valueOf(snapshot.getClickCount()));
-            map.put(DetinationInfoField.SCORE.label(), String.valueOf(snapshot.getScore()));
-
-            // 2. get info from map
-            map.putAll(td.getInfoMap());
-        }
+        for(TravelData td : travelDatas)
+            mapList.add(asMap(td));
 
         return mapList;
+    }
+
+    private Map<String, String> asMap(TravelData td) {
+        Map<String, String> map = new HashMap<>();
+
+        // 1. get info from snapshot
+        IdWeightSnapshot snapshot = td.getIdWeightSnapshot();
+        map.put(DetinationInfoField.IMPRESSION_COUNT.label(), String.valueOf(snapshot.getImpressionCount()));
+        map.put(DetinationInfoField.CLICK_COUNT.label(), String.valueOf(snapshot.getClickCount()));
+        map.put(DetinationInfoField.SCORE.label(), String.valueOf(snapshot.getScore()));
+
+        // 2. get info from map
+        map.putAll(td.getInfoMap());
+
+        return map;
     }
 }
