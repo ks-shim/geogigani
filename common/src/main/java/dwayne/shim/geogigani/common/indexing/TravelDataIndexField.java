@@ -101,43 +101,43 @@ public enum TravelDataIndexField {
     AREA_CODE("areacode") {
         @Override
         public Field buildField(String value) {
-            return new NumericDocValuesField(label(), Long.valueOf(value));
+            return new StoredField(label(), Long.valueOf(value));
         }
     },
     SIGUNGU_CODE("sigungucode") {
         @Override
         public Field buildField(String value) {
-            return new NumericDocValuesField(label(), Long.valueOf(value));
+            return new StoredField(label(), Long.valueOf(value));
         }
     },
     CREATED_TIME("createdtime") {
         @Override
         public Field buildField(String value) {
-            return new NumericDocValuesField(label(), Long.valueOf(value));
+            return new StoredField(label(), Long.valueOf(value));
         }
     },
     MODIFIED_TIME("modifiedtime") {
         @Override
         public Field buildField(String value) {
-            return new NumericDocValuesField(label(), Long.valueOf(value));
+            return new StoredField(label(), Long.valueOf(value));
         }
     },
     MAP_X("mapx") {
         @Override
         public Field buildField(String value) {
-            return new DoubleDocValuesField(label(), Double.valueOf(value));
+            return new StoredField(label(), Double.valueOf(value));
         }
     },
     MAP_Y("mapy") {
         @Override
         public Field buildField(String value) {
-            return new DoubleDocValuesField(label(), Double.valueOf(value));
+            return new StoredField(label(), Double.valueOf(value));
         }
     },
     MLEVEL("mlevel") {
         @Override
         public Field buildField(String value) {
-            return new NumericDocValuesField(label(), Long.valueOf(value));
+            return new StoredField(label(), Long.valueOf(value));
         }
     },
     CAT1("cat1") {
