@@ -47,6 +47,11 @@ public class FrontService {
         return asMapList(result);
     }
 
+    public List<Map<String, String>> searchDestinations(String keywords) {
+        TravelData[] result = restTemplate.getForObject(restSearch + "?keywords=" + keywords, TravelData[].class);
+        return asMapList(result);
+    }
+
     //****************************************************************************
     // Common methods ...
     //****************************************************************************

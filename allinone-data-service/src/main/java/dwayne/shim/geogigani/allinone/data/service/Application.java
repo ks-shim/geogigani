@@ -11,7 +11,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -43,6 +45,18 @@ public class Application extends SpringBootServletInitializer {
 
     @Value("${keyword.snapshot.dir}")
     private String keywordSnapshotDir;
+
+    @Value("${task.executor.core.thread.count}")
+    private int numCoreThreads;
+
+    @Bean
+    public TaskExecutor taskExecutor() {
+        ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
+        taskExecutor.setCorePoolSize(numCoreThreads);
+        taskExecutor.setMaxPoolSize(numCoreThreads * 2);
+        taskExecutor.setQueueCapacity(numCoreThreads * 10);
+        return taskExecutor;
+    }
 
     @Bean
     public ObjectMapper objectMapper() {

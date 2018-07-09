@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -36,5 +37,13 @@ public class FrontController {
         List<Map<String, String>> similarResult = frontService.getSimilarDestinations(destId);
         model.addAttribute(ModelField.DESTINATION_SIMILAR_INFO.label(), similarResult);
         return "detail-page";
+    }
+
+    @RequestMapping(value = {"/search-destinations"}, produces = "application/json; charset=utf8", method = {RequestMethod.GET})
+    public String searchDestinations(Model model,
+                                     @RequestParam(value = "keywords") String keywords) {
+        List<Map<String, String>> result = frontService.searchDestinations(keywords);
+        model.addAttribute(ModelField.DESTINATION_INFO.label(), result);
+        return "main-page";
     }
 }
