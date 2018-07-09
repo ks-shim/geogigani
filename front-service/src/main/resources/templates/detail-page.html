@@ -122,7 +122,7 @@
 
           <th:block th:if="${destination_similar_info != null}">
             <div th:each="doc,iterStat : ${destination_similar_info}" class="col-md-4 col-sm-6 portfolio-item">
-              <a class="portfolio-link" data-toggle="modal" href="#portfolioModal1">
+              <a class="portfolio-link" th:onclick="'javascript:show_detail(' + ${doc.contentid} + ')'">
                 <div class="portfolio-hover">
                   <div class="portfolio-hover-content">
                     <i class="fa fa-plus fa-3x"></i>
@@ -201,6 +201,16 @@
     <!-- Custom scripts for this template -->
     <script th:src="@{/js/agency.min.js}"></script>
 
+    <script>
+      function show_detail(dest_id) {
+        var url = '[[@{/destination-detail/}]]' + dest_id;
+        var form = document.createElement("form");
+        form.setAttribute("method", "GET");
+        form.setAttribute("action", url);
+        document.body.appendChild(form);
+        form.submit();
+      }
+    </script>
   </body>
 
 </html>

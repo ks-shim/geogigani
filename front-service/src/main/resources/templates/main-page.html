@@ -23,6 +23,13 @@
     <!-- Custom styles for this template -->
     <link th:href="@{/css/agency.min.css}" rel="stylesheet">
 
+    <style>
+      .post-footer{ position: relative; bottom: 0; left: 0; right: 0; text-align: center; }
+      .post-footer > li{ display: inline-block; line-height:5px; border-right: 1px solid #fff; background: #FFFFFF; }
+      .post-footer > li:first-child{ float: left; }
+      .post-footer > li:last-child{ border: 0px; float: right; }
+      .post-footer i{ display: inline-block; margin-right: 10px; opacity: .6; font-size: 1.1em; }
+    </style>
   </head>
 
   <body id="page-top">
@@ -58,7 +65,7 @@
             <form>
               <div class="form-row">
                 <div class="col-12 col-md-9 mb-2 mb-md-0">
-                  <input type="search" class="form-control form-control-lg" placeholder="Keywords">
+                  <input type="search" class="form-control form-control-lg" placeholder="Keywords ...">
                 </div>
                 <div class="col-12 col-md-3">
                   <button type="submit" class="btn btn-block btn-lg btn-primary">Find</button>
@@ -84,7 +91,7 @@
 
           <th:block th:if="${destination_info != null}">
             <div th:each="doc,iterStat : ${destination_info}" class="col-md-4 col-sm-6 portfolio-item">
-              <a class="portfolio-link" data-toggle="modal" href="#portfolioModal1">
+              <a class="portfolio-link" th:onclick="'javascript:show_detail(' + ${doc.contentid} + ')'">
                 <div class="portfolio-hover">
                   <div class="portfolio-hover-content">
                     <i class="fa fa-plus fa-3x"></i>
@@ -95,6 +102,10 @@
               <div class="portfolio-caption">
                 <h4 th:text="${doc.titleshort}"></h4>
                 <p class="text-muted" th:text="${doc.overviewshort}"></p>
+                <hr>
+                <ul class="post-footer">
+                  <li class="fa fa-eye" th:text="' ' +${doc.clickcount}"></li>
+                </ul>
               </div>
             </div>
           </th:block>
@@ -205,6 +216,16 @@
     <!-- Custom scripts for this template -->
     <script th:src="@{/js/agency.min.js}"></script>
 
+    <script>
+      function show_detail(dest_id) {
+        var url = '[[@{/destination-detail/}]]' + dest_id;
+        var form = document.createElement("form");
+        form.setAttribute("method", "GET");
+        form.setAttribute("action", url);
+        document.body.appendChild(form);
+        form.submit();
+      }
+    </script>
   </body>
 
 </html>

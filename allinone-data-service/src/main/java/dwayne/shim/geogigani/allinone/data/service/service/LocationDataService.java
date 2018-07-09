@@ -238,7 +238,7 @@ public class LocationDataService {
             else if(tmpLocationId.equals(locationId)) continue;
 
             // 4-1. increment impress count !!
-            locationStorage.impress(tmpLocationId);
+            //locationStorage.impress(tmpLocationId);
 
             IdWeightSnapshot snapshot = locationStorage.getSnapshot(tmpLocationId);
             travelDataList.add(new TravelData(snapshot, doc));

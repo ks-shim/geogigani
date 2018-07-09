@@ -78,6 +78,7 @@ public class IndexingExecutor {
     private void removeHtmlTags(Map<String, String> docMap,
                                 String fieldName) throws Exception {
         String content = docMap.get(fieldName);
+        content = content.replaceAll("&nbsp;", " ");
         docMap.put(fieldName, HtmlUtils.stripTags(content));
     }
 
