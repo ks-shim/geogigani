@@ -5,7 +5,9 @@ import dwayne.shim.geogigani.common.storage.IdWeightSnapshot;
 import lombok.extern.log4j.Log4j2;
 import org.codehaus.jackson.map.ObjectMapper;
 
+import java.io.EOFException;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -97,20 +99,32 @@ public class IdWeightStorage {
         for(File file : files) {
             if(file.isDirectory()) continue;
 
-            IdWeightSnapshot snapshot = mapper.readValue(file, IdWeightSnapshot.class);
-            addIdWeight(snapshot.asIdWeight());
+            try {
+                IdWeightSnapshot snapshot = mapper.readValue(file, IdWeightSnapshot.class);
+                addIdWeight(snapshot.asIdWeight());
+            } catch (EOFException e) {
+                log.error(e.getMessage());
+            }
         }
     }
 
     public void saveAllSnapshots(String outDirLocation) throws Exception {
-        saveAllSnapshots(new ObjectMapper(), outDirLocation);
+        try {
+            saveAllSnapshots(new ObjectMapper(), outDirLocation);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     public void saveAllSnapshots(ObjectMapper mapper,
                                  String outDirLocation) throws Exception {
         for(IdWeight iw : idWeightMap.values()) {
             String outFileLocation = outDirLocation + '/' + iw.getId();
-            mapper.writeValue(new File(outFileLocation), iw.snapshot());
+            try {
+                mapper.writeValue(new File(outFileLocation), iw.snapshot());
+            } catch (FileNotFoundException e) {
+                log.error(e.getMessage());
+            }
         }
     }
 

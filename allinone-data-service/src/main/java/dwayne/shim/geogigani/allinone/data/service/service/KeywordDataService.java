@@ -16,6 +16,9 @@ public class KeywordDataService {
     @Value("${keyword.topn}")
     private int topN;
 
+    @Value("${keyword.snapshot.dir}")
+    private String keywordSnapshotDir;
+
     @Autowired
     private IdWeightStorage keywordStorage;
 
@@ -32,6 +35,10 @@ public class KeywordDataService {
     }
 
     public void click(String id) {
-        keywordStorage.impress(id);
+        keywordStorage.click(id);
+    }
+
+    public void saveSnapshot() throws Exception {
+        keywordStorage.saveAllSnapshots(keywordSnapshotDir);
     }
 }

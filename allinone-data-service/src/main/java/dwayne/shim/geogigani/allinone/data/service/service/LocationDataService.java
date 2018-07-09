@@ -31,6 +31,9 @@ public class LocationDataService {
     @Value("${location.similar.size}")
     private int similarLocationSize;
 
+    @Value("${location.snapshot.dir}")
+    private String locationSnapshotDir;
+
     @Autowired
     private IdWeightStorage locationStorage;
 
@@ -256,5 +259,9 @@ public class LocationDataService {
 
     public void sortData() {
         locationStorage.sortAndPickTopN(topN);
+    }
+
+    public void saveSnapshot() throws Exception {
+        locationStorage.saveAllSnapshots(locationSnapshotDir);
     }
 }

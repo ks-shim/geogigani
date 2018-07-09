@@ -98,4 +98,17 @@ public class LocationDataController {
         keywordDataService.sortData();
         log.info("Finished sorting data ...");
     }
+
+    @Scheduled(fixedRateString = "${common.snapshot.save.interval}", initialDelayString = "${common.snapshot.save.init-time}")
+    private void saveSnapshots() {
+        log.info("Start saving snapshots ...");
+        try {
+            locationDataService.saveSnapshot();
+            keywordDataService.saveSnapshot();
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error(e.getMessage());
+        }
+        log.info("Finished saving snapshots ...");
+    }
 }
