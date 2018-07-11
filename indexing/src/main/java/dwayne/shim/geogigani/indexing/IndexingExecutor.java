@@ -46,7 +46,7 @@ public class IndexingExecutor {
             if(StringUtils.isBlank(mapXstr) || StringUtils.isBlank(mapYstr)) continue;
 
             System.out.print("\r Calculating distance : " + ++docCount);
-            ldc.addAndCalculateDistance(contentId, Double.valueOf(mapXstr), Double.valueOf(mapYstr), distanceLimit);
+            ldc.addAndCalculateDistance(contentId, Double.valueOf(mapYstr), Double.valueOf(mapXstr), distanceLimit);
         }
 
         Map<String, LocationDistanceCalculator.LocationMapInfo> distanceMap = ldc.asMap();
