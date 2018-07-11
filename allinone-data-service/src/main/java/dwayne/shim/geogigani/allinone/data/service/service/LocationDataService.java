@@ -31,6 +31,9 @@ public class LocationDataService {
     @Value("${location.similar.size}")
     private int similarLocationSize;
 
+    @Value("${location.short.dist.size}")
+    private int shortDistLocationSize;
+
     @Value("${location.snapshot.dir}")
     private String locationSnapshotDir;
 
@@ -60,7 +63,7 @@ public class LocationDataService {
     //***************************************************************************************
     // Popular location
     //***************************************************************************************
-    public List<TravelData> getPopularLocation() throws Exception {
+    public List<TravelData> getPopularLocations() throws Exception {
         // 1. get topN id-weights
         IdWeightSnapshot[] popularLocations = locationStorage.getTopNIdWeights();
 
@@ -162,7 +165,7 @@ public class LocationDataService {
             TravelDataIndexField.FIRST_IMAGE.label(),
     };
 
-    public List<TravelData> searchLocation(String keywords) throws Exception {
+    public List<TravelData> searchLocations(String keywords) throws Exception {
         // 1. search location by keywords
         SearchResult result = searchingExecutor.search(
                 fieldToGetForSearchingLocations,
@@ -210,7 +213,7 @@ public class LocationDataService {
             TravelDataIndexField.FIRST_IMAGE.label(),
     };
 
-    public List<TravelData> getSimilarLocation(String locationId) throws Exception {
+    public List<TravelData> getSimilarLocations(String locationId) throws Exception {
         // 1. get keywords data of the location ...
         SearchResult result = searchingExecutor.search(
                 fieldToGetForSimilarLocations1,
@@ -241,6 +244,62 @@ public class LocationDataService {
             String tmpLocationId = doc.get(TravelDataIndexField.CONTENT_ID.label());
             if(tmpLocationId == null) continue;
             else if(tmpLocationId.equals(locationId)) continue;
+
+            // 4-1. increment impress count !!
+            //locationStorage.impress(tmpLocationId);
+
+            IdWeightSnapshot snapshot = locationStorage.getSnapshot(tmpLocationId);
+            travelDataList.add(new TravelData(snapshot, doc));
+        }
+
+        return travelDataList;
+    }
+
+    private final String[] fieldToSearchForShortDistanceLocations1 = {TravelDataIndexField.CONTENT_ID.label()};
+    private final String[] fieldToGetForShortDistanceLocations1 = {
+            TravelDataIndexField.IN_5KM.label(),
+            TravelDataIndexField.IN_10KM.label()
+    };
+    private final String[] fieldToSearchForShortDistanceLocations2 = {
+            TravelDataIndexField.CONTENT_ID.label()
+    };
+    private final String[] fieldToGetForShortDistanceLocations2 = {
+            TravelDataIndexField.CONTENT_ID.label(),
+            TravelDataIndexField.CONTENT_TYPE_ID.label(),
+            TravelDataIndexField.TITLE.label(),
+            TravelDataIndexField.TITLE_SHORT.label(),
+            TravelDataIndexField.OVERVIEW.label(),
+            TravelDataIndexField.OVERVIEW_SHORT.label(),
+            TravelDataIndexField.ADDR1.label(),
+            TravelDataIndexField.FIRST_IMAGE.label(),
+    };
+    public List<TravelData> getShortDistanceLocations(String locationId) throws Exception {
+        // 1. get keywords data of the location ...
+        SearchResult result = searchingExecutor.search(
+                fieldToGetForShortDistanceLocations1,
+                fieldToSearchForShortDistanceLocations1,
+                locationId,
+                1);
+
+        // 2. make keywords string ...
+        Map<String, String> docMap = result.mapAt(0);
+        StringBuilder sb = new StringBuilder();
+        for(String keywordStr : docMap.values())
+            sb.append(keywordStr).append(' ');
+        String keywords = sb.toString().trim();
+
+        // 3. search similar location by keywords ...
+        result = searchingExecutor.search(
+                fieldToGetForShortDistanceLocations2,
+                fieldToSearchForShortDistanceLocations2,
+                keywords,
+                shortDistLocationSize);
+
+        // 4. make travel-data list ...
+        List<TravelData> travelDataList = new ArrayList<>();
+        List<Map<String, String>> docMapList = result.getDocMapList();
+        for(Map<String, String> doc : docMapList) {
+            String tmpLocationId = doc.get(TravelDataIndexField.CONTENT_ID.label());
 
             // 4-1. increment impress count !!
             //locationStorage.impress(tmpLocationId);

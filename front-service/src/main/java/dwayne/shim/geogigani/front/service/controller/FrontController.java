@@ -36,6 +36,10 @@ public class FrontController {
 
         List<Map<String, String>> similarResult = frontService.getSimilarDestinations(destId);
         model.addAttribute(ModelField.DESTINATION_SIMILAR_INFO.label(), similarResult);
+
+        List<Map<String, String>> shortDistResult = frontService.getShortDistanceDestinations(destId);
+        model.addAttribute(ModelField.DESTINATION_IN10KM_INFO.label(), shortDistResult);
+
         return "detail-page";
     }
 

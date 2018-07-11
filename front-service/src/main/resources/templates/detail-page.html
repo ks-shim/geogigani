@@ -48,6 +48,9 @@
               <a class="nav-link js-scroll-trigger" href="#services">Detail</a>
             </li>
             <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="#portfolio2">Short-Dist</a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link js-scroll-trigger" href="#portfolio">Related</a>
             </li>
           </ul>
@@ -111,13 +114,52 @@
       </div>
     </section>
 
-    <!-- Destinations -->
+    <!-- Short Distance -->
+    <section id="portfolio2">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 text-center">
+            <h2 class="section-heading text-uppercase">Short Distance</h2>
+            <h3 class="section-subheading text-muted">10km 이내에 위치한 장소들</h3>
+            <hr>
+          </div>
+        </div>
+        <div class="row">
+
+          <th:block th:if="${destination_similar_info != null}">
+            <div th:each="doc,iterStat : ${destination_in10km_info}" class="col-md-4 col-sm-6 portfolio2-item">
+              <a class="portfolio2-link" th:onclick="'javascript:show_detail(' + ${doc.contentid} + ')'">
+                <div class="portfolio2-hover">
+                  <div class="portfolio2-hover-content">
+                    <i class="fa fa-plus fa-3x"></i>
+                  </div>
+                </div>
+
+                <img class="img-fluid" th:src="${(doc.firstimage != null) ? doc.firstimage : '/img/no_image_available.png'}" th:alt="${doc.title}">
+
+              </a>
+              <div class="portfolio2-caption">
+                <h4 th:text="${doc.titleshort}"></h4>
+                <p class="text-muted" th:text="${doc.overviewshort}"></p>
+                <hr>
+                <ul class="post-footer">
+                  <li class="fa fa-eye" th:text="' ' +${doc.clickcount}"></li>
+                </ul>
+              </div>
+            </div>
+          </th:block>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Related -->
     <section class="bg-light" id="portfolio">
       <div class="container">
         <div class="row">
           <div class="col-lg-12 text-center">
             <h2 class="section-heading text-uppercase">Related</h2>
-            <h3 class="section-subheading text-muted">destinations related</h3>
+            <h3 class="section-subheading text-muted">관련있는 장소들</h3>
             <hr>
           </div>
         </div>

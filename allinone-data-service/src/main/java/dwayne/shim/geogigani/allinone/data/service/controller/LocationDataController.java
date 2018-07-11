@@ -4,7 +4,6 @@ import dwayne.shim.geogigani.allinone.data.service.service.KeywordDataService;
 import dwayne.shim.geogigani.allinone.data.service.service.LocationDataService;
 import dwayne.shim.geogigani.common.data.TravelData;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -12,9 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Log4j2
 @RestController
@@ -31,7 +28,7 @@ public class LocationDataController {
     public ResponseEntity<List<TravelData>> getPopularLocations() {
         List<TravelData> result;
         try {
-            result = locationDataService.getPopularLocation();
+            result = locationDataService.getPopularLocations();
         } catch (Exception e) {
             result = new ArrayList<>();
         }
@@ -49,7 +46,7 @@ public class LocationDataController {
     public ResponseEntity<List<TravelData>> searchLocations(@RequestParam(value = "keywords", required = true) String keywords) {
         List<TravelData> result;
         try {
-            result = locationDataService.searchLocation(keywords);
+            result = locationDataService.searchLocations(keywords);
         } catch (Exception e) {
             result = new ArrayList<>();
         }
@@ -62,7 +59,20 @@ public class LocationDataController {
 
         List<TravelData> result;
         try {
-            result = locationDataService.getSimilarLocation(locationId);
+            result = locationDataService.getSimilarLocations(locationId);
+        } catch (Exception e) {
+            result = new ArrayList<>();
+        }
+
+        return new ResponseEntity(result, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = {"/short-distance/{locationId}"}, produces = "application/json; charset=utf8", method = {RequestMethod.GET})
+    public ResponseEntity<List<TravelData>> getShortDistanceLocations(@PathVariable(value = "locationId") String locationId) {
+
+        List<TravelData> result;
+        try {
+            result = locationDataService.getShortDistanceLocations(locationId);
         } catch (Exception e) {
             result = new ArrayList<>();
         }

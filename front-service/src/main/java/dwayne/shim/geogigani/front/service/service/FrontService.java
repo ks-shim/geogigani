@@ -28,6 +28,9 @@ public class FrontService {
     @Value("${rest.similar}")
     private String restSimilar;
 
+    @Value("${rest.short-dist}")
+    private String restShortDistance;
+
     @Autowired
     private RestTemplate restTemplate;
 
@@ -43,6 +46,11 @@ public class FrontService {
 
     public List<Map<String, String>> getSimilarDestinations(String destId) {
         TravelData[] result = restTemplate.getForObject(restSimilar + '/' + destId, TravelData[].class);
+        return asMapList(result);
+    }
+
+    public List<Map<String, String>> getShortDistanceDestinations(String destId) {
+        TravelData[] result = restTemplate.getForObject(restShortDistance + '/' + destId, TravelData[].class);
         return asMapList(result);
     }
 
