@@ -157,6 +157,18 @@ public enum TravelDataIndexField {
         public Field buildField(String value) {
             return new StringField(label(), value, Field.Store.YES);
         }
+    },
+    IN_5KM("in5km") {
+        @Override
+        public Field buildField(String value) {
+            return new StringField(label(), value, Field.Store.YES);
+        }
+    },
+    IN_10KM("in10km") {
+        @Override
+        public Field buildField(String value) {
+            return new StringField(label(), value, Field.Store.YES);
+        }
     };
 
     public abstract Field buildField(String value);

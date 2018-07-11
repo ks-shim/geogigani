@@ -1,6 +1,6 @@
 package dwayne.shim.geogigani.front.service.constants;
 
-public enum DetinationInfoField {
+public enum DestinationInfoField {
 
     IMPRESSION_COUNT("impressioncount"),
     CLICK_COUNT("clickcount"),
@@ -30,10 +30,12 @@ public enum DetinationInfoField {
     MLEVEL("mlevel"),
     CAT1("cat1"),
     CAT2("cat2"),
-    CAT3("cat3");
+    CAT3("cat3"),
+    IN_5KM("in5km"),
+    IN_10KM("in10km");
 
     private String label;
-    private DetinationInfoField(String _label) {
+    private DestinationInfoField(String _label) {
         label = _label;
     }
 
