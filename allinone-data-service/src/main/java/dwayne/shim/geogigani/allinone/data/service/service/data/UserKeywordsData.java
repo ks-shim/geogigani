@@ -46,6 +46,7 @@ public class UserKeywordsData {
             oldKeywordSb.append(oldKeywords[start]);
         }
 
+        start = 0;
         for(; start < newKeywords.length; start++) {
             if(oldKeywordSb.length() > 0) oldKeywordSb.append(' ');
             oldKeywordSb.append(newKeywords[start]);

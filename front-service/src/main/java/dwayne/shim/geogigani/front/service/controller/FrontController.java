@@ -20,13 +20,6 @@ import java.util.Map;
 @RequestMapping("/")
 public class FrontController {
 
-    enum SessionKey {
-        KEYWORDS
-    }
-
-    @Value("${user.keywords.size}")
-    private int userKeywordsSize;
-
     @Resource
     private FrontService frontService;
 
@@ -36,6 +29,11 @@ public class FrontController {
 
         List<Map<String, String>> result = frontService.getPopularDestinations();
         model.addAttribute(ModelField.DESTINATION_INFO.label(), result);
+
+        String userId = session.getId();
+        List<Map<String, String>> interestResult = frontService.getInterestingDestinations(userId);
+        model.addAttribute(ModelField.DESTINATION_INTEREST_INFO.label(), interestResult.size() == 0 ? null : interestResult);
+
         return "main-page";
     }
 
@@ -44,7 +42,8 @@ public class FrontController {
                                         HttpSession session,
                                         @PathVariable(value = "destId") String destId) {
 
-        Map<String, String> detailResult = frontService.getDestinationDetail(destId);
+        String userId = session.getId();
+        Map<String, String> detailResult = frontService.getDestinationDetail(destId, userId);
         model.addAttribute(ModelField.DESTINATION_DETAIL_INFO.label(), detailResult);
 
         List<Map<String, String>> similarResult = frontService.getSimilarDestinations(destId);

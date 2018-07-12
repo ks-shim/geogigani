@@ -8,7 +8,7 @@ public enum ModelField {
     DESTINATION_SIMILAR_INFO("destination_similar_info"),
     DESTINATION_IN5KM_INFO("destination_in5km_info"),
     DESTINATION_IN10KM_INFO("destination_in10km_info"),
-    DESTINATION_FORYOU_INFO("destination_foryou_info");
+    DESTINATION_INTEREST_INFO("destination_interest_info");
 
     private String label;
     private ModelField(String _label) {

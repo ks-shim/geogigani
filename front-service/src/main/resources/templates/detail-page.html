@@ -126,7 +126,7 @@
         </div>
         <div class="row">
 
-          <th:block th:if="${destination_similar_info != null}">
+          <th:block th:if="${destination_in10km_info != null}">
             <div th:each="doc,iterStat : ${destination_in10km_info}" class="col-md-4 col-sm-6 portfolio2-item">
               <a class="portfolio2-link" th:onclick="'javascript:show_detail(' + ${doc.contentid} + ')'">
                 <div class="portfolio2-hover">

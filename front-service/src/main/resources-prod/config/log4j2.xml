@@ -1,8 +1,8 @@
 <?xml version= "1.0" encoding ="UTF-8"?>
 <Configuration>
     <Appenders>
-        <RollingFile name="RollingFile" fileName="/home/dwayne/tomcat/logs/demo.log"
-                     filePattern="/home/dwayne/tomcat/logs/$${date:yyyy-MM}/demo-%d{MM-dd-yyyy}-%i.log.gz">
+        <RollingFile name="RollingFile" fileName="/root/geogigani/front-log/front.log"
+                     filePattern="/root/geogigani/front-log/$${date:yyyy-MM}/front-%d{MM-dd-yyyy}-%i.log.gz">
             <PatternLayout>
                 <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
             </PatternLayout>

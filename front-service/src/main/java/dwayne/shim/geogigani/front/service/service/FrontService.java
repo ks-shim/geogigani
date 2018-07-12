@@ -31,6 +31,9 @@ public class FrontService {
     @Value("${rest.short-dist}")
     private String restShortDistance;
 
+    @Value("${rest.interest}")
+    private String restInterest;
+
     @Autowired
     private RestTemplate restTemplate;
 
@@ -39,8 +42,9 @@ public class FrontService {
         return asMapList(result);
     }
 
-    public Map<String, String> getDestinationDetail(String destId) {
-        TravelData result = restTemplate.getForObject(restDetail + '/' + destId, TravelData.class);
+    public Map<String, String> getDestinationDetail(String destId, String userId) {
+        String url = restDetail + '/' + destId + ((userId == null || userId.isEmpty()) ? "" : "?userId=" + userId);
+        TravelData result = restTemplate.getForObject(url, TravelData.class);
         return asMap(result);
     }
 
@@ -56,6 +60,13 @@ public class FrontService {
 
     public List<Map<String, String>> searchDestinations(String keywords) {
         TravelData[] result = restTemplate.getForObject(restSearch + "?keywords=" + keywords, TravelData[].class);
+        return asMapList(result);
+    }
+
+    public List<Map<String, String>> getInterestingDestinations(String userId) {
+        if(userId == null || userId.trim().isEmpty()) return new ArrayList<>();
+        
+        TravelData[] result = restTemplate.getForObject(restInterest + "/" + userId, TravelData[].class);
         return asMapList(result);
     }
 
