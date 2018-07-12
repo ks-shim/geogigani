@@ -150,6 +150,12 @@
                     <artifactId>spring-boot-starter-tomcat</artifactId>
                     <scope>provided</scope>
                 </dependency>
+
+                <dependency>
+                    <groupId>javax.el</groupId>
+                    <artifactId>javax.el-api</artifactId>
+                    <version>3.0.0</version>
+                </dependency>
             </dependencies>
         </profile>
     </profiles>
