@@ -1,6 +1,7 @@
 package dwayne.shim.geogigani.allinone.data.service.service;
 
 import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import dwayne.shim.geogigani.common.data.TravelData;
 import dwayne.shim.geogigani.common.indexing.TravelDataIndexField;
 import dwayne.shim.geogigani.common.storage.IdWeightSnapshot;
@@ -34,6 +35,9 @@ public class LocationDataService {
     @Value("${location.short.dist.size}")
     private int shortDistLocationSize;
 
+    @Value("${location.interest.size}")
+    private int interestLocationSize;
+
     @Value("${location.snapshot.dir}")
     private String locationSnapshotDir;
 
@@ -45,7 +49,7 @@ public class LocationDataService {
 
     private final LRUMap<Object, List<TravelData>> cache;
     public LocationDataService() {
-        cache = new LRUMap(2);
+        cache = new LRUMap<>(2);
     }
 
     private final String[] fieldToSearchForPopularLocations = {TravelDataIndexField.CONTENT_ID.label()};
@@ -78,7 +82,10 @@ public class LocationDataService {
         String ids = sb.toString().trim();
 
         // 3. If cached data exists, return it right away !!
-        List<TravelData> cachedTravelData = cache.get(popularLocations);
+        List<TravelData> cachedTravelData = null;
+        synchronized (cache) {
+             cachedTravelData = cache.get(popularLocations);
+        }
         if(cachedTravelData != null) return cachedTravelData;
 
         // 4. If cached data doesn't exist, search from lucene
@@ -104,7 +111,9 @@ public class LocationDataService {
         result.clear();
 
         // 7. put travel-data into the cache !!
-        cache.put(popularLocations, travelDataList);
+        synchronized (cache) {
+            cache.put(popularLocations, travelDataList);
+        }
         return travelDataList;
     }
 
@@ -165,13 +174,26 @@ public class LocationDataService {
             TravelDataIndexField.FIRST_IMAGE.label(),
     };
 
+    public List<TravelData> searchLocations(String keywords,
+                                            int resultSize) throws Exception {
+        return searchLocations(
+                keywords, fieldToSearchForSearchingLocations, fieldToGetForSearchingLocations, topN);
+    }
+
     public List<TravelData> searchLocations(String keywords) throws Exception {
+        return searchLocations(keywords, topN);
+    }
+
+    private List<TravelData> searchLocations(String keywords,
+                                             String[] fieldsToSearch,
+                                             String[] fieldsToGet,
+                                             int resultSize) throws Exception {
         // 1. search location by keywords
         SearchResult result = searchingExecutor.search(
-                fieldToGetForSearchingLocations,
-                fieldToSearchForSearchingLocations,
+                fieldsToGet,
+                fieldsToSearch,
                 keywords,
-                topN
+                resultSize
         );
 
         // 2. build travel-data list ...
@@ -309,6 +331,31 @@ public class LocationDataService {
         }
 
         return travelDataList;
+    }
+
+    //**********************************************************************************
+    // Interesting Locations
+    //**********************************************************************************
+    private final String[] fieldToSearchForInterestingLocations = {
+            TravelDataIndexField.TITLE.label(),
+            TravelDataIndexField.TITLE_KEYWORDS.label(),
+            TravelDataIndexField.OVERVIEW.label(),
+            TravelDataIndexField.OVERVIEW_KEYWORDS.label(),
+            TravelDataIndexField.ADDR1.label()
+    };
+    private final String[] fieldToGetForInterestingLocations = {
+            TravelDataIndexField.CONTENT_ID.label(),
+            TravelDataIndexField.CONTENT_TYPE_ID.label(),
+            TravelDataIndexField.TITLE.label(),
+            TravelDataIndexField.TITLE_SHORT.label(),
+            TravelDataIndexField.OVERVIEW.label(),
+            TravelDataIndexField.OVERVIEW_SHORT.label(),
+            TravelDataIndexField.ADDR1.label(),
+            TravelDataIndexField.FIRST_IMAGE.label(),
+    };
+    public List<TravelData> interestingLocations(String keywords) throws Exception {
+        return searchLocations(
+                keywords, fieldToSearchForInterestingLocations, fieldToGetForInterestingLocations, interestLocationSize);
     }
 
     //**********************************************************************************

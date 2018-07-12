@@ -1,7 +1,9 @@
 package dwayne.shim.geogigani.front.service.controller;
 
+import dwayne.shim.geogigani.common.indexing.TravelDataIndexField;
 import dwayne.shim.geogigani.front.service.constants.ModelField;
 import dwayne.shim.geogigani.front.service.service.FrontService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
 
@@ -17,11 +20,20 @@ import java.util.Map;
 @RequestMapping("/")
 public class FrontController {
 
+    enum SessionKey {
+        KEYWORDS
+    }
+
+    @Value("${user.keywords.size}")
+    private int userKeywordsSize;
+
     @Resource
     private FrontService frontService;
 
     @RequestMapping(value = {"/popular-destinations"}, produces = "application/json; charset=utf8", method = {RequestMethod.GET})
-    public String showPopularDestinations(Model model) {
+    public String showPopularDestinations(Model model,
+                                          HttpSession session) {
+
         List<Map<String, String>> result = frontService.getPopularDestinations();
         model.addAttribute(ModelField.DESTINATION_INFO.label(), result);
         return "main-page";
@@ -29,6 +41,7 @@ public class FrontController {
 
     @RequestMapping(value = {"/destination-detail/{destId}"}, produces = "application/json; charset=utf8", method = {RequestMethod.GET})
     public String showDestinationDetail(Model model,
+                                        HttpSession session,
                                         @PathVariable(value = "destId") String destId) {
 
         Map<String, String> detailResult = frontService.getDestinationDetail(destId);

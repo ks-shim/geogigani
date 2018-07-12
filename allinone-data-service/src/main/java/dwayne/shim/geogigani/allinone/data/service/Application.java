@@ -101,7 +101,7 @@ public class Application extends SpringBootServletInitializer {
     public IdWeightStorage keywordStorage() throws Exception {
         IdWeightStorage storage = new IdWeightStorage();
 
-        // 1. read from keyword list file ...
+        /*// 1. read from keyword list file ...
         log.info("Start reading the keyword list ...");
         try (BufferedReader in = new BufferedReader(new FileReader(keywordListFile))){
             String keyword = null;
@@ -122,7 +122,7 @@ public class Application extends SpringBootServletInitializer {
         // 3. get ready to service (sort and pick topN)
         log.info("Start sorting and picking top-n keywords ...");
         storage.sortAndPickTopN(keywordTopN);
-        log.info("Finished sorting and picking top-n keywords ...");
+        log.info("Finished sorting and picking top-n keywords ...");*/
 
         return storage;
     }
