@@ -1,9 +1,7 @@
 package dwayne.shim.geogigani.front.service.controller;
 
-import dwayne.shim.geogigani.common.indexing.TravelDataIndexField;
 import dwayne.shim.geogigani.front.service.constants.ModelField;
 import dwayne.shim.geogigani.front.service.service.FrontService;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;

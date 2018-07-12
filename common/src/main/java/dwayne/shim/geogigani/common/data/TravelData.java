@@ -3,7 +3,6 @@ package dwayne.shim.geogigani.common.data;
 import dwayne.shim.geogigani.common.searching.LuceneResultField;
 import dwayne.shim.geogigani.common.storage.IdWeightSnapshot;
 import lombok.Data;
-import lombok.Getter;
 
 import java.io.Serializable;
 import java.util.HashMap;

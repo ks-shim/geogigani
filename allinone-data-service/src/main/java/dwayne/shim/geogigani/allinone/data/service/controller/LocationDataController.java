@@ -1,6 +1,5 @@
 package dwayne.shim.geogigani.allinone.data.service.controller;
 
-import dwayne.shim.geogigani.allinone.data.service.service.KeywordDataService;
 import dwayne.shim.geogigani.allinone.data.service.service.LocationDataService;
 import dwayne.shim.geogigani.allinone.data.service.service.UserPreferenceDataService;
 import dwayne.shim.geogigani.common.data.TravelData;

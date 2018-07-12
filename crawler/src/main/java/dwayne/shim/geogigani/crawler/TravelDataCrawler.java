@@ -2,7 +2,6 @@ package dwayne.shim.geogigani.crawler;
 
 import dwayne.shim.geogigani.crawler.apicaller.ApiCaller;
 import dwayne.shim.geogigani.crawler.apicaller.DefaultGetApiCaller;
-import dwayne.shim.geogigani.crawler.exception.OutOfAuthKeyException;
 import lombok.extern.log4j.Log4j2;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.w3c.dom.Document;
@@ -12,13 +11,13 @@ import org.xml.sax.InputSource;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-
-import static dwayne.shim.geogigani.crawler.TravelDataCrawler.ParameterKey.*;
-
 import java.io.File;
 import java.io.StringReader;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
+import static dwayne.shim.geogigani.crawler.TravelDataCrawler.ParameterKey.*;
 
 @Log4j2
 public class TravelDataCrawler {

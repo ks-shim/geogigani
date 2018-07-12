@@ -2,7 +2,6 @@ package dwayne.shim.geogigani.searching;
 
 import lombok.Data;
 import org.apache.lucene.search.BooleanClause;
-import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.Query;
 
 @Data

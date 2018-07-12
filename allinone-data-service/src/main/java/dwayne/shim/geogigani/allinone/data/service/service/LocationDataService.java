@@ -1,7 +1,5 @@
 package dwayne.shim.geogigani.allinone.data.service.service;
 
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
 import dwayne.shim.geogigani.common.data.TravelData;
 import dwayne.shim.geogigani.common.indexing.TravelDataIndexField;
 import dwayne.shim.geogigani.common.storage.IdWeightSnapshot;
