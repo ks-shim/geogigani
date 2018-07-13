@@ -45,16 +45,7 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav text-uppercase ml-auto">
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#about">About</a>
-            </li>
-            <th:li  th:if="${destination_interest_info != null}" class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#portfolio2">Interest</a>
-            </th:li>
-            <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#portfolio">Destinations</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#team">Helper</a>
+              <a class="nav-link js-scroll-trigger" href="#portfolio">Search Results</a>
             </li>
           </ul>
         </div>
@@ -83,76 +74,13 @@
       </div>
     </header>
 
-    <!-- About -->
-    <section id="about" th:class="${destination_interest_info == null ? 'bg-light' : ''}">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-12 text-center">
-            <h2 class="section-heading text-uppercase">About</h2>
-            <h3 class="section-subheading text-muted">What is GeoGiGaNi?</h3>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-lg-12 mx-auto text-center">
-            <div class="timeline-heading">
-              <p class="text-muted">I hope this can help Mom and Dad find out where to go every weekend. There are 4 options.</p>
-              <p class="text-muted">- Real-time popular destinations.</p>
-              <p class="text-muted">- You might be interested.</p>
-              <p class="text-muted">- Destinations in short-distance.</p>
-              <p class="text-muted">- Related destinations.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Interest -->
-    <th:block th:if="${destination_interest_info != null}">
-    <section class="bg-light" id="portfolio2">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-12 text-center">
-            <h2 class="section-heading text-uppercase">Interest</h2>
-            <h3 class="section-subheading text-muted">For your interest</h3>
-            <hr/>
-          </div>
-        </div>
-        <div class="row">
-
-            <div th:each="doc,iterStat : ${destination_interest_info}" class="col-md-4 col-sm-6 portfolio2-item">
-              <a class="portfolio2-link" th:onclick="'javascript:show_detail(' + ${doc.contentid} + ')'">
-                <div class="portfolio2-hover">
-                  <div class="portfolio2-hover-content">
-                    <i class="fa fa-plus fa-3x"></i>
-                  </div>
-                </div>
-
-                <img class="img-fluid" th:src="${(doc.firstimage != null) ? doc.firstimage : '/img/no_image_available.png'}" th:alt="${doc.title}"/>
-
-              </a>
-              <div class="portfolio2-caption">
-                <h4 th:text="${doc.titleshort}"></h4>
-                <p class="text-muted" th:text="${doc.overviewshort}"></p>
-                <hr/>
-                <ul class="post-footer">
-                  <li class="fa fa-eye" th:text="' ' +${doc.clickcount}"></li>
-                </ul>
-              </div>
-            </div>
-
-
-        </div>
-      </div>
-    </section>
-    </th:block>
-
-    <!-- Destinations -->
+    <!-- Search Results -->
     <section id="portfolio">
       <div class="container">
         <div class="row">
           <div class="col-lg-12 text-center">
-            <h2 class="section-heading text-uppercase">Destinations</h2>
-            <h3 class="section-subheading text-muted">Real-time popular destinations</h3>
+            <h2 class="section-heading text-uppercase">Search Results</h2>
+            <h3 class="section-subheading text-muted">Results for your search</h3>
             <hr/>
           </div>
         </div>
@@ -179,32 +107,6 @@
             </div>
           </th:block>
 
-        </div>
-      </div>
-    </section>
-
-    <!-- Team -->
-    <section id="team" class="bg-light">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-12 text-center">
-            <h2 class="section-heading text-uppercase">HELPER</h2>
-            <h3 class="section-subheading text-muted">members</h3>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-12">
-            <div class="team-member">
-              <img class="mx-auto rounded-circle" th:src="${'/img/my.jpg'}" alt="">
-              <h4>Shim Kangseop</h4>
-              <p class="text-muted">Developer</p>
-              <ul class="list-inline social-buttons">
-                <li class="list-inline-item">
-                  dwayne.shim@gmail.com
-                </li>
-              </ul>
-            </div>
-          </div>
         </div>
       </div>
     </section>

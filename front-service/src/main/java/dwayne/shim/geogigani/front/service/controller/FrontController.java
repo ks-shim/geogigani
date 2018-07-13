@@ -58,6 +58,6 @@ public class FrontController {
                                      @RequestParam(value = "keywords") String keywords) {
         List<Map<String, String>> result = frontService.searchDestinations(keywords);
         model.addAttribute(ModelField.DESTINATION_INFO.label(), result);
-        return "main-page";
+        return "search-page";
     }
 }
