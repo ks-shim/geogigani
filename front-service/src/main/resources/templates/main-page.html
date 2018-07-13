@@ -3,25 +3,25 @@
 
   <head>
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
 
     <title>GeoGiGaNi?</title>
 
     <!-- Bootstrap core CSS -->
-    <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
 
     <!-- Custom fonts for this template -->
-    <link th:href="@{/vendor/font-awesome/css/font-awesome.min.css}" rel="stylesheet" type="text/css">
-    <link th:href="@{https://fonts.googleapis.com/css?family=Montserrat:400,700}" rel="stylesheet" type="text/css">
-    <link th:href='@{https://fonts.googleapis.com/css?family=Kaushan+Script}' rel='stylesheet' type='text/css'>
-    <link th:href='@{https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic}' rel='stylesheet' type='text/css'>
-    <link th:href='@{https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700}' rel='stylesheet' type='text/css'>
+    <link th:href="@{/vendor/font-awesome/css/font-awesome.min.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{https://fonts.googleapis.com/css?family=Montserrat:400,700}" rel="stylesheet" type="text/css"/>
+    <link th:href='@{https://fonts.googleapis.com/css?family=Kaushan+Script}' rel='stylesheet' type='text/css'/>
+    <link th:href='@{https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic}' rel='stylesheet' type='text/css'/>
+    <link th:href='@{https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700}' rel='stylesheet' type='text/css'/>
 
     <!-- Custom styles for this template -->
-    <link th:href="@{/css/agency.min.css}" rel="stylesheet">
+    <link th:href="@{/css/agency.min.css}" rel="stylesheet"/>
 
     <style>
       .post-footer{ position: relative; bottom: 0; left: 0; right: 0; text-align: center; }
@@ -62,13 +62,13 @@
     <header class="masthead">
       <div class="container">
         <div class="intro-text">
-          <div class="intro-lead-in">Destination Search & Share</div>
+          <div class="intro-lead-in">Destination Search and Share</div>
           <div class="intro-heading text-uppercase">거기가니?</div>
           <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
             <form id="search_form" role="form" th:action="@{/search-destinations}" method="get">
               <div class="form-row">
                 <div class="col-12 col-md-9 mb-2 mb-md-0">
-                  <input id="keywords" name="keywords" type="text" class="form-control form-control-lg" placeholder="Keywords ..." th:onkeypress="'javascript:if(event.keyCode==13) {search(); return false;}'">
+                  <input id="keywords" name="keywords" type="text" class="form-control form-control-lg" placeholder="Keywords ..." th:onkeypress="'javascript:if(event.keyCode==13) {search(); return false;}'"/>
                 </div>
                 <div class="col-12 col-md-3">
                   <button type="button" class="btn btn-block btn-lg btn-primary" th:onclick="'javascript:search();'">Find</button>
@@ -88,7 +88,7 @@
           <div class="col-lg-12 text-center">
             <h2 class="section-heading text-uppercase">Interest</h2>
             <h3 class="section-subheading text-muted">For your interest</h3>
-            <hr>
+            <hr/>
           </div>
         </div>
         <div class="row">
@@ -101,13 +101,13 @@
                   </div>
                 </div>
 
-                <img class="img-fluid" th:src="${(doc.firstimage != null) ? doc.firstimage : '/img/no_image_available.png'}" th:alt="${doc.title}">
+                <img class="img-fluid" th:src="${(doc.firstimage != null) ? doc.firstimage : '/img/no_image_available.png'}" th:alt="${doc.title}"/>
 
               </a>
               <div class="portfolio2-caption">
                 <h4 th:text="${doc.titleshort}"></h4>
                 <p class="text-muted" th:text="${doc.overviewshort}"></p>
-                <hr>
+                <hr/>
                 <ul class="post-footer">
                   <li class="fa fa-eye" th:text="' ' +${doc.clickcount}"></li>
                 </ul>
@@ -127,7 +127,7 @@
           <div class="col-lg-12 text-center">
             <h2 class="section-heading text-uppercase">Destinations</h2>
             <h3 class="section-subheading text-muted">Real-time popular destinations</h3>
-            <hr>
+            <hr/>
           </div>
         </div>
         <div class="row">
@@ -140,12 +140,12 @@
                     <i class="fa fa-plus fa-3x"></i>
                   </div>
                 </div>
-                <img class="img-fluid" th:src="${(doc.firstimage != null) ? doc.firstimage : '/img/no_image_available.png'}" th:alt="${doc.title}">
+                <img class="img-fluid" th:src="${(doc.firstimage != null) ? doc.firstimage : '/img/no_image_available.png'}" th:alt="${doc.title}"/>
               </a>
               <div class="portfolio-caption">
                 <h4 th:text="${doc.titleshort}"></h4>
                 <p class="text-muted" th:text="${doc.overviewshort}"></p>
-                <hr>
+                <hr/>
                 <ul class="post-footer">
                   <li class="fa fa-eye" th:text="' ' +${doc.clickcount}"></li>
                 </ul>
@@ -178,7 +178,7 @@
       </div>
     </section>-->
 
-    <hr>
+    <hr/>
     <!-- Footer -->
     <footer>
       <div class="container">
@@ -210,7 +210,7 @@
     <!-- Custom scripts for this template -->
     <script th:src="@{/js/agency.min.js}"></script>
 
-    <script>
+    <script th:inline="javascript">
       function search() {
         var text = $("#keywords").val();
         text = text.trim();
@@ -220,7 +220,8 @@
       }
 
       function show_detail(dest_id) {
-        var url = '[[@{/destination-detail/}]]' + dest_id;
+        var url = /*[[@{'/destination-detail/'}]]*/;
+        url = url + dest_id;
         var form = document.createElement("form");
         form.setAttribute("method", "GET");
         form.setAttribute("action", url);

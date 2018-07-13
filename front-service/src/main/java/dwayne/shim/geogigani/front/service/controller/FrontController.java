@@ -21,7 +21,7 @@ public class FrontController {
     @Resource
     private FrontService frontService;
 
-    @RequestMapping(value = {"/popular-destinations"}, produces = "application/json; charset=utf8", method = {RequestMethod.GET})
+    @RequestMapping(value = {"", "/", "/popular-destinations"}, produces = "application/json; charset=utf8", method = {RequestMethod.GET})
     public String showPopularDestinations(Model model,
                                           HttpSession session) {
 
