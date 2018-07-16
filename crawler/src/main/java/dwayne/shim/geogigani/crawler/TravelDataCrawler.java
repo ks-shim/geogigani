@@ -227,7 +227,7 @@ public class TravelDataCrawler {
             Map<String, String> newItemValueMap = new HashMap<>();
             for(XMLNode xmlNode : XMLNode.values()) {
                 NodeList subNodeList = element.getElementsByTagName(xmlNode.label);
-                if(subNodeList.getLength() <= 0) continue;
+                if(subNodeList == null || subNodeList.getLength() <= 0) continue;
 
                 newItemValueMap.put(xmlNode.label, subNodeList.item(0).getTextContent());
             }
