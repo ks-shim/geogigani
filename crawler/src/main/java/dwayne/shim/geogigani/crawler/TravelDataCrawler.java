@@ -13,9 +13,9 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 import java.io.StringReader;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.logging.SimpleFormatter;
 
 import static dwayne.shim.geogigani.crawler.TravelDataCrawler.ParameterKey.*;
 
@@ -103,7 +103,8 @@ public class TravelDataCrawler {
                         String osName,
                         File outDir,
                         int startPage,
-                        int endPage) throws Exception {
+                        int endPage,
+                        String lastModifiedTime) throws Exception {
 
         // 0. ready to write the results ...
         outDir.mkdirs();
@@ -133,14 +134,14 @@ public class TravelDataCrawler {
             else if (pageNo > endPage) break;
 
             // 5-1. call areaBasedList and extract data ...
-            keepCrawling = readAreaBasedListTravelData(travelDataMap, areaBaseListApi, parameters, apiCaller, dBuilder, pageNo);
+            keepCrawling = readAreaBasedListTravelData(travelDataMap, areaBaseListApi, parameters, apiCaller, dBuilder, pageNo, lastModifiedTime);
             if(!keepCrawling) break;
 
             //if(pageNo <= 1) continue;
 
             // 5-2. call detailCommon and extract data ...
             readDetailedTravelData(travelDataMap, detailCommonApi, parameters,
-                    apiCaller, dBuilder);
+                    apiCaller, dBuilder, lastModifiedTime);
 
             // 5-3. write to files ...
             writeToFile(travelDataMap, objectMapper, outDir);
@@ -173,22 +174,24 @@ public class TravelDataCrawler {
                                                 Map<ParameterKey, String> parameters,
                                                 ApiCaller apiCaller,
                                                 DocumentBuilder dBuilder,
-                                                int pageNo) throws Exception {
+                                                int pageNo,
+                                                String lastModifiedTime) throws Exception {
         parameters.clear();
         parameters.put(PAGE_NO, String.valueOf(pageNo));
-        return readTravelData(travelDataMap, areaBaseListApi, parameters, apiCaller, dBuilder);
+        return readTravelData(travelDataMap, areaBaseListApi, parameters, apiCaller, dBuilder, lastModifiedTime);
     }
 
     private void readDetailedTravelData(Map<String, Map<String, String>> travelDataMap,
                                         RestApiInfo detailCommonApi,
                                         Map<ParameterKey, String> parameters,
                                         ApiCaller apiCaller,
-                                        DocumentBuilder dBuilder) throws Exception {
+                                        DocumentBuilder dBuilder,
+                                        String lastModifiedTime) throws Exception {
 
         for(String contentId : travelDataMap.keySet()) {
             parameters.clear();
             parameters.put(CONTENT_ID, contentId);
-            readTravelData(travelDataMap, detailCommonApi, parameters, apiCaller, dBuilder);
+            readTravelData(travelDataMap, detailCommonApi, parameters, apiCaller, dBuilder, lastModifiedTime);
             //Thread.sleep(500);
         }
     }
@@ -197,16 +200,18 @@ public class TravelDataCrawler {
                                    RestApiInfo apiInfo,
                                    Map<ParameterKey, String> parameters,
                                    ApiCaller apiCaller,
-                                   DocumentBuilder dBuilder) throws Exception {
+                                   DocumentBuilder dBuilder,
+                                   String lastModifiedTime) throws Exception {
         String url = apiInfo.asUrlStringWith(parameters);
         log.info(url);
 
         String xml = apiCaller.call(url);
-        return putDataInfoInto(travelDataMap, dBuilder.parse(new InputSource(new StringReader(xml))));
+        return putDataInfoInto(travelDataMap, dBuilder.parse(new InputSource(new StringReader(xml))), lastModifiedTime);
     }
 
     private boolean putDataInfoInto(Map<String, Map<String, String>> travelDataMap,
-                                    Document doc) {
+                                    Document doc,
+                                    String lastModifiedTime) {
 
         // 1. get all item list ...
         NodeList nodeList = doc.getElementsByTagName(XMLNode.ITEM.label);
@@ -214,6 +219,7 @@ public class TravelDataCrawler {
         if(nodeLen <= 0) return false;
 
         // 2. traverse all item nodes ...
+        boolean hasValidOnes = false;
         for(int i=0; i<nodeLen; i++) {
             Element element = (Element)nodeList.item(i);
 
@@ -230,17 +236,21 @@ public class TravelDataCrawler {
             String contentId = newItemValueMap.get(XMLNode.CONTENT_ID.label);
             if(contentId == null) continue;
 
+            String oModifiedTime = newItemValueMap.get(XMLNode.MODIFIED_TIME.label);
+            if(oModifiedTime == null) continue;
+            if(lastModifiedTime.compareTo(oModifiedTime) > 0) continue;
+
             // 2-3. add newly or merge with old value map ...
             Map<String, String> oldItemValueMap = travelDataMap.get(contentId);
+            hasValidOnes = true;
             if(oldItemValueMap == null) {
                 travelDataMap.put(contentId, newItemValueMap);
                 continue;
             }
-
             oldItemValueMap.putAll(newItemValueMap);
         }
 
-        return true;
+        return hasValidOnes;
     }
 
     private RestApiInfo buildAreaBasedListApiInfo(String authKey,
@@ -256,7 +266,7 @@ public class TravelDataCrawler {
         parameters.put(NUM_OF_ROWS, String.valueOf(numOfRows));
         parameters.put(MOBILE_APP, appName);
         parameters.put(MOBILE_OS, osName);
-        parameters.put(ARRANGE, "R");
+        parameters.put(ARRANGE, "Q");
         parameters.put(CAT1, "");
         parameters.put(CAT2, "");
         parameters.put(CAT3, "");
@@ -295,13 +305,19 @@ public class TravelDataCrawler {
         return apiInfo;
     }
 
+    public static String getTimestampBefore(int days) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        cal.add(Calendar.DATE, days * -1);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+        return formatter.format(cal.getTimeInMillis()) + "000000";
+    }
+
     public static void main(String[] args) throws Exception {
 
         // 1. reading related variables ...
         final String[] authKeys = {
-                "yUZKBeVTETcH8r9aE%2FHv1uNYXav0MmW%2B37mxGP5A%2FR2fMtWVbGPiKue9KAYV16WKfjiiqmYcOljfYSgpzMdylw%3D%3D",
-                "F7YBdXZHx6vqnUZ9woYUfR%2BB9Te%2Fzsx%2BhZLZ5txWbFzjSGgVM8fSgmEb8%2F7fRf1TSXE8MAE98rXn%2Bqy8tHY64w%3D%3D",
-                "bESXjwhur523SfTeKHpjpmmU4gDJ4ynWR7YlMC4BfcQagWP%2FkMNQmYiEU%2BiaZ40LtAHMJm%2FaBv0jXOmFLb5dYA%3D%3D"
+                "Vwp9OmiFxxt9M2nremlH%2FAU2uOOGjbudaPl7HHd8hb1HYufbqGcYEtbdljMYWYB8KVhLPjCeJNG68O9WVOzZeA%3D%3D"
         };
 
         final int numOfRows = 1000;
@@ -314,8 +330,9 @@ public class TravelDataCrawler {
         // 3. processing ..
         TravelDataCrawler tdc = new TravelDataCrawler();
         int startPage = 1;
+        String lastModifiedTime = getTimestampBefore(7);
         for(int i=0; i<authKeys.length; i++)
-            tdc.execute(authKeys[i], numOfRows, appName, osName, new File(outDirectory), startPage+i, startPage+i);
+          tdc.execute(authKeys[i], numOfRows, appName, osName, new File(outDirectory), startPage+i, startPage+i, lastModifiedTime);
     }
 
     private static class RestApiInfo {
