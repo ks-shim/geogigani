@@ -69,7 +69,7 @@ public class IdWeight implements Comparable<IdWeight> {
     }
 
     private double calculateScoreAndGet() {
-        return impressionWeight + (clickWeight * 10.0);
+        return impressionWeight + (clickWeight * 25.0);
     }
 
     public synchronized IdWeightSnapshot snapshot() {
