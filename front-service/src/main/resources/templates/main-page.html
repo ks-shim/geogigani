@@ -78,8 +78,10 @@
                 <div class="col-12 col-md-9 mb-2 mb-md-0">
                   <input id="keywords" name="keywords" type="text" class="form-control form-control-lg" placeholder="Keywords ..." th:onkeypress="'javascript:if(event.keyCode==13) {search(); return false;}'"/>
                 </div>
-                <div class="col-12 col-md-3">
-                  <button type="button" class="btn btn-block btn-lg " th:onclick="'javascript:search();'">Find</button>
+                <div class="col-12 col-md-1">
+                  <button type="button" class="btn btn-block btn-lg btn-outline-danger" th:onclick="'javascript:search();'">
+                    <i class="fa fa-search"></i>
+                  </button>
                 </div>
               </div>
             </form>
