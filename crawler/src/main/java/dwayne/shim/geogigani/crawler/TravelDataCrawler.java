@@ -1,7 +1,7 @@
 package dwayne.shim.geogigani.crawler;
 
 import dwayne.shim.geogigani.crawler.apicaller.ApiCaller;
-import dwayne.shim.geogigani.crawler.apicaller.DefaultGetApiCaller;
+import dwayne.shim.geogigani.crawler.apicaller.DefaultApiCaller;
 import lombok.extern.log4j.Log4j2;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.w3c.dom.Document;
@@ -15,7 +15,6 @@ import java.io.File;
 import java.io.StringReader;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.logging.SimpleFormatter;
 
 import static dwayne.shim.geogigani.crawler.TravelDataCrawler.ParameterKey.*;
 
@@ -112,7 +111,7 @@ public class TravelDataCrawler {
         // 1. declare data store (map)
         Map<String, Map<String, String>> travelDataMap = new HashMap<>();
         // 2. api caller
-        ApiCaller apiCaller = new DefaultGetApiCaller();
+        ApiCaller apiCaller = new DefaultApiCaller();
         // 3. xml parser
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -124,7 +123,7 @@ public class TravelDataCrawler {
         RestApiInfo areaBaseListApi = buildAreaBasedListApiInfo(authKey, numOfRows, appName, osName);
         RestApiInfo detailCommonApi = buildDetailCommonApiInfo(authKey, appName, osName);
 
-        // 6. call areaBasedList api & detailCommon api sequentially ...
+        // 6. callAsGet areaBasedList api & detailCommon api sequentially ...
         boolean keepCrawling = true;
         int pageNo = 0;
         while(true) {
@@ -133,13 +132,13 @@ public class TravelDataCrawler {
             if(pageNo < startPage) continue;
             else if (pageNo > endPage) break;
 
-            // 5-1. call areaBasedList and extract data ...
+            // 5-1. callAsGet areaBasedList and extract data ...
             keepCrawling = readAreaBasedListTravelData(travelDataMap, areaBaseListApi, parameters, apiCaller, dBuilder, pageNo, lastModifiedTime);
             if(!keepCrawling) break;
 
             //if(pageNo <= 1) continue;
 
-            // 5-2. call detailCommon and extract data ...
+            // 5-2. callAsGet detailCommon and extract data ...
             readDetailedTravelData(travelDataMap, detailCommonApi, parameters,
                     apiCaller, dBuilder, lastModifiedTime);
 
@@ -205,7 +204,7 @@ public class TravelDataCrawler {
         String url = apiInfo.asUrlStringWith(parameters);
         log.info(url);
 
-        String xml = apiCaller.call(url);
+        String xml = apiCaller.callAsGet(url);
         return putDataInfoInto(travelDataMap, dBuilder.parse(new InputSource(new StringReader(xml))), lastModifiedTime);
     }
 

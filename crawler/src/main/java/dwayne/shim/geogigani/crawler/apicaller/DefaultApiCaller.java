@@ -4,6 +4,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
@@ -11,12 +12,12 @@ import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 
-public class DefaultGetApiCaller implements ApiCaller {
+public class DefaultApiCaller implements ApiCaller {
 
     private final PoolingHttpClientConnectionManager poolConnManager;
     private final CloseableHttpClient httpClient;
 
-    public DefaultGetApiCaller() {
+    public DefaultApiCaller() {
         poolConnManager = new PoolingHttpClientConnectionManager();
         poolConnManager.setMaxTotal(200);
         httpClient = HttpClients.custom().setConnectionManager(poolConnManager).build();
@@ -33,7 +34,7 @@ public class DefaultGetApiCaller implements ApiCaller {
     };
 
     @Override
-    public String call(String url) throws Exception {
+    public String callAsGet(String url) throws Exception {
 
         HttpGet httpGet = new HttpGet(url);
         String responseBody = httpClient.execute(httpGet, responseHandler);
@@ -46,5 +47,12 @@ public class DefaultGetApiCaller implements ApiCaller {
             if(httpClient != null) httpClient.close();
             if(poolConnManager != null) poolConnManager.close();
         } catch (Exception e) {}
+    }
+
+    @Override
+    public String callAsPut(String url) throws Exception {
+        HttpPut httpPut = new HttpPut(url);
+        String responseBody = httpClient.execute(httpPut, responseHandler);
+        return responseBody;
     }
 }

@@ -1,5 +1,6 @@
 package dwayne.shim.geogigani.allinone.data.service;
 
+import dwayne.shim.geogigani.allinone.data.service.util.IndexPathUtil;
 import dwayne.shim.geogigani.core.storage.IdWeightStorage;
 import dwayne.shim.geogigani.searching.SearchingExecutor;
 import lombok.extern.log4j.Log4j2;
@@ -29,8 +30,14 @@ public class Application extends SpringBootServletInitializer {
     @Value("${location.original.dir}")
     private String locationOriginalDir;
 
-    @Value("${location.index.dir}")
-    private String locationIndexDir;
+    @Value("${location.index.path.file}")
+    private String locationIndexPathFile;
+
+    @Value("${location.index.dir1}")
+    private String locationIndexDir1;
+
+    @Value("${location.index.dir2}")
+    private String locationIndexDir2;
 
     @Value("${location.snapshot.dir}")
     private String locationSnapshotDir;
@@ -57,6 +64,11 @@ public class Application extends SpringBootServletInitializer {
     }
 
     @Bean
+    public IndexPathUtil indexPathUtil() {
+        return new IndexPathUtil();
+    }
+
+    @Bean
     public ObjectMapper objectMapper() {
         return new ObjectMapper();
     }
@@ -67,8 +79,8 @@ public class Application extends SpringBootServletInitializer {
     }
 
     @Bean
-    public SearchingExecutor searchingExecutor() {
-        return new SearchingExecutor(locationIndexDir);
+    public SearchingExecutor searchingExecutor(IndexPathUtil indexPathUtil) throws Exception {
+        return new SearchingExecutor(indexPathUtil.getCurrentIndexPath(locationIndexPathFile, locationIndexDir1));
     }
 
     @Bean

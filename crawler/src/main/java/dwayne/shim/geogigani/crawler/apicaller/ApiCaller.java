@@ -4,5 +4,7 @@ import java.io.Closeable;
 
 public interface ApiCaller extends Closeable {
 
-    String call(String url) throws Exception;
+    String callAsGet(String url) throws Exception;
+
+    String callAsPut(String url) throws Exception;
 }
