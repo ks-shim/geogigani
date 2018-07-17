@@ -3,6 +3,7 @@ package dwayne.shim.geogigani.crawler;
 import dwayne.shim.geogigani.crawler.apicaller.ApiCaller;
 import dwayne.shim.geogigani.crawler.apicaller.DefaultApiCaller;
 import lombok.extern.log4j.Log4j2;
+import org.apache.commons.codec.binary.StringUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -37,6 +38,7 @@ public class TravelDataCrawler {
         AREA_CODE("areaCode"),
         SIGUNGU_CODE("sigunguCode"),
         LIST_YN("listYN"),
+        INTRO_YN("introYN"),
 
         MAP_X(""),
         MAP_Y(""),
@@ -84,7 +86,56 @@ public class TravelDataCrawler {
         TEL_NAME("telname"),
         TITLE("title"),
         ZIPCODE("zipcode"),
-        OVERVIEW("overview");
+        OVERVIEW("overview"),
+
+        ACCOM_COUNT("accomcount"),
+        CHK_BABY_CARRIAGE("chkbabycarriage"),
+        CHK_PET("chkpet"),
+        EXP_GUIDE("expguide"),
+        INFO_CENTER("infocenter"),
+        OPEN_DATE("opendate"),
+        PARKING("parking"),
+        REST_DATE("restdate"),
+        USE_SEASON("useseason"),
+        USE_TIME("usetime"),
+        ACCOM_COUNT_CULTURE("accomcountculture"),
+        DISCOUNT_INFO("discountinfo"),
+        INFO_CENTER_CULTURE("infocenterculture"),
+        PARKING_CULTURE("parkingculture"),
+        PARKING_FEE("parkingfee"),
+        BOOKING_PLACE("bookingplace"),
+        EVENT_HOMEPAGE("eventhomepage"),
+        USE_FEE("usefee"),
+        AGE_LIMIT("agelimit"),
+        DISCOUNT_INFO_FESTIVAL("discountinfofestival"),
+        EVENT_END_DATE("eventenddate"),
+        EVENT_PLACE("eventplace"),
+        EVENT_START_DATE("eventstartdate"),
+        PLACE_INFO("placeinfo"),
+        PROGRAM("program"),
+        SPEND_TIME_FESTIVAL("spendtimefestival"),
+        USE_TIME_FESTIVAL("usetimefestival"),
+
+        ACCOM_COUNT_LODGING("accomcountlodging"),
+        CHEK_IN_TIME("chekintime"),
+        CHEK_OUT_TIME("checkouttime"),
+        CHK_COOKING("chkcooking"),
+        INFO_CENTER_LODGING("infocenterlodging"),
+        PARKING_LODING("parkingloding"),
+
+        DISCOUNT_INFO_FOOD("discountinfofood"),
+        FIRST_MENU("firstmenu"),
+        INFO_CENTER_FOOD("infocenterfood"),
+        OPEN_TIME_FOOD("opentimefood"),
+        PARKING_FOOD("parkingfood"),
+        PACKING("packing"),
+        RESERVATION_FOOD("reservationfood"),
+        REST_DATE_FOOD("restdatefood"),
+        SCALE_FOOD("scalefood"),
+        SEAT("seat"),
+        TREAT_MENU("treatmenu");
+
+
 
         private final String label;
         private XMLNode(String _label) {
@@ -122,6 +173,7 @@ public class TravelDataCrawler {
         // 5. api info
         RestApiInfo areaBaseListApi = buildAreaBasedListApiInfo(authKey, numOfRows, appName, osName);
         RestApiInfo detailCommonApi = buildDetailCommonApiInfo(authKey, appName, osName);
+        RestApiInfo introApi = buildIntroApiInfo(authKey, appName, osName);
 
         // 6. callAsGet areaBasedList api & detailCommon api sequentially ...
         boolean keepCrawling = true;
@@ -142,10 +194,14 @@ public class TravelDataCrawler {
             readDetailedTravelData(travelDataMap, detailCommonApi, parameters,
                     apiCaller, dBuilder, lastModifiedTime);
 
-            // 5-3. write to files ...
+            // 5-3. callAsGet detailCommon and extract data ...
+            readIntroTravelData(travelDataMap, introApi, parameters,
+                    apiCaller, dBuilder, lastModifiedTime);
+
+            // 5-4. write to files ...
             writeToFile(travelDataMap, objectMapper, outDir);
 
-            // 5-4. empty travel data map
+            // 5-5. empty travel data map
             travelDataMap.clear();
         }
     }
@@ -195,6 +251,27 @@ public class TravelDataCrawler {
         }
     }
 
+    private void readIntroTravelData(Map<String, Map<String, String>> travelDataMap,
+                                     RestApiInfo introApi,
+                                     Map<ParameterKey, String> parameters,
+                                     ApiCaller apiCaller,
+                                     DocumentBuilder dBuilder,
+                                     String lastModifiedTime) throws Exception {
+        for(Map<String, String> docMap : travelDataMap.values()) {
+            parameters.clear();
+            String contentId = docMap.get(XMLNode.CONTENT_ID.label);
+            String contentTypeId = docMap.get(XMLNode.CONTENT_TYPE_ID.label);
+            parameters.put(CONTENT_ID, contentId);
+            parameters.put(CONTENT_TYPE_ID, contentTypeId);
+
+            try {
+                readTravelData(travelDataMap, introApi, parameters, apiCaller, dBuilder, lastModifiedTime);
+            } catch (Exception e) {
+                log.error(e);
+            }
+        }
+    }
+
     private boolean readTravelData(Map<String, Map<String, String>> travelDataMap,
                                    RestApiInfo apiInfo,
                                    Map<ParameterKey, String> parameters,
@@ -236,8 +313,7 @@ public class TravelDataCrawler {
             if(contentId == null) continue;
 
             String oModifiedTime = newItemValueMap.get(XMLNode.MODIFIED_TIME.label);
-            if(oModifiedTime == null) continue;
-            if(lastModifiedTime.compareTo(oModifiedTime) > 0) continue;
+            if(oModifiedTime != null && lastModifiedTime.compareTo(oModifiedTime) > 0) continue;
 
             // 2-3. add newly or merge with old value map ...
             Map<String, String> oldItemValueMap = travelDataMap.get(contentId);
@@ -300,6 +376,27 @@ public class TravelDataCrawler {
 
         RestApiInfo apiInfo = new RestApiInfo(
                 "http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon", Collections.unmodifiableMap(parameters));
+
+        return apiInfo;
+    }
+
+    private RestApiInfo buildIntroApiInfo(String authKey,
+                                          String appName,
+                                          String osName) {
+
+        // make intro restapi info ...
+        Map<ParameterKey, String> parameters = new HashMap<>();
+        parameters.put(SERVICE_KEY, authKey);
+        parameters.put(PAGE_NO, "1");
+        parameters.put(NUM_OF_ROWS, "100");
+        parameters.put(MOBILE_APP, appName);
+        parameters.put(MOBILE_OS, osName);
+        parameters.put(CONTENT_ID, "");
+        parameters.put(CONTENT_TYPE_ID, "");
+        parameters.put(INTRO_YN, "Y");
+
+        RestApiInfo apiInfo = new RestApiInfo(
+                "http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailIntro", Collections.unmodifiableMap(parameters));
 
         return apiInfo;
     }
