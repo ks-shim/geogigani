@@ -77,10 +77,16 @@ public class BatchExecutor {
         // 2. execute batch step 1
         //    - crawl location data using tour-api
         //-------------------------------------------------------------------------------
-        System.out.println("\n\nStart executing step-1 ...");
         BatchExecutor batchExecutor = new BatchExecutor();
-        batchExecutor.executeStep1(authKey, appName, osName, locationDataDir, daysBefore);
-        System.out.println("End executing step-1 ...");
+
+        boolean enableCrawling = Boolean.parseBoolean(prop.getProperty("crawl.enable"));
+        if(enableCrawling) {
+            System.out.println("\n\nStart executing step-1 ...");
+            batchExecutor.executeStep1(authKey, appName, osName, locationDataDir, daysBefore);
+            System.out.println("End executing step-1 ...");
+        } else
+            System.out.println("\n\nSkipped executing step-1 ...");
+
 
         //-------------------------------------------------------------------------------
         // 3. get to-be index dir path ...
@@ -97,11 +103,16 @@ public class BatchExecutor {
         System.out.println("End getting to-be index path ...");
 
         //-------------------------------------------------------------------------------
-        // 4. get to-be index dir path ...
+        // 4. do indexing dir path ...
         //-------------------------------------------------------------------------------
-        System.out.println("\n\nStart executing step-2 ...");
-        batchExecutor.executeStep2(locationDataDir, toBePath, keyExtractorConfigPath);
-        System.out.println("End executing step-2 ...");
+
+        boolean enableIndexing = Boolean.parseBoolean(prop.getProperty("indexing.enable"));
+        if(enableIndexing) {
+            System.out.println("\n\nStart executing step-2 ...");
+            batchExecutor.executeStep2(locationDataDir, toBePath, keyExtractorConfigPath);
+            System.out.println("End executing step-2 ...");
+        } else
+            System.out.println("Skipped executing step-2 ...");
 
         //-------------------------------------------------------------------------------
         // 5. force data-service to switch index path ...

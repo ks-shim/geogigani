@@ -43,7 +43,9 @@ public class IndexController {
         try {
             String toBeIndexPath = indexPathUtil.getNextIndexPath(locationIndexPathFile, locationIndexDir1, locationIndexDir2);
             searchingExecutor.switchIndexLocation(toBeIndexPath);
+            log.info("Switched index path ...");
             indexPathUtil.switchIndexPath(locationIndexPathFile, toBeIndexPath);
+            log.info("Switched index path info in the file ...");
         } catch (Exception e) {
             log.error(e);
         }
