@@ -316,9 +316,9 @@ public class TravelDataCrawler {
     public static void main(String[] args) throws Exception {
 
         // 1. reading related variables ...
-        final String[] authKeys = {
-                "Vwp9OmiFxxt9M2nremlH%2FAU2uOOGjbudaPl7HHd8hb1HYufbqGcYEtbdljMYWYB8KVhLPjCeJNG68O9WVOzZeA%3D%3D"
-        };
+        final String authKey =
+                "Vwp9OmiFxxt9M2nremlH%2FAU2uOOGjbudaPl7HHd8hb1HYufbqGcYEtbdljMYWYB8KVhLPjCeJNG68O9WVOzZeA%3D%3D";
+
 
         final int numOfRows = 1000;
         final String appName = "geogigani";
@@ -330,9 +330,8 @@ public class TravelDataCrawler {
         // 3. processing ..
         TravelDataCrawler tdc = new TravelDataCrawler();
         int startPage = 1;
-        String lastModifiedTime = getTimestampBefore(7);
-        for(int i=0; i<authKeys.length; i++)
-          tdc.execute(authKeys[i], numOfRows, appName, osName, new File(outDirectory), startPage+i, startPage+i, lastModifiedTime);
+        String lastModifiedTime = getTimestampBefore(1);
+        tdc.execute(authKey, numOfRows, appName, osName, new File(outDirectory), startPage, startPage+100, lastModifiedTime);
     }
 
     private static class RestApiInfo {
