@@ -14,10 +14,25 @@ public class Temp {
                 line = line.trim();
                 if (line.isEmpty()) continue;
 
-                String upper = line.toUpperCase();
-                String lower = line.replaceAll("_", "").toLowerCase();
+                // <tr th:if="${destination_detail_info.addr1 != null}">
+                //                        <td class="align-middle"><small class="fa fa-phone"></small></td>
+                //                        <td class="align-middle"><small>주소</small></td>
+                //                        <td class="align-middle"><small th:text="${destination_detail_info.addr1}"></small></td>
+                //                      </tr>
+                String[] infos = line.split("\\t");
+                String kor = infos[0].trim();
+                String icon = infos[1]. replaceAll(String.valueOf((char)160), "").trim();
+                String lower = infos[2].replaceAll("_", "").toLowerCase();
 
-                System.out.println("TravelDataIndexField." + upper + ".label(),");
+                //System.out.println("TravelDataIndexField." + upper + ".label(),");
+                //removeHtmlTags(docMap, TravelDataIndexField.OVERVIEW.label());
+                System.out.println("<tr th:if=\"${destination_detail_info." + lower + " != null && destination_detail_info." + lower + " != ''}\">");
+                System.out.println("\t<td class=\"align-middle\"><small class=\"fa " + icon + "\"></small> <small>" + kor + "</small></td>");
+                System.out.println("\t<td class=\"align-middle\"><small th:text=\"${destination_detail_info." + lower + "}\"></small></td>");
+                System.out.println("</tr>");
+                //System.out.println("removeHtmlTags(docMap, TravelDataIndexField." + upper + ".label());");
+                //System.out.println("<li class=\"fa " + icon + "\" th:if=\"${destination_detail_info." + lower + " != null}\" th:text=\"' (" + kor + ") : ' + ${destination_detail_info." + lower + "}\"></li>");
+                //System.out.println("<br th:if=\"${destination_detail_info." + lower + " != null}\"/>");
             }
         }
     }

@@ -160,8 +160,8 @@
 
               </a>
               <div class="portfolio2-caption">
-                <h4 th:text="${doc.titleshort}"></h4>
-                <p class="text-muted" th:text="${doc.overviewshort}"></p>
+                <h5 th:text="${doc.titleshort}"></h5>
+                <small class="text-muted" th:text="${doc.overviewshort}"></small>
                 <hr/>
                 <ul class="post-footer">
                   <li class="fa fa-eye" th:text="' ' +${doc.clickcount}"></li>
@@ -196,8 +196,8 @@
                 <img class="img-fluid" th:src="${(doc.firstimage != null) ? doc.firstimage : '/img/no_image_available.png'}" th:alt="${doc.title}"/>
               </a>
               <div class="portfolio-caption">
-                <h4 th:text="${doc.titleshort}"></h4>
-                <p class="text-muted" th:text="${doc.overviewshort}"></p>
+                <h5 th:text="${doc.titleshort}"></h5>
+                <small class="text-muted" th:text="${doc.overviewshort}"></small>
                 <hr/>
                 <ul class="post-footer">
                   <li class="fa fa-eye" th:text="' ' +${doc.clickcount}"></li>
