@@ -259,8 +259,6 @@ public class TravelDataCrawler {
             keepCrawling = readAreaBasedListTravelData(travelDataMap, areaBaseListApi, parameters, apiCaller, dBuilder, pageNo, lastModifiedTime);
             if(!keepCrawling) break;
 
-            //if(pageNo <= 1) continue;
-
             // 5-2. callAsGet detailCommon and extract data ...
             readDetailedTravelData(travelDataMap, detailCommonApi, parameters,
                     apiCaller, dBuilder, lastModifiedTime);
@@ -485,7 +483,6 @@ public class TravelDataCrawler {
         // 1. reading related variables ...
         final String authKey =
                 "Vwp9OmiFxxt9M2nremlH%2FAU2uOOGjbudaPl7HHd8hb1HYufbqGcYEtbdljMYWYB8KVhLPjCeJNG68O9WVOzZeA%3D%3D";
-
 
         final int numOfRows = 1000;
         final String appName = "geogigani";
