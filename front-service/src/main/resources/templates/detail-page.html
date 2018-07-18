@@ -597,6 +597,9 @@
                   </table>
                 </div>
                 <div class="modal-footer">
+                  <a th:href="'https://search.naver.com/search.naver?where=nexearch&sm=tab_jum&query=' + ${destination_detail_info.title}">
+                    <small>네이버 검색</small>
+                  </a>
                   <p class="fa fa-eye" th:text="' ' +${destination_detail_info.clickcount}"></p>
                 </div>
               </div>
