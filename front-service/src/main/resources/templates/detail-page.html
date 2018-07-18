@@ -112,7 +112,7 @@
                   <p th:text="${destination_detail_info.overview}"></p>
                   <hr/>
                   <ul class="list-inline">
-                    <li class="fa fa-phone" th:text=" ${destination_detail_info.tel != null} ?  ' (Tel) : ' + ${destination_detail_info.tel} : ' (Tel) : ...'"></li>
+                    <li class="fa fa-phone" th:if="${destination_detail_info.tel != null}" th:text=" ${destination_detail_info.tel != null} ?  ' (Tel) : ' + ${destination_detail_info.tel} : ' (Tel) : ...'"></li>
                     <br>
                     <li class="fa fa-map-marker" th:text="${destination_detail_info.addr1 != null} ? ' (Address) : ' + ${destination_detail_info.addr1} : ' (Address) : ...'"></li>
                   </ul>

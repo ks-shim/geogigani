@@ -115,6 +115,8 @@ public class IndexingExecutor {
     private void removeHtmlTags(Map<String, String> docMap,
                                 String fieldName) throws Exception {
         String content = docMap.get(fieldName);
+        if(content == null) return;
+
         content = content.replaceAll("&nbsp;", " ");
         docMap.put(fieldName, HtmlUtils.stripTags(content));
     }
@@ -123,6 +125,7 @@ public class IndexingExecutor {
                                  String sourceFieldName,
                                  String targetFieldName) throws Exception {
         String content = docMap.get(sourceFieldName);
+        if(content == null) return;
         docMap.put(targetFieldName, extractKeywords(content));
     }
 
@@ -131,6 +134,7 @@ public class IndexingExecutor {
                                 String targetFieldName,
                                 int contentLengthLimit) throws Exception {
         String content = docMap.get(sourceFieldName);
+        if(content == null) return;
         if(content.length() > contentLengthLimit) content = content.substring(0, contentLengthLimit-3) + " ...";
         docMap.put(targetFieldName, content);
     }
@@ -165,7 +169,7 @@ public class IndexingExecutor {
         final int docSizeLimit = 1000;
 
         // 관광지, 문화시설, 숙박, 쇼핑, 음식점, 축제(15), 여행코스(25)
-        final int[] contentTypes = {12, 14, 28, 32, 38, 39};
+        final int[] contentTypes = {12, 14, 28, 32, 38, 39, 15, 25};
         final Set<String> allowedContentTypes = new HashSet<>();
         for(int contentType : contentTypes)
             allowedContentTypes.add(String.valueOf(contentType));
