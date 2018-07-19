@@ -49,9 +49,9 @@ public class FrontService {
         return asMap(result);
     }
 
-    public List<Map<String, String>> getSimilarDestinations(String destId) {
+    public Map<String, List<Map<String, String>>> getSimilarDestinations(String destId) {
         TravelData[] result = restTemplate.getForObject(restSimilar + '/' + destId, TravelData[].class);
-        return asMapList(result);
+        return asCategorizedMapList(result);
     }
 
     public Map<String, List<Map<String, String>>> getShortDistanceDestinations(String destId) {
@@ -59,9 +59,9 @@ public class FrontService {
         return asCategorizedMapList(result);
     }
 
-    public List<Map<String, String>> searchDestinations(String keywords) {
+    public Map<String, List<Map<String, String>>> searchDestinations(String keywords) {
         TravelData[] result = restTemplate.getForObject(restSearch + "?keywords=" + keywords, TravelData[].class);
-        return asMapList(result);
+        return asCategorizedMapList(result);
     }
 
     public Map<String, List<Map<String, String>>> getInterestingDestinations(String userId) {

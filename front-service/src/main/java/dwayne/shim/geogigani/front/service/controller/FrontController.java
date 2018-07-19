@@ -44,7 +44,7 @@ public class FrontController {
         Map<String, String> detailResult = frontService.getDestinationDetail(destId, userId);
         model.addAttribute(ModelField.DESTINATION_DETAIL_INFO.label(), detailResult);
 
-        List<Map<String, String>> similarResult = frontService.getSimilarDestinations(destId);
+        Map<String, List<Map<String, String>>> similarResult = frontService.getSimilarDestinations(destId);
         model.addAttribute(ModelField.DESTINATION_SIMILAR_INFO.label(), similarResult);
 
         Map<String, List<Map<String, String>>> shortDistResult = frontService.getShortDistanceDestinations(destId);
@@ -56,7 +56,7 @@ public class FrontController {
     @RequestMapping(value = {"/search-destinations"}, produces = "application/json; charset=utf8", method = {RequestMethod.GET})
     public String searchDestinations(Model model,
                                      @RequestParam(value = "keywords") String keywords) {
-        List<Map<String, String>> result = frontService.searchDestinations(keywords);
+        Map<String, List<Map<String, String>>> result = frontService.searchDestinations(keywords);
         model.addAttribute(ModelField.DESTINATION_INFO.label(), result);
         return "search-page";
     }
