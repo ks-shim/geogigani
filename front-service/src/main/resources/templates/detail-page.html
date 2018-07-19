@@ -185,13 +185,13 @@
                       <td class="align-middle"><small class="fa fa-clock-o"></small> <small>개장일</small></td>
                       <td class="align-middle"><small th:utext="${destination_detail_info.opendate}"></small></td>
                     </tr>
-                    <tr th:if="${destination_detail_info.parking != null && destination_detail_info.parking != ''}">
-                      <td class="align-middle"><small class="fa fa-car"></small> <small>주차시설</small></td>
-                      <td class="align-middle"><small th:utext="${destination_detail_info.parking}"></small></td>
-                    </tr>
                     <tr th:if="${destination_detail_info.restdate != null && destination_detail_info.restdate != ''}">
                       <td class="align-middle"><small class="fa fa-clock-o"></small> <small>쉬는날</small></td>
                       <td class="align-middle"><small th:utext="${destination_detail_info.restdate}"></small></td>
+                    </tr>
+                    <tr th:if="${destination_detail_info.parking != null && destination_detail_info.parking != ''}">
+                      <td class="align-middle"><small class="fa fa-car"></small> <small>주차시설</small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.parking}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.useseason != null && destination_detail_info.useseason != ''}">
                       <td class="align-middle"><small class="fa fa-clock-o"></small> <small>이용시기</small></td>
@@ -533,13 +533,13 @@
                       <td class="align-middle"><small class="fa fa-clock-o"></small> <small>영업시간</small></td>
                       <td class="align-middle"><small th:utext="${destination_detail_info.opentime}"></small></td>
                     </tr>
-                    <tr th:if="${destination_detail_info.parkingshopping != null && destination_detail_info.parkingshopping != ''}">
-                      <td class="align-middle"><small class="fa fa-car"></small> <small>주차시설</small></td>
-                      <td class="align-middle"><small th:utext="${destination_detail_info.parkingshopping}"></small></td>
-                    </tr>
                     <tr th:if="${destination_detail_info.restdateshopping != null && destination_detail_info.restdateshopping != ''}">
                       <td class="align-middle"><small class="fa fa-calendar"></small> <small>쉬는날</small></td>
                       <td class="align-middle"><small th:utext="${destination_detail_info.restdateshopping}"></small></td>
+                    </tr>
+                    <tr th:if="${destination_detail_info.parkingshopping != null && destination_detail_info.parkingshopping != ''}">
+                      <td class="align-middle"><small class="fa fa-car"></small> <small>주차시설</small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.parkingshopping}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.restroom != null && destination_detail_info.restroom != ''}">
                       <td class="align-middle"><small class="fa fa-info-circle"></small> <small>화장실 설명</small></td>
