@@ -134,6 +134,7 @@ public class LocationDataService {
             TravelDataIndexField.FIRST_IMAGE2.label(),
             TravelDataIndexField.MAP_X.label(),
             TravelDataIndexField.MAP_Y.label(),
+            TravelDataIndexField.HOMEPAGE.label(),
             TravelDataIndexField.IN_5KM.label(),
             TravelDataIndexField.IN_10KM.label(),
             TravelDataIndexField.ACCOM_COUNT.label(),

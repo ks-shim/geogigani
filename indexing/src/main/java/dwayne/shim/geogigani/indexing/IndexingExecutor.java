@@ -66,7 +66,7 @@ public class IndexingExecutor {
             // 3-2. remove html tags
             removeHtmlTags(docMap, TravelDataIndexField.TITLE.label());
             removeHtmlTags(docMap, TravelDataIndexField.OVERVIEW.label());
-            removeHtmlTags(docMap, TravelDataIndexField.ACCOM_COUNT.label());
+            /*removeHtmlTags(docMap, TravelDataIndexField.ACCOM_COUNT.label());
             removeHtmlTags(docMap, TravelDataIndexField.CHK_BABY_CARRIAGE.label());
             removeHtmlTags(docMap, TravelDataIndexField.CHK_CREDIT_CARD.label());
             removeHtmlTags(docMap, TravelDataIndexField.CHK_PET.label());
@@ -182,7 +182,7 @@ public class IndexingExecutor {
             removeHtmlTags(docMap, TravelDataIndexField.SCALE_FOOD.label());
             removeHtmlTags(docMap, TravelDataIndexField.SEAT.label());
             removeHtmlTags(docMap, TravelDataIndexField.SMOKING.label());
-            removeHtmlTags(docMap, TravelDataIndexField.TREAT_MENU.label());
+            removeHtmlTags(docMap, TravelDataIndexField.TREAT_MENU.label());*/
 
             // 3-3. extract keywords and put it into docMap as new fields
             extractKeywords(docMap, TravelDataIndexField.TITLE.label(), TravelDataIndexField.TITLE_KEYWORDS.label());

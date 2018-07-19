@@ -101,6 +101,12 @@ public enum TravelDataIndexField {
             return new TextField(label(), value, Field.Store.YES);
         }
     },
+    HOMEPAGE("homepage") {
+        @Override
+        public Field buildField(String value) {
+            return new TextField(label(), value, Field.Store.YES);
+        }
+    },
     AREA_CODE("areacode") {
         @Override
         public Field buildField(String value) {

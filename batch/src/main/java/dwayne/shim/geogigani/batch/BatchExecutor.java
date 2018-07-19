@@ -39,7 +39,7 @@ public class BatchExecutor {
         final int docSizeLimit = 1000;
 
         // 관광지, 문화시설, 숙박, 쇼핑, 음식점, 축제(15), 여행코스(25)
-        final int[] contentTypes = {12, 14, 28, 32, 38, 39};
+        final int[] contentTypes = {12, 14, 28, 32, 38, 39, 15, 25};
         final Set<String> allowedContentTypes = new HashSet<>();
         for(int contentType : contentTypes)
             allowedContentTypes.add(String.valueOf(contentType));

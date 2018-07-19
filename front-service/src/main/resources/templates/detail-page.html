@@ -42,6 +42,13 @@
         padding: 1 !important;
         margin: 0 !important;
       }
+
+      a:link
+      {color: blue;}
+      a:visited
+      {color: blue;}
+      a:hover
+      {color: skyblue;}
     </style>
   </head>
 
@@ -117,6 +124,12 @@
                   </th:block>
                   <small th:text="${destination_detail_info.overview}"></small>
                   <hr/>
+                  <div class="text-right">
+                    <a th:href="'https://search.naver.com/search.naver?where=nexearch&sm=tab_jum&query=' + ${destination_detail_info.title}" target="_blank">
+                      <button class="btn btn-success btn-sm"><i class="fa fa-search"></i><small> 네이버 검색</small></button>
+                    </a>
+                  </div>
+                  <br />
                   <table class="table table-striped table-bordered">
                     <thead>
                       <tr class="text-center">
@@ -125,481 +138,483 @@
                       </tr>
                     </thead>
                     <tbody>
+                    <tr th:if="${destination_detail_info.homepage != null && destination_detail_info.homepage != ''}">
+                      <td class="align-middle"><small class="fa fa-home"></small> <small>홈페이지</small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.homepage}"></small></td>
+                    </tr>
                     <tr th:if="${destination_detail_info.accomcount != null && destination_detail_info.accomcount != ''}">
                       <td class="align-middle"><small class="fa fa-group"></small> <small>수용인원</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.accomcount}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.accomcount}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.chkbabycarriage != null && destination_detail_info.chkbabycarriage != ''}">
                       <td class="align-middle"><small class="fa fa-child"></small> <small>유모차대여 정보</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.chkbabycarriage}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.chkbabycarriage}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.chkcreditcard != null && destination_detail_info.chkcreditcard != ''}">
                       <td class="align-middle"><small class="fa fa-credit-card"></small> <small>신용카드가능 정보</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.chkcreditcard}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.chkcreditcard}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.chkpet != null && destination_detail_info.chkpet != ''}">
                       <td class="align-middle"><small class="fa fa-paw"></small> <small>애완동물동반가능 정보</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.chkpet}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.chkpet}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.expagerange != null && destination_detail_info.expagerange != ''}">
                       <td class="align-middle"><small class="fa fa-user"></small> <small>체험가능 연령</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.expagerange}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.expagerange}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.expguide != null && destination_detail_info.expguide != ''}">
                       <td class="align-middle"><small class="fa fa-comments"></small> <small>체험안내</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.expguide}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.expguide}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.infocenter != null && destination_detail_info.infocenter != ''}">
                       <td class="align-middle"><small class="fa fa-phone"></small> <small>문의 및 안내</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.infocenter}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.infocenter}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.opendate != null && destination_detail_info.opendate != ''}">
                       <td class="align-middle"><small class="fa fa-clock-o"></small> <small>개장일</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.opendate}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.opendate}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.parking != null && destination_detail_info.parking != ''}">
                       <td class="align-middle"><small class="fa fa-car"></small> <small>주차시설</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.parking}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.parking}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.restdate != null && destination_detail_info.restdate != ''}">
                       <td class="align-middle"><small class="fa fa-clock-o"></small> <small>쉬는날</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.restdate}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.restdate}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.useseason != null && destination_detail_info.useseason != ''}">
                       <td class="align-middle"><small class="fa fa-clock-o"></small> <small>이용시기</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.useseason}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.useseason}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.usetime != null && destination_detail_info.usetime != ''}">
                       <td class="align-middle"><small class="fa fa-clock-o"></small> <small>이용시간</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.usetime}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.usetime}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.accomcountculture != null && destination_detail_info.accomcountculture != ''}">
                       <td class="align-middle"><small class="fa fa-group"></small> <small>수용인원</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.accomcountculture}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.accomcountculture}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.chkbabycarriageculture != null && destination_detail_info.chkbabycarriageculture != ''}">
                       <td class="align-middle"><small class="fa fa-child"></small> <small>유모차대여 정보</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.chkbabycarriageculture}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.chkbabycarriageculture}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.chkcreditcardculture != null && destination_detail_info.chkcreditcardculture != ''}">
                       <td class="align-middle"><small class="fa fa-credit-card"></small> <small>신용카드가능 정보</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.chkcreditcardculture}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.chkcreditcardculture}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.chkpetculture != null && destination_detail_info.chkpetculture != ''}">
                       <td class="align-middle"><small class="fa fa-paw"></small> <small>애완동물동반가능 정보</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.chkpetculture}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.chkpetculture}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.discountinfo != null && destination_detail_info.discountinfo != ''}">
                       <td class="align-middle"><small class="fa fa-money"></small> <small>할인정보</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.discountinfo}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.discountinfo}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.infocenterculture != null && destination_detail_info.infocenterculture != ''}">
                       <td class="align-middle"><small class="fa fa-phone"></small> <small>문의 및 안내</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.infocenterculture}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.infocenterculture}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.parkingculture != null && destination_detail_info.parkingculture != ''}">
                       <td class="align-middle"><small class="fa fa-car"></small> <small>주차시설</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.parkingculture}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.parkingculture}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.parkingfee != null && destination_detail_info.parkingfee != ''}">
                       <td class="align-middle"><small class="fa fa-money"></small> <small>주차요금</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.parkingfee}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.parkingfee}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.restdateculture != null && destination_detail_info.restdateculture != ''}">
                       <td class="align-middle"><small class="fa fa-clock-o"></small> <small>쉬는날</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.restdateculture}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.restdateculture}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.usefee != null && destination_detail_info.usefee != ''}">
                       <td class="align-middle"><small class="fa fa-money"></small> <small>이용요금</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.usefee}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.usefee}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.usetimeculture != null && destination_detail_info.usetimeculture != ''}">
                       <td class="align-middle"><small class="fa fa-clock-o"></small> <small>이용시간</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.usetimeculture}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.usetimeculture}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.spendtime != null && destination_detail_info.spendtime != ''}">
                       <td class="align-middle"><small class="fa fa-clock-o"></small> <small>관람 소요시간</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.spendtime}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.spendtime}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.agelimit != null && destination_detail_info.agelimit != ''}">
                       <td class="align-middle"><small class="fa fa-user"></small> <small>관람 가능연령</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.agelimit}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.agelimit}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.bookingplace != null && destination_detail_info.bookingplace != ''}">
                       <td class="align-middle"><small class="fa fa-map-marker"></small> <small>예매처</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.bookingplace}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.bookingplace}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.discountinfofestival != null && destination_detail_info.discountinfofestival != ''}">
                       <td class="align-middle"><small class="fa fa-money"></small> <small>할인정보</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.discountinfofestival}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.discountinfofestival}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.eventenddate != null && destination_detail_info.eventenddate != ''}">
                       <td class="align-middle"><small class="fa fa-clock-o"></small> <small>행사 종료일</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.eventenddate}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.eventenddate}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.eventhomepage != null && destination_detail_info.eventhomepage != ''}">
                       <td class="align-middle"><small class="fa fa-home"></small> <small>행사 홈페이지</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.eventhomepage}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.eventhomepage}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.eventplace != null && destination_detail_info.eventplace != ''}">
                       <td class="align-middle"><small class="fa fa-map-marker"></small> <small>행사 장소</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.eventplace}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.eventplace}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.eventstartdate != null && destination_detail_info.eventstartdate != ''}">
                       <td class="align-middle"><small class="fa fa-clock-o"></small> <small>행사 시작일</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.eventstartdate}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.eventstartdate}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.placeinfo != null && destination_detail_info.placeinfo != ''}">
                       <td class="align-middle"><small class="fa fa-map-marker"></small> <small>행사장 위치안내</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.placeinfo}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.placeinfo}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.playtime != null && destination_detail_info.playtime != ''}">
                       <td class="align-middle"><small class="fa fa-clock-o"></small> <small>공연시간</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.playtime}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.playtime}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.program != null && destination_detail_info.program != ''}">
                       <td class="align-middle"><small class="fa fa-clock-o"></small> <small>행사 프로그램</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.program}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.program}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.spendtimefestival != null && destination_detail_info.spendtimefestival != ''}">
                       <td class="align-middle"><small class="fa fa-clock-o"></small> <small>관람 소요시간</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.spendtimefestival}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.spendtimefestival}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.sponsor1 != null && destination_detail_info.sponsor1 != ''}">
                       <td class="align-middle"><small class="fa fa-building-o"></small> <small>주최자 정보</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.sponsor1}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.sponsor1}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.sponsor1tel != null && destination_detail_info.sponsor1tel != ''}">
                       <td class="align-middle"><small class="fa fa-phone"></small> <small>주최자 연락처</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.sponsor1tel}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.sponsor1tel}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.sponsor2 != null && destination_detail_info.sponsor2 != ''}">
                       <td class="align-middle"><small class="fa fa-building-o"></small> <small>주관사 정보</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.sponsor2}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.sponsor2}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.sponsor2tel != null && destination_detail_info.sponsor2tel != ''}">
                       <td class="align-middle"><small class="fa fa-phone"></small> <small>주관사 연락처</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.sponsor2tel}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.sponsor2tel}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.subevent != null && destination_detail_info.subevent != ''}">
                       <td class="align-middle"><small class="fa fa-info-circle"></small> <small>부대행사</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.subevent}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.subevent}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.usetimefestival != null && destination_detail_info.usetimefestival != ''}">
                       <td class="align-middle"><small class="fa fa-money"></small> <small>이용요금</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.usetimefestival}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.usetimefestival}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.distance != null && destination_detail_info.distance != ''}">
                       <td class="align-middle"><small class="fa fa-road"></small> <small>코스 총거리</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.distance}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.distance}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.infocentertourcourse != null && destination_detail_info.infocentertourcourse != ''}">
                       <td class="align-middle"><small class="fa fa-phone"></small> <small>문의 및 안내</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.infocentertourcourse}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.infocentertourcourse}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.schedule != null && destination_detail_info.schedule != ''}">
                       <td class="align-middle"><small class="fa fa-calendar"></small> <small>코스 일정</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.schedule}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.schedule}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.taketime != null && destination_detail_info.taketime != ''}">
                       <td class="align-middle"><small class="fa fa-clock-o"></small> <small>코스 총 소요 시간</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.taketime}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.taketime}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.theme != null && destination_detail_info.theme != ''}">
                       <td class="align-middle"><small class="fa fa-info-circle"></small> <small>코스 테마</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.theme}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.theme}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.accomcountleports != null && destination_detail_info.accomcountleports != ''}">
                       <td class="align-middle"><small class="fa fa-user"></small> <small>수용인원</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.accomcountleports}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.accomcountleports}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.chkbabycarriageleports != null && destination_detail_info.chkbabycarriageleports != ''}">
                       <td class="align-middle"><small class="fa fa-child"></small> <small>유모차대여 정보</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.chkbabycarriageleports}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.chkbabycarriageleports}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.chkcreditcardleports != null && destination_detail_info.chkcreditcardleports != ''}">
                       <td class="align-middle"><small class="fa fa-credit-card"></small> <small>신용카드가능 정보</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.chkcreditcardleports}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.chkcreditcardleports}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.chkpetleports != null && destination_detail_info.chkpetleports != ''}">
                       <td class="align-middle"><small class="fa fa-paw"></small> <small>애완동물동반가능 정보</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.chkpetleports}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.chkpetleports}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.expagerangeleports != null && destination_detail_info.expagerangeleports != ''}">
                       <td class="align-middle"><small class="fa fa-user"></small> <small>체험 가능연령</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.expagerangeleports}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.expagerangeleports}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.infocenterleports != null && destination_detail_info.infocenterleports != ''}">
                       <td class="align-middle"><small class="fa fa-phone"></small> <small>문의 및 안내</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.infocenterleports}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.infocenterleports}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.openperiod != null && destination_detail_info.openperiod != ''}">
                       <td class="align-middle"><small class="fa fa-calendar"></small> <small>개장기간</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.openperiod}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.openperiod}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.parkingfeeleports != null && destination_detail_info.parkingfeeleports != ''}">
                       <td class="align-middle"><small class="fa fa-money"></small> <small>주차요금</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.parkingfeeleports}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.parkingfeeleports}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.parkingleports != null && destination_detail_info.parkingleports != ''}">
                       <td class="align-middle"><small class="fa fa-car"></small> <small>주차시설</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.parkingleports}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.parkingleports}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.reservation != null && destination_detail_info.reservation != ''}">
                       <td class="align-middle"><small class="fa fa-calendar"></small> <small>예약안내</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.reservation}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.reservation}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.restdateleports != null && destination_detail_info.restdateleports != ''}">
                       <td class="align-middle"><small class="fa fa-calendar"></small> <small>쉬는날</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.restdateleports}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.restdateleports}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.scaleleports != null && destination_detail_info.scaleleports != ''}">
                       <td class="align-middle"><small class="fa fa-arrows-h"></small> <small>규모</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.scaleleports}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.scaleleports}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.usefeeleports != null && destination_detail_info.usefeeleports != ''}">
                       <td class="align-middle"><small class="fa fa-money"></small> <small>입장료</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.usefeeleports}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.usefeeleports}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.usetimeleports != null && destination_detail_info.usetimeleports != ''}">
                       <td class="align-middle"><small class="fa fa-clock-o"></small> <small>이용시간</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.usetimeleports}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.usetimeleports}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.accomcountlodging != null && destination_detail_info.accomcountlodging != ''}">
                       <td class="align-middle"><small class="fa fa-group"></small> <small>수용 가능인원</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.accomcountlodging}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.accomcountlodging}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.checkintime != null && destination_detail_info.checkintime != ''}">
                       <td class="align-middle"><small class="fa fa-clock-o"></small> <small>입실 시간</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.checkintime}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.checkintime}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.checkouttime != null && destination_detail_info.checkouttime != ''}">
                       <td class="align-middle"><small class="fa fa-clock-o"></small> <small>퇴실 시간</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.checkouttime}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.checkouttime}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.chkcooking != null && destination_detail_info.chkcooking != ''}">
                       <td class="align-middle"><small class="fa fa-spoon"></small> <small>객실내 취사 여부</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.chkcooking}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.chkcooking}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.foodplace != null && destination_detail_info.foodplace != ''}">
                       <td class="align-middle"><small class="fa fa-beer"></small> <small>식음료장</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.foodplace}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.foodplace}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.hanok != null && destination_detail_info.hanok != ''}">
                       <td class="align-middle"><small class="fa fa-check-square"></small> <small>한옥 여부</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.hanok}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.hanok}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.infocenterlodging != null && destination_detail_info.infocenterlodging != ''}">
                       <td class="align-middle"><small class="fa fa-phone"></small> <small>문의 및 안내</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.infocenterlodging}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.infocenterlodging}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.parkinglodging != null && destination_detail_info.parkinglodging != ''}">
                       <td class="align-middle"><small class="fa fa-car"></small> <small>주차시설</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.parkinglodging}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.parkinglodging}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.pickup != null && destination_detail_info.pickup != ''}">
                       <td class="align-middle"><small class="fa fa-car"></small> <small>픽업 서비스</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.pickup}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.pickup}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.roomcount != null && destination_detail_info.roomcount != ''}">
                       <td class="align-middle"><small class="fa fa-group"></small> <small>객실수</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.roomcount}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.roomcount}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.reservationlodging != null && destination_detail_info.reservationlodging != ''}">
                       <td class="align-middle"><small class="fa fa-calendar"></small> <small>예약안내</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.reservationlodging}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.reservationlodging}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.reservationurl != null && destination_detail_info.reservationurl != ''}">
                       <td class="align-middle"><small class="fa fa-home"></small> <small>예약안내 홈페이지</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.reservationurl}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.reservationurl}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.roomtype != null && destination_detail_info.roomtype != ''}">
                       <td class="align-middle"><small class="fa fa-check-square"></small> <small>객실유형</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.roomtype}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.roomtype}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.scalelodging != null && destination_detail_info.scalelodging != ''}">
                       <td class="align-middle"><small class="fa fa-arrows-h"></small> <small>규모</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.scalelodging}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.scalelodging}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.subfacility != null && destination_detail_info.subfacility != ''}">
                       <td class="align-middle"><small class="fa fa-flag"></small> <small>부대시설 (기타)</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.subfacility}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.subfacility}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.barbecue != null && destination_detail_info.barbecue != ''}">
                       <td class="align-middle"><small class="fa fa-fire"></small> <small>바비큐장 여부</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.barbecue}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.barbecue}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.beauty != null && destination_detail_info.beauty != ''}">
                       <td class="align-middle"><small class="fa fa-female"></small> <small>뷰티시설 정보</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.beauty}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.beauty}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.beverage != null && destination_detail_info.beverage != ''}">
                       <td class="align-middle"><small class="fa fa-beer"></small> <small>식음료장 여부</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.beverage}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.beverage}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.bicycle != null && destination_detail_info.bicycle != ''}">
                       <td class="align-middle"><small class="fa fa-check-square"></small> <small>자전거 대여 여부</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.bicycle}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.bicycle}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.campfire != null && destination_detail_info.campfire != ''}">
                       <td class="align-middle"><small class="fa fa-fire"></small> <small>캠프파이어 여부</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.campfire}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.campfire}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.fitness != null && destination_detail_info.fitness != ''}">
                       <td class="align-middle"><small class="fa fa-male"></small> <small>휘트니스 센터 여부</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.fitness}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.fitness}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.karaoke != null && destination_detail_info.karaoke != ''}">
                       <td class="align-middle"><small class="fa fa-power-off"></small> <small>노래방 여부</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.karaoke}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.karaoke}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.publicbath != null && destination_detail_info.publicbath != ''}">
                       <td class="align-middle"><small class="fa fa-info-circle"></small> <small>공용 샤워실 여부</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.publicbath}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.publicbath}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.publicpc != null && destination_detail_info.publicpc != ''}">
                       <td class="align-middle"><small class="fa fa-info-circle"></small> <small>공동 PC실 여부</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.publicpc}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.publicpc}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.sauna != null && destination_detail_info.sauna != ''}">
                       <td class="align-middle"><small class="fa fa-info-circle"></small> <small>사우나실 여부</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.sauna}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.sauna}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.seminar != null && destination_detail_info.seminar != ''}">
                       <td class="align-middle"><small class="fa fa-info-circle"></small> <small>세미나실 여부</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.seminar}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.seminar}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.sports != null && destination_detail_info.sports != ''}">
                       <td class="align-middle"><small class="fa fa-info-circle"></small> <small>스포츠 시설 여부</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.sports}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.sports}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.chkbabycarriageshopping != null && destination_detail_info.chkbabycarriageshopping != ''}">
                       <td class="align-middle"><small class="fa fa-child"></small> <small>유모차대여 정보</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.chkbabycarriageshopping}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.chkbabycarriageshopping}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.chkcreditcardshopping != null && destination_detail_info.chkcreditcardshopping != ''}">
                       <td class="align-middle"><small class="fa fa-credit-card"></small> <small>신용카드가능 정보</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.chkcreditcardshopping}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.chkcreditcardshopping}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.chkpetshopping != null && destination_detail_info.chkpetshopping != ''}">
                       <td class="align-middle"><small class="fa fa-paw"></small> <small>애완동물동반가능 정보</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.chkpetshopping}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.chkpetshopping}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.culturecenter != null && destination_detail_info.culturecenter != ''}">
                       <td class="align-middle"><small class="fa fa-map-marker"></small> <small>문화센터</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.culturecenter}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.culturecenter}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.fairday != null && destination_detail_info.fairday != ''}">
                       <td class="align-middle"><small class="fa fa-calendar"></small> <small>장서는 날</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.fairday}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.fairday}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.infocentershopping != null && destination_detail_info.infocentershopping != ''}">
                       <td class="align-middle"><small class="fa fa-phone"></small> <small>문의 및 안내</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.infocentershopping}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.infocentershopping}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.opendateshopping != null && destination_detail_info.opendateshopping != ''}">
                       <td class="align-middle"><small class="fa fa-calendar"></small> <small>개장일</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.opendateshopping}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.opendateshopping}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.opentime != null && destination_detail_info.opentime != ''}">
                       <td class="align-middle"><small class="fa fa-clock-o"></small> <small>영업시간</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.opentime}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.opentime}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.parkingshopping != null && destination_detail_info.parkingshopping != ''}">
                       <td class="align-middle"><small class="fa fa-car"></small> <small>주차시설</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.parkingshopping}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.parkingshopping}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.restdateshopping != null && destination_detail_info.restdateshopping != ''}">
                       <td class="align-middle"><small class="fa fa-calendar"></small> <small>쉬는날</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.restdateshopping}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.restdateshopping}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.restroom != null && destination_detail_info.restroom != ''}">
                       <td class="align-middle"><small class="fa fa-info-circle"></small> <small>화장실 설명</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.restroom}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.restroom}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.saleitem != null && destination_detail_info.saleitem != ''}">
                       <td class="align-middle"><small class="fa fa-gift"></small> <small>판매 품목</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.saleitem}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.saleitem}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.saleitemcost != null && destination_detail_info.saleitemcost != ''}">
                       <td class="align-middle"><small class="fa fa-money"></small> <small>판매 품목별 가격</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.saleitemcost}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.saleitemcost}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.scaleshopping != null && destination_detail_info.scaleshopping != ''}">
                       <td class="align-middle"><small class="fa fa-arrows-h"></small> <small>규모</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.scaleshopping}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.scaleshopping}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.shopguide != null && destination_detail_info.shopguide != ''}">
                       <td class="align-middle"><small class="fa fa-building-o"></small> <small>매장안내</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.shopguide}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.shopguide}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.chkcreditcardfood != null && destination_detail_info.chkcreditcardfood != ''}">
                       <td class="align-middle"><small class="fa fa-credit-card"></small> <small>신용카드가능 정보</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.chkcreditcardfood}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.chkcreditcardfood}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.discountinfofood != null && destination_detail_info.discountinfofood != ''}">
                       <td class="align-middle"><small class="fa fa-money"></small> <small>할인정보</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.discountinfofood}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.discountinfofood}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.firstmenu != null && destination_detail_info.firstmenu != ''}">
                       <td class="align-middle"><small class="fa fa-edit"></small> <small>대표 메뉴</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.firstmenu}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.firstmenu}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.infocenterfood != null && destination_detail_info.infocenterfood != ''}">
                       <td class="align-middle"><small class="fa fa-phone"></small> <small>문의 및 안내</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.infocenterfood}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.infocenterfood}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.kidsfacility != null && destination_detail_info.kidsfacility != ''}">
                       <td class="align-middle"><small class="fa fa-info-circle"></small> <small>어린이 놀이방 여부</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.kidsfacility}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.kidsfacility}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.opendatefood != null && destination_detail_info.opendatefood != ''}">
                       <td class="align-middle"><small class="fa fa-calendar"></small> <small>개업일</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.opendatefood}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.opendatefood}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.opentimefood != null && destination_detail_info.opentimefood != ''}">
                       <td class="align-middle"><small class="fa fa-clock-o"></small> <small>영업시간</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.opentimefood}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.opentimefood}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.packing != null && destination_detail_info.packing != ''}">
                       <td class="align-middle"><small class="fa fa-info-circle"></small> <small>포장 가능</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.packing}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.packing}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.parkingfood != null && destination_detail_info.parkingfood != ''}">
                       <td class="align-middle"><small class="fa fa-car"></small> <small>주차시설</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.parkingfood}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.parkingfood}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.reservationfood != null && destination_detail_info.reservationfood != ''}">
                       <td class="align-middle"><small class="fa fa-calendar"></small> <small>예약안내</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.reservationfood}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.reservationfood}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.restdatefood != null && destination_detail_info.restdatefood != ''}">
                       <td class="align-middle"><small class="fa fa-calendar"></small> <small>쉬는날</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.restdatefood}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.restdatefood}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.scalefood != null && destination_detail_info.scalefood != ''}">
                       <td class="align-middle"><small class="fa fa-arrows-h"></small> <small>규모</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.scalefood}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.scalefood}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.seat != null && destination_detail_info.seat != ''}">
                       <td class="align-middle"><small class="fa fa-group"></small> <small>좌석수</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.seat}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.seat}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.smoking != null && destination_detail_info.smoking != ''}">
                       <td class="align-middle"><small class="fa fa-info-circle"></small> <small>금연/흡연 여부</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.smoking}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.smoking}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.treatmenu != null && destination_detail_info.treatmenu != ''}">
                       <td class="align-middle"><small class="fa fa-edit"></small> <small>취급 메뉴</small></td>
-                      <td class="align-middle"><small th:text="${destination_detail_info.treatmenu}"></small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.treatmenu}"></small></td>
                     </tr>
                     </tbody>
                   </table>
                 </div>
+
                 <div class="modal-footer">
-                  <a th:href="'https://search.naver.com/search.naver?where=nexearch&sm=tab_jum&query=' + ${destination_detail_info.title}">
-                    <small>네이버 검색</small>
-                  </a>
                   <p class="fa fa-eye" th:text="' ' +${destination_detail_info.clickcount}"></p>
                 </div>
               </div>

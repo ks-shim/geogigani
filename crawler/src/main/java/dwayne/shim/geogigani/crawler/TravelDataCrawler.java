@@ -77,6 +77,7 @@ public class TravelDataCrawler {
         CREATED_TIME("createdtime"),
         FIRST_IMAGE("firstimage"),
         FIRST_IMAGE2("firstimage2"),
+        HOMEPAGE("homepage"),
         MAP_X("mapx"),
         MAP_Y("mapy"),
         MLEVEL("mlevel"),
