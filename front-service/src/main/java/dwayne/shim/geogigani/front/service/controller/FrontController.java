@@ -25,11 +25,11 @@ public class FrontController {
     public String showPopularDestinations(Model model,
                                           HttpSession session) {
 
-        List<Map<String, String>> result = frontService.getPopularDestinations();
+        Map<String, List<Map<String, String>>> result = frontService.getPopularDestinations();
         model.addAttribute(ModelField.DESTINATION_INFO.label(), result);
 
         String userId = session.getId();
-        List<Map<String, String>> interestResult = frontService.getInterestingDestinations(userId);
+        Map<String, List<Map<String, String>>> interestResult = frontService.getInterestingDestinations(userId);
         model.addAttribute(ModelField.DESTINATION_INTEREST_INFO.label(), interestResult.size() == 0 ? null : interestResult);
 
         return "main-page";
@@ -47,7 +47,7 @@ public class FrontController {
         List<Map<String, String>> similarResult = frontService.getSimilarDestinations(destId);
         model.addAttribute(ModelField.DESTINATION_SIMILAR_INFO.label(), similarResult);
 
-        List<Map<String, String>> shortDistResult = frontService.getShortDistanceDestinations(destId);
+        Map<String, List<Map<String, String>>> shortDistResult = frontService.getShortDistanceDestinations(destId);
         model.addAttribute(ModelField.DESTINATION_IN10KM_INFO.label(), shortDistResult);
 
         return "detail-page";

@@ -113,7 +113,7 @@
       </div>
     </header>
 
-    <section id="services">
+    <section class="bg-light" id="services">
       <div class="container">
         <div class="modal-content">
           <div class="container">
@@ -636,46 +636,60 @@
     </section>
 
     <!-- Short Distance -->
-    <section class="bg-light" id="portfolio2">
+    <section id="portfolio2">
       <div class="container">
         <div class="row">
           <div class="col-lg-12 text-center">
             <h2 class="section-heading text-uppercase">Short Distance</h2>
             <h3 class="section-subheading text-muted">10km 이내에 위치한 장소들</h3>
-            <hr/>
+            <div>
+              <th:block th:if="${destination_in10km_info != null}">
+                <ul class="nav nav-tabs">
+                  <li th:each="category,iterStat : ${destination_in10km_info}" class="nav-item">
+                    <a th:class="'nav-link' + ${iterStat.index == 0 ? ' active' : ''}" th:href="'#shot-dist-tab' + ${iterStat.index}" data-toggle="tab"><small th:text="${category.key}"></small></a>
+                  </li>
+                </ul>
+              </th:block>
+            </div>
+            <br />
           </div>
         </div>
-        <div class="row">
 
-          <th:block th:if="${destination_in10km_info != null}">
-            <div th:each="doc,iterStat : ${destination_in10km_info}" class="col-md-4 col-sm-6 portfolio2-item">
-              <a class="portfolio2-link" th:onclick="'javascript:show_detail(' + ${doc.contentid} + ')'">
-                <div class="portfolio2-hover">
-                  <div class="portfolio2-hover-content">
-                    <i class="fa fa-plus fa-3x"></i>
+        <div class="tab-content">
+          <th:block th:each="list,iterStat : ${destination_in10km_info}" th:if="${destination_in10km_info != null}">
+            <div th:class="'tab-pane fade' + ${iterStat.index == 0 ? ' active in show' : ''}" th:id="'shot-dist-tab' + ${iterStat.index}">
+              <div class="row">
+              <th:block th:each="doc : ${list.value}" th:if="${list.value != null}">
+                <div class="col-md-4 col-sm-6 portfolio2-item">
+                  <a class="portfolio2-link" th:onclick="'javascript:show_detail(' + ${doc.contentid} + ')'">
+                    <div class="portfolio2-hover">
+                      <div class="portfolio2-hover-content">
+                        <i class="fa fa-plus fa-3x"></i>
+                      </div>
+                    </div>
+
+                    <img class="img-fluid" th:src="${(doc.firstimage != null) ? doc.firstimage : '/img/no_image_available.png'}" th:alt="${doc.title}"/>
+
+                  </a>
+                  <div class="portfolio2-caption">
+                    <h5 th:text="${doc.titleshort}"></h5>
+                    <small class="text-muted" th:text="${doc.overviewshort}"></small>
+                    <hr/>
+                    <ul class="post-footer">
+                      <li class="fa fa-eye" th:text="' ' +${doc.clickcount}"></li>
+                    </ul>
                   </div>
                 </div>
-
-                <img class="img-fluid" th:src="${(doc.firstimage != null) ? doc.firstimage : '/img/no_image_available.png'}" th:alt="${doc.title}"/>
-
-              </a>
-              <div class="portfolio2-caption">
-                <h5 th:text="${doc.titleshort}"></h5>
-                <small class="text-muted" th:text="${doc.overviewshort}"></small>
-                <hr/>
-                <ul class="post-footer">
-                  <li class="fa fa-eye" th:text="' ' +${doc.clickcount}"></li>
-                </ul>
+              </th:block>
               </div>
             </div>
           </th:block>
-
         </div>
       </div>
     </section>
 
     <!-- Related -->
-    <section id="portfolio">
+    <section class="bg-light" id="portfolio">
       <div class="container">
         <div class="row">
           <div class="col-lg-12 text-center">

@@ -59,6 +59,8 @@ public class LocationDataService {
             TravelDataIndexField.OVERVIEW.label(),
             TravelDataIndexField.OVERVIEW_SHORT.label(),
             TravelDataIndexField.ADDR1.label(),
+            TravelDataIndexField.CAT1.label(),
+            TravelDataIndexField.AREA_CODE.label(),
             TravelDataIndexField.FIRST_IMAGE.label(),
     };
 
@@ -122,6 +124,8 @@ public class LocationDataService {
     private final String[] fieldToGetForLocationDetail = {
             TravelDataIndexField.CONTENT_ID.label(),
             TravelDataIndexField.CONTENT_TYPE_ID.label(),
+            TravelDataIndexField.CAT1.label(),
+            TravelDataIndexField.AREA_CODE.label(),
             TravelDataIndexField.TITLE.label(),
             TravelDataIndexField.TITLE_KEYWORDS.label(),
             TravelDataIndexField.OVERVIEW.label(),
@@ -287,6 +291,8 @@ public class LocationDataService {
             TravelDataIndexField.OVERVIEW.label(),
             TravelDataIndexField.OVERVIEW_SHORT.label(),
             TravelDataIndexField.ADDR1.label(),
+            TravelDataIndexField.CAT1.label(),
+            TravelDataIndexField.AREA_CODE.label(),
             TravelDataIndexField.FIRST_IMAGE.label(),
     };
 
@@ -348,6 +354,8 @@ public class LocationDataService {
             TravelDataIndexField.OVERVIEW.label(),
             TravelDataIndexField.OVERVIEW_SHORT.label(),
             TravelDataIndexField.ADDR1.label(),
+            TravelDataIndexField.CAT1.label(),
+            TravelDataIndexField.AREA_CODE.label(),
             TravelDataIndexField.FIRST_IMAGE.label(),
     };
 
@@ -409,6 +417,8 @@ public class LocationDataService {
             TravelDataIndexField.OVERVIEW.label(),
             TravelDataIndexField.OVERVIEW_SHORT.label(),
             TravelDataIndexField.ADDR1.label(),
+            TravelDataIndexField.CAT1.label(),
+            TravelDataIndexField.AREA_CODE.label(),
             TravelDataIndexField.FIRST_IMAGE.label(),
     };
     public List<TravelData> getShortDistanceLocations(String locationId) throws Exception {
@@ -467,6 +477,8 @@ public class LocationDataService {
             TravelDataIndexField.OVERVIEW.label(),
             TravelDataIndexField.OVERVIEW_SHORT.label(),
             TravelDataIndexField.ADDR1.label(),
+            TravelDataIndexField.CAT1.label(),
+            TravelDataIndexField.AREA_CODE.label(),
             TravelDataIndexField.FIRST_IMAGE.label(),
     };
     public List<TravelData> interestingLocations(String keywords) throws Exception {

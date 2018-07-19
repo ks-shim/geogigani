@@ -3853,7 +3853,7 @@ input[type="button"].btn-block {
 }
 
 .nav-tabs {
-  border-bottom: 1px solid #dee2e6;
+  border-bottom: 1px solid #282828;
 }
 
 .nav-tabs .nav-item {
@@ -3867,7 +3867,7 @@ input[type="button"].btn-block {
 }
 
 .nav-tabs .nav-link:hover, .nav-tabs .nav-link:focus {
-  border-color: #e9ecef #e9ecef #dee2e6;
+  border-color: #282828 #282828 #dee2e6;
 }
 
 .nav-tabs .nav-link.disabled {
@@ -6084,7 +6084,7 @@ button.bg-danger:focus {
 }
 
 .bg-light {
-  background-color: #e0e1e2 !important;
+  background-color: #f4f4f4 !important;
 }
 
 a.bg-light:hover, a.bg-light:focus,

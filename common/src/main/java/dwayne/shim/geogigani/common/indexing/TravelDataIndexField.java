@@ -17,7 +17,7 @@ public enum TravelDataIndexField {
             return new TextField(label(), value, Field.Store.YES);
         }
     },
-    CONTENT_TYPE_ID("contenttypeid") {
+    CONTENT_TYPE_ID("contenttypeid") { // 12 관광지, 14 문화시설, 15 축제공연행사, 25 여행코스, 28 레포츠, 32 숙박, 38 쇼핑, 39 음식점
         @Override
         public Field buildField(String value) {
             return new TextField(label(), value, Field.Store.YES);
@@ -108,6 +108,8 @@ public enum TravelDataIndexField {
         }
     },
     AREA_CODE("areacode") {
+        // 1 서울, 2 인천, 3 대전, 4 대구, 5 광주, 6 부산, 7 울산, 8 세종특별자치시
+        // 31 경기도, 32 강원도, 33 충청북도, 34 충청남도, 35 경상북도, 36 경상남도, 37 전라북도, 38 전라남도, 39 제주도
         @Override
         public Field buildField(String value) {
             return new StoredField(label(), Long.valueOf(value));
@@ -149,7 +151,7 @@ public enum TravelDataIndexField {
             return new StoredField(label(), Long.valueOf(value));
         }
     },
-    CAT1("cat1") {
+    CAT1("cat1") { // A01 자연, A02 인문, A03 레포츠, A04 쇼핑, A05 음식, B02 숙박, C01 추천코스
         @Override
         public Field buildField(String value) {
             return new StringField(label(), value, Field.Store.YES);

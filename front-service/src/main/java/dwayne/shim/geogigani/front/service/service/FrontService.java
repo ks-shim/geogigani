@@ -1,5 +1,6 @@
 package dwayne.shim.geogigani.front.service.service;
 
+import dwayne.shim.geogigani.common.code.ContentTypeIdCode;
 import dwayne.shim.geogigani.common.data.TravelData;
 import dwayne.shim.geogigani.common.storage.IdWeightSnapshot;
 import dwayne.shim.geogigani.front.service.constants.DestinationInfoField;
@@ -37,9 +38,9 @@ public class FrontService {
     @Autowired
     private RestTemplate restTemplate;
 
-    public List<Map<String, String>> getPopularDestinations() {
+    public Map<String, List<Map<String, String>>> getPopularDestinations() {
         TravelData[] result = restTemplate.getForObject(restPopular, TravelData[].class);
-        return asMapList(result);
+        return asCategorizedMapList(result);
     }
 
     public Map<String, String> getDestinationDetail(String destId, String userId) {
@@ -53,9 +54,9 @@ public class FrontService {
         return asMapList(result);
     }
 
-    public List<Map<String, String>> getShortDistanceDestinations(String destId) {
+    public Map<String, List<Map<String, String>>> getShortDistanceDestinations(String destId) {
         TravelData[] result = restTemplate.getForObject(restShortDistance + '/' + destId, TravelData[].class);
-        return asMapList(result);
+        return asCategorizedMapList(result);
     }
 
     public List<Map<String, String>> searchDestinations(String keywords) {
@@ -63,11 +64,11 @@ public class FrontService {
         return asMapList(result);
     }
 
-    public List<Map<String, String>> getInterestingDestinations(String userId) {
-        if(userId == null || userId.trim().isEmpty()) return new ArrayList<>();
+    public Map<String, List<Map<String, String>>> getInterestingDestinations(String userId) {
+        if(userId == null || userId.trim().isEmpty()) return new HashMap<>();
         
         TravelData[] result = restTemplate.getForObject(restInterest + "/" + userId, TravelData[].class);
-        return asMapList(result);
+        return asCategorizedMapList(result);
     }
 
     //****************************************************************************
@@ -94,5 +95,35 @@ public class FrontService {
         map.putAll(td.getInfoMap());
 
         return map;
+    }
+
+    private Map<String, List<Map<String, String>>> asCategorizedMapList(TravelData[] travelDatas) {
+        return asCategorizedMapList(travelDatas, new HashMap<>());
+    }
+
+    private Map<String, List<Map<String, String>>> asCategorizedMapList(TravelData[] travelDatas,
+                                                                        Map<String, List<Map<String, String>>> categoryMap) {
+        for(TravelData td : travelDatas) {
+            Map<String, String> docMap = asMap(td);
+            String contentTypeId = docMap.get(DestinationInfoField.CONTENT_TYPE_ID.label());
+            if(contentTypeId == null) continue;
+
+            String categoryLabel = null;
+            try {
+                categoryLabel = ContentTypeIdCode.getTypeIdCode(contentTypeId).label();
+            } catch (Exception e) {
+                continue;
+            }
+
+            List<Map<String, String>> docMapList = categoryMap.get(categoryLabel);
+            if(docMapList == null) {
+                docMapList = new ArrayList<>();
+                categoryMap.put(categoryLabel, docMapList);
+            }
+
+            docMapList.add(docMap);
+        }
+
+        return categoryMap;
     }
 }
