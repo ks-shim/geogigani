@@ -261,6 +261,10 @@
                       <td class="align-middle"><small class="fa fa-money"></small> <small>할인정보</small></td>
                       <td class="align-middle"><small th:utext="${destination_detail_info.discountinfofestival}"></small></td>
                     </tr>
+                    <tr th:if="${destination_detail_info.eventstartdate != null && destination_detail_info.eventstartdate != ''}">
+                      <td class="align-middle"><small class="fa fa-clock-o"></small> <small>행사 시작일</small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.eventstartdate}"></small></td>
+                    </tr>
                     <tr th:if="${destination_detail_info.eventenddate != null && destination_detail_info.eventenddate != ''}">
                       <td class="align-middle"><small class="fa fa-clock-o"></small> <small>행사 종료일</small></td>
                       <td class="align-middle"><small th:utext="${destination_detail_info.eventenddate}"></small></td>
@@ -272,10 +276,6 @@
                     <tr th:if="${destination_detail_info.eventplace != null && destination_detail_info.eventplace != ''}">
                       <td class="align-middle"><small class="fa fa-map-marker"></small> <small>행사 장소</small></td>
                       <td class="align-middle"><small th:utext="${destination_detail_info.eventplace}"></small></td>
-                    </tr>
-                    <tr th:if="${destination_detail_info.eventstartdate != null && destination_detail_info.eventstartdate != ''}">
-                      <td class="align-middle"><small class="fa fa-clock-o"></small> <small>행사 시작일</small></td>
-                      <td class="align-middle"><small th:utext="${destination_detail_info.eventstartdate}"></small></td>
                     </tr>
                     <tr th:if="${destination_detail_info.placeinfo != null && destination_detail_info.placeinfo != ''}">
                       <td class="align-middle"><small class="fa fa-map-marker"></small> <small>행사장 위치안내</small></td>
