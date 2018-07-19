@@ -38,6 +38,12 @@
       .post-footer > li:last-child{ border: 0px; float: right; }
       .post-footer i{ display: inline-block; margin-right: 10px; opacity: .6; font-size: 1.1em; }
 
+      table { table-layout: fixed; }
+      table th, table td {
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
       tr td{
         padding: 1 !important;
         margin: 0 !important;
@@ -138,8 +144,8 @@
                   <table class="table table-striped table-bordered">
                     <thead>
                       <tr class="text-center">
-                        <th style="width: 40%"> </th>
-                        <th style="width: 60%"><small>정보</small></th>
+                        <th style="width:40%">    </th>
+                        <th style="width:60%"><small>정보</small></th>
                       </tr>
                     </thead>
                     <tbody>
