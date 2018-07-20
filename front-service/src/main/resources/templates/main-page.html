@@ -42,12 +42,23 @@
         color: #dd3806;
       }
 
+      table { table-layout: fixed; }
+      table th, table td {
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      tr td{
+        padding: 1 !important;
+        margin: 0 !important;
+      }
+
       a:link
-      {color: blue;}
+      {color: #dd3806;}
       a:visited
       {color: blue;}
       a:hover
-      {color: skyblue;}
+      {color: #dd3806;}
     </style>
   </head>
 
@@ -65,14 +76,14 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav text-uppercase ml-auto">
-            <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#about">About</a>
-            </li>
             <th:li  th:if="${destination_interest_info != null}" class="nav-item">
               <a class="nav-link js-scroll-trigger" href="#portfolio2">Interest</a>
             </th:li>
             <li class="nav-item">
               <a class="nav-link js-scroll-trigger" href="#portfolio">Popular</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="#about">About</a>
             </li>
             <li class="nav-item">
               <a class="nav-link js-scroll-trigger" href="#team">Helper</a>
@@ -119,29 +130,6 @@
         </div>
       </div>
     </header>
-
-    <!-- About -->
-    <section id="about" th:class="${destination_interest_info == null ? 'bg-light' : ''}">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-12 text-center">
-            <h2 class="section-heading text-uppercase">About</h2>
-            <h3 class="section-subheading text-muted">What is GeoGiGaNi?</h3>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-lg-12 mx-auto text-center">
-            <div class="timeline-heading">
-              <p class="text-muted">I hope this can help Mom and Dad find out where to go every weekend. There are 4 options.</p>
-              <p class="text-muted">- Real-time popular destinations.</p>
-              <p class="text-muted">- You might be interested.</p>
-              <p class="text-muted">- Destinations in short-distance.</p>
-              <p class="text-muted">- Related destinations.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
 
     <!-- Interest -->
     <th:block th:if="${destination_interest_info != null}">
@@ -251,8 +239,60 @@
       </div>
     </section>
 
+    <!-- About -->
+    <section id="about" class="bg-light">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 text-center">
+            <h2 class="section-heading text-uppercase">About</h2>
+            <h3 class="section-subheading text-muted">거기가니?</h3>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12 mx-auto text-center">
+            <small style="color: #dd3806;">매주 어디갈지를 고민하는 엄마, 아빠에게 장소 추천을 해드려요. 여긴 어떠세요?</small>
+            <br/>
+            <br/>
+            <table class="table table-striped table-bordered">
+              <thead>
+              <tr class="text-center">
+                <th style="width:40%"><small>섹션</small></th>
+                <th style="width:60%"><small>설명</small></th>
+              </tr>
+              </thead>
+
+              <tbody>
+              <tr>
+                <td class="align-middle text-center"><small>Popular<br/>(집단지성)</small></td>
+                <td class="align-middle text-left"><small>최신성을 반영한 요즘 인기 여행지를 추천해 드려요.</small></td>
+              </tr>
+              <tr>
+                <td class="align-middle text-center"><small>Interest<br/>(개인화)</small></td>
+                <td class="align-middle text-left"><small>엄마/아빠가 조회하는 여행지를 기반으로 맞춤 여행지를 추천해 드려요.(세션타임동안만..)</small></td>
+              </tr>
+              <tr>
+                <td class="align-middle text-center"><small>Short-Distance<br/>(근거리)</small></td>
+                <td class="align-middle text-left"><small>현재 상세조회한 여행지와 가까운(10km이내) 여행지를 추천해 드려요.</small></td>
+              </tr>
+              <tr>
+                <td class="align-middle text-center"><small>Related<br/>(관련/유사)</small></td>
+                <td class="align-middle text-left"><small>현재 상세조회한 여행지와 관련있거나 유사한 전국의 여행지를 추천해 드려요.</small></td>
+              </tr>
+              </tbody>
+            </table>
+
+            <!--<p class="text-muted">I hope this can help Mom and Dad find out where to go every weekend. There are 4 options.</p>
+            <p class="text-muted">- Real-time popular destinations.</p>
+            <p class="text-muted">- You might be interested.</p>
+            <p class="text-muted">- Destinations in short-distance.</p>
+            <p class="text-muted">- Related destinations.</p>-->
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Team -->
-    <section id="team" class="bg-light">
+    <section id="team">
       <div class="container">
         <div class="row">
           <div class="col-lg-12 text-center">
