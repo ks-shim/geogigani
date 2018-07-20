@@ -274,6 +274,8 @@ public class TravelDataCrawler {
             // 5-5. empty travel data map
             travelDataMap.clear();
         }
+
+        apiCaller.close();
     }
 
     //******************************************************************************************
