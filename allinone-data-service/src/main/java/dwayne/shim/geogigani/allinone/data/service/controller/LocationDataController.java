@@ -108,7 +108,7 @@ public class LocationDataController {
     @RequestMapping(value = {"/detail/{locationId}"}, produces = "application/json; charset=utf8", method = {RequestMethod.GET})
     public ResponseEntity<TravelData> getLocationDetail(@PathVariable(value = "locationId") String locationId,
                                                         @RequestParam(value = "userId", required = false) String userId,
-                                                        @RequestParam(value = "skipSocring", required = false, defaultValue = "false") boolean skipScoring) {
+                                                        @RequestParam(value = "skipScoring", required = false, defaultValue = "false") boolean skipScoring) {
 
         TravelData result;
         try {

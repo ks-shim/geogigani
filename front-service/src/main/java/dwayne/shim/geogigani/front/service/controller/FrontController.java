@@ -43,7 +43,7 @@ public class FrontController {
                                         @PathVariable(value = "destId") String destId) {
         String userAgent = request.getHeader("user-agent");
         boolean skipScoring = userAgent == null ? false : userAgent.toLowerCase().contains("googlebot") ? true : false;
-
+        System.out.println(skipScoring);
         String userId = session.getId();
         Map<String, String> detailResult = frontService.getDestinationDetail(destId, userId, skipScoring);
         model.addAttribute(ModelField.DESTINATION_DETAIL_INFO.label(), detailResult);

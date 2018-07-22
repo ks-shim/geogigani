@@ -149,6 +149,10 @@
                       </tr>
                     </thead>
                     <tbody>
+                    <tr th:if="${destination_detail_info.addr1 != null && destination_detail_info.addr1 != ''}">
+                      <td class="align-middle"><small class="fa fa-map-marker"></small> <small>주소</small></td>
+                      <td class="align-middle"><small th:utext="${destination_detail_info.addr1}"></small></td>
+                    </tr>
                     <tr th:if="${destination_detail_info.homepage != null && destination_detail_info.homepage != ''}">
                       <td class="align-middle"><small class="fa fa-home"></small> <small>홈페이지</small></td>
                       <td class="align-middle"><small th:utext="${destination_detail_info.homepage}"></small></td>

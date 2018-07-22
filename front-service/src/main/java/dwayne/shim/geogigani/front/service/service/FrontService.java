@@ -45,8 +45,8 @@ public class FrontService {
 
     public Map<String, String> getDestinationDetail(String destId,
                                                     String userId,
-                                                    boolean skipSocring) {
-        String url = restDetail + '/' + destId + ((userId == null || userId.isEmpty()) ? "" : "?userId=" + userId + "&skipScoring=" + skipSocring);
+                                                    boolean skipScoring) {
+        String url = restDetail + '/' + destId + ((userId == null || userId.isEmpty()) ? "" : "?userId=" + userId + "&skipScoring=" + skipScoring);
         TravelData result = restTemplate.getForObject(url, TravelData.class);
         return asMap(result);
     }
