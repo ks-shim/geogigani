@@ -30,7 +30,7 @@ public class IndexingExecutor {
 
         // 2. ** start calculate distance ...
         ObjectMapper objectMapper = new ObjectMapper();
-        final double distanceLimit = 10;
+        final double distanceLimit = 20;
         int docCount = 0;
         LocationDistanceCalculator ldc = new LocationDistanceCalculator();
         File[] docFiles = new File(inDirLocation).listFiles();
