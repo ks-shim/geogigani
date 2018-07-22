@@ -107,12 +107,13 @@ public class LocationDataController {
 
     @RequestMapping(value = {"/detail/{locationId}"}, produces = "application/json; charset=utf8", method = {RequestMethod.GET})
     public ResponseEntity<TravelData> getLocationDetail(@PathVariable(value = "locationId") String locationId,
-                                                        @RequestParam(value = "userId", required = false) String userId) {
+                                                        @RequestParam(value = "userId", required = false) String userId,
+                                                        @RequestParam(value = "skipSocring", required = false, defaultValue = "false") boolean skipScoring) {
 
         TravelData result;
         try {
             // 1. get location detail data ...
-            result = locationDataService.getLocationDetail(locationId);
+            result = locationDataService.getLocationDetail(locationId, skipScoring);
 
             // 2. register user-keywords info ...
             if(userId != null) userPreferenceDataService.addUserKeywords(

@@ -43,8 +43,10 @@ public class FrontService {
         return asCategorizedMapList(result);
     }
 
-    public Map<String, String> getDestinationDetail(String destId, String userId) {
-        String url = restDetail + '/' + destId + ((userId == null || userId.isEmpty()) ? "" : "?userId=" + userId);
+    public Map<String, String> getDestinationDetail(String destId,
+                                                    String userId,
+                                                    boolean skipSocring) {
+        String url = restDetail + '/' + destId + ((userId == null || userId.isEmpty()) ? "" : "?userId=" + userId + "&skipScoring=" + skipSocring);
         TravelData result = restTemplate.getForObject(url, TravelData.class);
         return asMap(result);
     }

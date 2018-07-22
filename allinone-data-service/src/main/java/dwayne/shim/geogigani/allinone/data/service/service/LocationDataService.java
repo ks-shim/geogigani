@@ -260,9 +260,10 @@ public class LocationDataService {
             TravelDataIndexField.TREAT_MENU.label(),
     };
 
-    public TravelData getLocationDetail(String locationId) throws Exception {
+    public TravelData getLocationDetail(String locationId,
+                                        boolean skipSocring) throws Exception {
         // 1. increment click count
-        locationStorage.click(locationId);
+        if(!skipSocring) locationStorage.click(locationId);
 
         SearchResult result = searchingExecutor.search(
                 fieldToGetForLocationDetail,

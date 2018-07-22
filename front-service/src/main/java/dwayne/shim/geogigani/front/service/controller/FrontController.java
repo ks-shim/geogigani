@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +39,10 @@ public class FrontController {
     @RequestMapping(value = {"/destination-detail/{destId}"}, produces = "application/json; charset=utf8", method = {RequestMethod.GET})
     public String showDestinationDetail(Model model,
                                         HttpSession session,
+                                        HttpServletRequest request,
                                         @PathVariable(value = "destId") String destId) {
+        String userAgent = request.getHeader("user-agent");
+        boolean skipScoring = userAgent == null ? false : userAgent.toLowerCase().contains("googlebot") ? true : false;
 
         String userId = session.getId();
         Map<String, String> detailResult = frontService.getDestinationDetail(destId, userId);
