@@ -45,7 +45,7 @@ public class FrontController {
         boolean skipScoring = userAgent == null ? false : userAgent.toLowerCase().contains("googlebot") ? true : false;
 
         String userId = session.getId();
-        Map<String, String> detailResult = frontService.getDestinationDetail(destId, userId);
+        Map<String, String> detailResult = frontService.getDestinationDetail(destId, userId, skipScoring);
         model.addAttribute(ModelField.DESTINATION_DETAIL_INFO.label(), detailResult);
 
         Map<String, List<Map<String, String>>> similarResult = frontService.getSimilarDestinations(destId);
