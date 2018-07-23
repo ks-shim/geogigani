@@ -116,7 +116,7 @@ public class LocationDataController {
             result = locationDataService.getLocationDetail(locationId, skipScoring);
 
             // 2. register user-keywords info ...
-            if(userId != null) userPreferenceDataService.addUserKeywords(
+            if(userId != null && !skipScoring) userPreferenceDataService.addUserKeywords(
                     userId, result.getInfoMap(), fieldsForUserKeywords);
         } catch (Exception e) {
             result = TravelData.dummyTravelData(locationId);

@@ -282,7 +282,8 @@ public class LocationDataService {
             TravelDataIndexField.TITLE.label(),
             TravelDataIndexField.TITLE_KEYWORDS.label(),
             TravelDataIndexField.OVERVIEW.label(),
-            TravelDataIndexField.OVERVIEW_KEYWORDS.label()
+            TravelDataIndexField.OVERVIEW_KEYWORDS.label(),
+            TravelDataIndexField.ADDR1.label(),
     };
     private final String[] fieldToGetForSearchingLocations = {
             TravelDataIndexField.CONTENT_ID.label(),
@@ -345,7 +346,8 @@ public class LocationDataService {
     };
     private final String[] fieldToSearchForSimilarLocations2 = {
             TravelDataIndexField.TITLE_KEYWORDS.label(),
-            TravelDataIndexField.OVERVIEW_KEYWORDS.label()
+            TravelDataIndexField.OVERVIEW_KEYWORDS.label(),
+            TravelDataIndexField.ADDR1.label()
     };
     private final String[] fieldToGetForSimilarLocations2 = {
             TravelDataIndexField.CONTENT_ID.label(),
