@@ -1,14 +1,17 @@
 package dwayne.shim.geogigani.front.service.service;
 
+import dwayne.shim.geogigani.common.code.AreaCode;
 import dwayne.shim.geogigani.common.code.ContentTypeIdCode;
 import dwayne.shim.geogigani.common.data.TravelData;
 import dwayne.shim.geogigani.common.storage.IdWeightSnapshot;
 import dwayne.shim.geogigani.front.service.constants.DestinationInfoField;
+import dwayne.shim.geogigani.front.service.model.DestinationInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import javax.validation.constraints.Null;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,9 +41,9 @@ public class FrontService {
     @Autowired
     private RestTemplate restTemplate;
 
-    public Map<String, List<Map<String, String>>> getPopularDestinations() {
+    public List<DestinationInfo> getPopularDestinations() {
         TravelData[] result = restTemplate.getForObject(restPopular, TravelData[].class);
-        return asCategorizedMapList(result);
+        return asCategorizedDestInfo(result);
     }
 
     public Map<String, String> getDestinationDetail(String destId,
@@ -51,26 +54,26 @@ public class FrontService {
         return asMap(result);
     }
 
-    public Map<String, List<Map<String, String>>> getSimilarDestinations(String destId) {
+    public List<DestinationInfo> getSimilarDestinations(String destId) {
         TravelData[] result = restTemplate.getForObject(restSimilar + '/' + destId, TravelData[].class);
-        return asCategorizedMapList(result);
+        return asCategorizedDestInfo(result);
     }
 
-    public Map<String, List<Map<String, String>>> getShortDistanceDestinations(String destId) {
+    public List<DestinationInfo> getShortDistanceDestinations(String destId) {
         TravelData[] result = restTemplate.getForObject(restShortDistance + '/' + destId, TravelData[].class);
-        return asCategorizedMapList(result);
+        return asCategorizedDestInfo(result);
     }
 
-    public Map<String, List<Map<String, String>>> searchDestinations(String keywords) {
+    public List<DestinationInfo> searchDestinations(String keywords) {
         TravelData[] result = restTemplate.getForObject(restSearch + "?keywords=" + keywords, TravelData[].class);
-        return asCategorizedMapList(result);
+        return asCategorizedDestInfo(result);
     }
 
-    public Map<String, List<Map<String, String>>> getInterestingDestinations(String userId) {
-        if(userId == null || userId.trim().isEmpty()) return new HashMap<>();
+    public List<DestinationInfo> getInterestingDestinations(String userId) {
+        if(userId == null || userId.trim().isEmpty()) return new ArrayList<>();
         
         TravelData[] result = restTemplate.getForObject(restInterest + "/" + userId, TravelData[].class);
-        return asCategorizedMapList(result);
+        return asCategorizedDestInfo(result);
     }
 
     //****************************************************************************
@@ -99,33 +102,37 @@ public class FrontService {
         return map;
     }
 
-    private Map<String, List<Map<String, String>>> asCategorizedMapList(TravelData[] travelDatas) {
-        return asCategorizedMapList(travelDatas, new HashMap<>());
-    }
+    private List<DestinationInfo> asCategorizedDestInfo(TravelData[] travelDatas) {
 
-    private Map<String, List<Map<String, String>>> asCategorizedMapList(TravelData[] travelDatas,
-                                                                        Map<String, List<Map<String, String>>> categoryMap) {
+        Map<String, DestinationInfo> keyDestMap = new HashMap<>();
+
         for(TravelData td : travelDatas) {
             Map<String, String> docMap = asMap(td);
-            String contentTypeId = docMap.get(DestinationInfoField.CONTENT_TYPE_ID.label());
-            if(contentTypeId == null) continue;
 
-            String categoryLabel = null;
+            // 1. categorizing by content-type
+            String contentTypeId = docMap.get(DestinationInfoField.CONTENT_TYPE_ID.label());
+            String areaCode = docMap.get(DestinationInfoField.AREA_CODE.label());
+            if(contentTypeId == null || areaCode == null) continue;
+
+            String contentTypeLabel = null;
+            String aredLabel = null;
             try {
-                categoryLabel = ContentTypeIdCode.getTypeIdCode(contentTypeId).label();
+                contentTypeLabel = ContentTypeIdCode.getTypeIdCode(contentTypeId).label();
+                areaCode = AreaCode.getAreaCode(areaCode).label();
             } catch (Exception e) {
                 continue;
             }
 
-            List<Map<String, String>> docMapList = categoryMap.get(categoryLabel);
-            if(docMapList == null) {
-                docMapList = new ArrayList<>();
-                categoryMap.put(categoryLabel, docMapList);
+            DestinationInfo destInfo = keyDestMap.get(contentTypeLabel);
+            if(destInfo == null) {
+                destInfo = new DestinationInfo(contentTypeLabel);
+                keyDestMap.put(contentTypeLabel, destInfo);
             }
 
-            docMapList.add(docMap);
+            // 2. categorizing by area
+            destInfo.add(aredLabel, docMap);
         }
 
-        return categoryMap;
+        return new ArrayList<>(keyDestMap.values());
     }
 }

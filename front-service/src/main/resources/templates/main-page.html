@@ -143,7 +143,7 @@
               <th:block th:if="${destination_interest_info != null}">
                 <ul class="nav nav-tabs">
                   <li th:each="category,iterStat : ${destination_interest_info}" class="nav-item">
-                    <a th:class="'nav-link' + ${iterStat.index == 0 ? ' active' : ''}" th:href="'#interest-tab' + ${iterStat.index}" data-toggle="tab"><small th:text="${category.key}"></small></a>
+                    <a th:class="'nav-link' + ${iterStat.index == 0 ? ' active' : ''}" th:href="'#interest-ct-tab' + ${iterStat.index}" data-toggle="tab"><small th:text="${category.key} + ' (' + ${category.totalSize} + ')'"></small></a>
                   </li>
                 </ul>
               </th:block>
@@ -153,32 +153,36 @@
         </div>
 
         <div class="tab-content">
-          <th:block th:each="list,iterStat : ${destination_interest_info}" th:if="${destination_interest_info != null}">
-            <div th:class="'tab-pane fade' + ${iterStat.index == 0 ? ' active in show' : ''}" th:id="'interest-tab' + ${iterStat.index}">
-              <div class="row">
-                <th:block th:each="doc : ${list.value}" th:if="${list.value != null}">
-                  <div class="col-md-4 col-sm-6 portfolio2-item">
-                    <a class="portfolio2-link" th:onclick="'javascript:show_detail(' + ${doc.contentid} + ')'">
-                      <div class="portfolio2-hover">
-                        <div class="portfolio2-hover-content">
-                          <i class="fa fa-plus fa-3x"></i>
+          <th:block th:each="destlist,iterStat : ${destination_interest_info}" th:if="${destination_interest_info != null}">
+            <div th:class="'tab-pane fade' + ${iterStat.index == 0 ? ' active in show' : ''}" th:id="'interest-ct-tab' + ${iterStat.index}">
+              <th:block th:each="list,iterStat : ${destlist.destListMap}" th:if="${destlist.destListMap != null}">
+                <div th:class="'tab-pane fade' + ${iterStat.index == 0 ? ' active in show' : ''}" th:id="'interest-ac-tab' + ${iterStat.index}">
+                  <div class="row">
+                    <th:block th:each="doc : ${list.value}" th:if="${list.value != null}">
+                      <div class="col-md-4 col-sm-6 portfolio2-item">
+                        <a class="portfolio2-link" th:onclick="'javascript:show_detail(' + ${doc.contentid} + ')'">
+                          <div class="portfolio2-hover">
+                            <div class="portfolio2-hover-content">
+                              <i class="fa fa-plus fa-3x"></i>
+                            </div>
+                          </div>
+
+                          <img class="img-fluid" th:src="${(doc.firstimage != null) ? doc.firstimage : '/img/no_image_available.png'}" th:alt="${doc.title}"/>
+
+                        </a>
+                        <div class="portfolio2-caption">
+                          <h5 th:text="${doc.titleshort}"></h5>
+                          <small class="text-muted" th:text="${doc.overviewshort}"></small>
+                          <hr/>
+                          <ul class="post-footer">
+                            <li class="fa fa-eye" th:text="' ' +${doc.clickcount}"></li>
+                          </ul>
                         </div>
                       </div>
-
-                      <img class="img-fluid" th:src="${(doc.firstimage != null) ? doc.firstimage : '/img/no_image_available.png'}" th:alt="${doc.title}"/>
-
-                    </a>
-                    <div class="portfolio2-caption">
-                      <h5 th:text="${doc.titleshort}"></h5>
-                      <small class="text-muted" th:text="${doc.overviewshort}"></small>
-                      <hr/>
-                      <ul class="post-footer">
-                        <li class="fa fa-eye" th:text="' ' +${doc.clickcount}"></li>
-                      </ul>
-                    </div>
+                    </th:block>
                   </div>
-                </th:block>
-              </div>
+                </div>
+              </th:block>
             </div>
           </th:block>
         </div>
@@ -197,7 +201,7 @@
               <th:block th:if="${destination_info != null}">
                 <ul class="nav nav-tabs">
                   <li th:each="category,iterStat : ${destination_info}" class="nav-item">
-                    <a th:class="'nav-link' + ${iterStat.index == 0 ? ' active' : ''}" th:href="'#popular-tab' + ${iterStat.index}" data-toggle="tab"><small th:text="${category.key}"></small></a>
+                    <a th:class="'nav-link' + ${iterStat.index == 0 ? ' active' : ''}" th:href="'#popular-ct-tab' + ${iterStat.index}" data-toggle="tab"><small th:text="${category.key} + ' (' + ${category.totalSize} + ')'"></small></a>
                   </li>
                 </ul>
               </th:block>
@@ -207,32 +211,36 @@
         </div>
 
         <div class="tab-content">
-          <th:block th:each="list,iterStat : ${destination_info}" th:if="${destination_info != null}">
-            <div th:class="'tab-pane fade' + ${iterStat.index == 0 ? ' active in show' : ''}" th:id="'popular-tab' + ${iterStat.index}">
-              <div class="row">
-                <th:block th:each="doc : ${list.value}" th:if="${list.value != null}">
-                  <div class="col-md-4 col-sm-6 portfolio-item">
-                    <a class="portfolio-link" th:onclick="'javascript:show_detail(' + ${doc.contentid} + ')'">
-                      <div class="portfolio-hover">
-                        <div class="portfolio-hover-content">
-                          <i class="fa fa-plus fa-3x"></i>
+          <th:block th:each="destlist,iterStat : ${destination_info}" th:if="${destination_info != null}">
+            <div th:class="'tab-pane fade' + ${iterStat.index == 0 ? ' active in show' : ''}" th:id="'popular-ct-tab' + ${iterStat.index}">
+              <th:block th:each="list,iterStat : ${destlist.destListMap}" th:if="${destlist.destListMap != null}">
+                <div th:class="'tab-pane fade' + ${iterStat.index == 0 ? ' active in show' : ''}" th:id="'popular-ac-tab' + ${iterStat.index}">
+                  <div class="row">
+                    <th:block th:each="doc : ${list.value}" th:if="${list.value != null}">
+                      <div class="col-md-4 col-sm-6 portfolio-item">
+                        <a class="portfolio-link" th:onclick="'javascript:show_detail(' + ${doc.contentid} + ')'">
+                          <div class="portfolio-hover">
+                            <div class="portfolio-hover-content">
+                              <i class="fa fa-plus fa-3x"></i>
+                            </div>
+                          </div>
+
+                          <img class="img-fluid" th:src="${(doc.firstimage != null) ? doc.firstimage : '/img/no_image_available.png'}" th:alt="${doc.title}"/>
+
+                        </a>
+                        <div class="portfolio-caption">
+                          <h5 th:text="${doc.titleshort}"></h5>
+                          <small class="text-muted" th:text="${doc.overviewshort}"></small>
+                          <hr/>
+                          <ul class="post-footer">
+                            <li class="fa fa-eye" th:text="' ' +${doc.clickcount}"></li>
+                          </ul>
                         </div>
                       </div>
-
-                      <img class="img-fluid" th:src="${(doc.firstimage != null) ? doc.firstimage : '/img/no_image_available.png'}" th:alt="${doc.title}"/>
-
-                    </a>
-                    <div class="portfolio-caption">
-                      <h5 th:text="${doc.titleshort}"></h5>
-                      <small class="text-muted" th:text="${doc.overviewshort}"></small>
-                      <hr/>
-                      <ul class="post-footer">
-                        <li class="fa fa-eye" th:text="' ' +${doc.clickcount}"></li>
-                      </ul>
-                    </div>
+                    </th:block>
                   </div>
-                </th:block>
-              </div>
+                </div>
+              </th:block>
             </div>
           </th:block>
         </div>

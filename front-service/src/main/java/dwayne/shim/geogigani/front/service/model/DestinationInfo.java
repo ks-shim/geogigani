@@ -1,0 +1,35 @@
+package dwayne.shim.geogigani.front.service.model;
+
+import lombok.Data;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+@Data
+public class DestinationInfo {
+
+    private String key;
+    private Map<String, List<Map<String, String>>> destListMap;
+    private int totalSize;
+
+    public DestinationInfo(String key) {
+        this.key = key;
+        this.destListMap = new HashMap<>();
+    }
+
+    public void add(String subKey,
+                    Map<String, String> destMap) {
+        List<Map<String, String>> destMapList = destListMap.get(subKey);
+        if(destMapList == null) {
+            destMapList = new ArrayList<>();
+            destListMap.put(subKey, destMapList);
+        }
+
+        totalSize++;
+        destMapList.add(destMap);
+    }
+}
+
+

@@ -1,6 +1,7 @@
 package dwayne.shim.geogigani.front.service.controller;
 
 import dwayne.shim.geogigani.front.service.constants.ModelField;
+import dwayne.shim.geogigani.front.service.model.DestinationInfo;
 import dwayne.shim.geogigani.front.service.service.FrontService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,11 +27,11 @@ public class FrontController {
     public String showPopularDestinations(Model model,
                                           HttpSession session) {
 
-        Map<String, List<Map<String, String>>> result = frontService.getPopularDestinations();
-        model.addAttribute(ModelField.DESTINATION_INFO.label(), result);
+        List<DestinationInfo> result = frontService.getPopularDestinations();
+        model.addAttribute(ModelField.DESTINATION_INFO.label(), result.size() == 0 ? null : result);
 
         String userId = session.getId();
-        Map<String, List<Map<String, String>>> interestResult = frontService.getInterestingDestinations(userId);
+        List<DestinationInfo> interestResult = frontService.getInterestingDestinations(userId);
         model.addAttribute(ModelField.DESTINATION_INTEREST_INFO.label(), interestResult.size() == 0 ? null : interestResult);
 
         return "main-page";
@@ -43,16 +44,16 @@ public class FrontController {
                                         @PathVariable(value = "destId") String destId) {
         String userAgent = request.getHeader("user-agent");
         boolean skipScoring = userAgent == null ? false : userAgent.toLowerCase().contains("googlebot") ? true : false;
-        System.out.println(skipScoring);
+
         String userId = session.getId();
         Map<String, String> detailResult = frontService.getDestinationDetail(destId, userId, skipScoring);
-        model.addAttribute(ModelField.DESTINATION_DETAIL_INFO.label(), detailResult);
+        model.addAttribute(ModelField.DESTINATION_DETAIL_INFO.label(), detailResult.size() == 0 ? null : detailResult);
 
-        Map<String, List<Map<String, String>>> similarResult = frontService.getSimilarDestinations(destId);
-        model.addAttribute(ModelField.DESTINATION_SIMILAR_INFO.label(), similarResult);
+        List<DestinationInfo> similarResult = frontService.getSimilarDestinations(destId);
+        model.addAttribute(ModelField.DESTINATION_SIMILAR_INFO.label(), similarResult.size() == 0 ? null : similarResult);
 
-        Map<String, List<Map<String, String>>> shortDistResult = frontService.getShortDistanceDestinations(destId);
-        model.addAttribute(ModelField.DESTINATION_IN10KM_INFO.label(), shortDistResult);
+        List<DestinationInfo> shortDistResult = frontService.getShortDistanceDestinations(destId);
+        model.addAttribute(ModelField.DESTINATION_IN10KM_INFO.label(), shortDistResult.size() == 0 ? null : shortDistResult);
 
         return "detail-page";
     }
@@ -60,8 +61,8 @@ public class FrontController {
     @RequestMapping(value = {"/search-destinations"}, produces = "application/json; charset=utf8", method = {RequestMethod.GET})
     public String searchDestinations(Model model,
                                      @RequestParam(value = "keywords") String keywords) {
-        Map<String, List<Map<String, String>>> result = frontService.searchDestinations(keywords);
-        model.addAttribute(ModelField.DESTINATION_INFO.label(), result);
+        List<DestinationInfo> result = frontService.searchDestinations(keywords);
+        model.addAttribute(ModelField.DESTINATION_INFO.label(), result.size() == 0 ? null : result);
         return "search-page";
     }
 }
