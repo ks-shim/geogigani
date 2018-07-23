@@ -106,6 +106,7 @@ public class FrontService {
 
         Map<String, DestinationInfo> keyDestMap = new HashMap<>();
 
+        int seq = 0;
         for(TravelData td : travelDatas) {
             Map<String, String> docMap = asMap(td);
 
@@ -115,22 +116,22 @@ public class FrontService {
             if(contentTypeId == null || areaCode == null) continue;
 
             String contentTypeLabel = null;
-            String aredLabel = null;
+            String areaLabel = null;
             try {
                 contentTypeLabel = ContentTypeIdCode.getTypeIdCode(contentTypeId).label();
-                areaCode = AreaCode.getAreaCode(areaCode).label();
+                areaLabel = AreaCode.getAreaCode(areaCode).label();
             } catch (Exception e) {
                 continue;
             }
 
             DestinationInfo destInfo = keyDestMap.get(contentTypeLabel);
             if(destInfo == null) {
-                destInfo = new DestinationInfo(contentTypeLabel);
+                destInfo = new DestinationInfo(contentTypeLabel, ++seq);
                 keyDestMap.put(contentTypeLabel, destInfo);
             }
 
             // 2. categorizing by area
-            destInfo.add(aredLabel, docMap);
+            destInfo.add(areaLabel, docMap);
         }
 
         return new ArrayList<>(keyDestMap.values());

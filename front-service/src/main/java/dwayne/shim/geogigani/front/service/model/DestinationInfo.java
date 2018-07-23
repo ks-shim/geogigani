@@ -11,11 +11,14 @@ import java.util.Map;
 public class DestinationInfo {
 
     private String key;
+    private int seq;
     private Map<String, List<Map<String, String>>> destListMap;
     private int totalSize;
 
-    public DestinationInfo(String key) {
+    public DestinationInfo(String key,
+                           int seq) {
         this.key = key;
+        this.seq = seq;
         this.destListMap = new HashMap<>();
     }
 
