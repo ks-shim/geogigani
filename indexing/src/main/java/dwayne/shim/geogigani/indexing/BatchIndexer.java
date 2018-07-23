@@ -54,14 +54,30 @@ public class BatchIndexer implements Closeable {
 
     private Document mapToDocument(Map<String, String> documentMap,
                                    Document document) {
+        String latitude = null;
+        String longitude = null;
         for(String key : documentMap.keySet()) {
             String value = documentMap.get(key);
             if(value == null) continue;
 
             TravelDataIndexField tdiField = fieldMap.get(key);
+
+            if(tdiField == TravelDataIndexField.MAP_Y) latitude = value;
+            else if(tdiField == TravelDataIndexField.MAP_X) longitude = value;
+
             Field field = (tdiField == null) ? new TextField(key, value, Field.Store.YES) : tdiField.buildField(value);
             document.add(field);
         }
+
+        try {
+            if (latitude != null && longitude != null) {
+                document.add(TravelDataIndexField.LAT_LON_POINT.buildField(latitude + ' ' + longitude));
+                document.add(TravelDataIndexField.LAT_LON_VALUE.buildField(latitude + ' ' + longitude));
+            }
+        } catch (Exception e) {
+            System.out.println("Latitude error : " + document.toString());
+        }
+
         return document;
     }
 

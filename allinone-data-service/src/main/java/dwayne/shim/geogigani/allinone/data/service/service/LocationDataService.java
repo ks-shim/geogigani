@@ -33,6 +33,9 @@ public class LocationDataService {
     @Value("${location.short.dist.size}")
     private int shortDistLocationSize;
 
+    @Value("${location.short.dist.radiusmeter}")
+    private double shortDistRadiusMeter;
+
     @Value("${location.interest.size}")
     private int interestLocationSize;
 
@@ -139,8 +142,6 @@ public class LocationDataService {
             TravelDataIndexField.MAP_X.label(),
             TravelDataIndexField.MAP_Y.label(),
             TravelDataIndexField.HOMEPAGE.label(),
-            TravelDataIndexField.IN_5KM.label(),
-            TravelDataIndexField.IN_10KM.label(),
             TravelDataIndexField.ACCOM_COUNT.label(),
             TravelDataIndexField.CHK_BABY_CARRIAGE.label(),
             TravelDataIndexField.CHK_CREDIT_CARD.label(),
@@ -406,11 +407,11 @@ public class LocationDataService {
 
     private final String[] fieldToSearchForShortDistanceLocations1 = {TravelDataIndexField.CONTENT_ID.label()};
     private final String[] fieldToGetForShortDistanceLocations1 = {
-            TravelDataIndexField.IN_5KM.label(),
-            TravelDataIndexField.IN_10KM.label()
+            TravelDataIndexField.MAP_Y.label(),
+            TravelDataIndexField.MAP_X.label()
     };
     private final String[] fieldToSearchForShortDistanceLocations2 = {
-            TravelDataIndexField.CONTENT_ID.label()
+            TravelDataIndexField.LAT_LON_POINT.label()
     };
     private final String[] fieldToGetForShortDistanceLocations2 = {
             TravelDataIndexField.CONTENT_ID.label(),
@@ -434,16 +435,17 @@ public class LocationDataService {
 
         // 2. make keywords string ...
         Map<String, String> docMap = result.mapAt(0);
-        StringBuilder sb = new StringBuilder();
-        for(String keywordStr : docMap.values())
-            sb.append(keywordStr).append(' ');
-        String keywords = sb.toString().trim();
+        String latitude = docMap.get(TravelDataIndexField.MAP_Y.label());
+        String longitude = docMap.get(TravelDataIndexField.MAP_X.label());
+        if(latitude == null || longitude == null) throw new NullPointerException("LAT : " + latitude + " LONG : " + longitude);
 
         // 3. search similar location by keywords ...
         result = searchingExecutor.search(
                 fieldToGetForShortDistanceLocations2,
-                fieldToSearchForShortDistanceLocations2,
-                keywords,
+                TravelDataIndexField.LAT_LON_POINT.label(),
+                Double.valueOf(latitude),
+                Double.valueOf(longitude),
+                shortDistRadiusMeter,
                 shortDistLocationSize);
 
         // 4. make travel-data list ...

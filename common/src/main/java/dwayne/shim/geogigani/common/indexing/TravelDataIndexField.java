@@ -1,9 +1,6 @@
 package dwayne.shim.geogigani.common.indexing;
 
-import org.apache.lucene.document.Field;
-import org.apache.lucene.document.StoredField;
-import org.apache.lucene.document.StringField;
-import org.apache.lucene.document.TextField;
+import org.apache.lucene.document.*;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -145,6 +142,20 @@ public enum TravelDataIndexField {
             return new StoredField(label(), Double.valueOf(value));
         }
     },
+    LAT_LON_POINT("latlonpoint") {
+        @Override
+        public Field buildField(String value) {
+            String[] latLon = value.split("\\s+");
+            return new LatLonPoint(label(), Double.valueOf(latLon[0]), Double.valueOf(latLon[1]));
+        }
+    },
+    LAT_LON_VALUE("latlonvalue") {
+        @Override
+        public Field buildField(String value) {
+            String[] latLon = value.split("\\s+");
+            return new LatLonDocValuesField(label(), Double.valueOf(latLon[0]), Double.valueOf(latLon[1]));
+        }
+    },
     MLEVEL("mlevel") {
         @Override
         public Field buildField(String value) {
@@ -164,18 +175,6 @@ public enum TravelDataIndexField {
         }
     },
     CAT3("cat3") {
-        @Override
-        public Field buildField(String value) {
-            return new StringField(label(), value, Field.Store.YES);
-        }
-    },
-    IN_5KM("in5km") {
-        @Override
-        public Field buildField(String value) {
-            return new StringField(label(), value, Field.Store.YES);
-        }
-    },
-    IN_10KM("in10km") {
         @Override
         public Field buildField(String value) {
             return new StringField(label(), value, Field.Store.YES);

@@ -6,6 +6,8 @@ import lombok.extern.log4j.Log4j2;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
+import org.apache.lucene.document.LatLonDocValuesField;
+import org.apache.lucene.document.LatLonPoint;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
@@ -107,6 +109,17 @@ public class SearchingExecutor {
     // Search and get specific fields
     //******************************************************************************************************************
     public SearchResult search(String[] fieldsToGet,
+                               String fieldToSearch,
+                               double latitude,
+                               double longitude,
+                               double radiusMeters,
+                               int resultLimit) throws Exception {
+
+        Query query = LatLonPoint.newDistanceQuery(fieldToSearch, latitude, longitude, radiusMeters);
+        return search(fieldsToGet, query, new Sort(LatLonDocValuesField.newDistanceSort(TravelDataIndexField.LAT_LON_VALUE.label(), latitude, longitude)), resultLimit);
+    }
+
+    public SearchResult search(String[] fieldsToGet,
                                String[] fieldsToSearch,
                                String keywords,
                                int resultLimt) throws Exception {
@@ -124,8 +137,15 @@ public class SearchingExecutor {
     }
 
     private SearchResult search(String[] fieldsToGet,
-                                      Query query,
-                                      int resultLimit) throws Exception {
+                                Query query,
+                                int resultLimit) throws Exception {
+        return search(fieldsToGet, query, null, resultLimit);
+    }
+
+    private SearchResult search(String[] fieldsToGet,
+                                Query query,
+                                Sort sort,
+                                int resultLimit) throws Exception {
         // 1. initialize ...
         IndexSearcher searcher = getSearcher();
 
@@ -136,7 +156,7 @@ public class SearchingExecutor {
 
             // 3. querying and getting the result from lucene ...
             long startTime =System.currentTimeMillis();
-            TopDocs results = searcher.search(query, resultLimit);
+            TopDocs results = (sort == null) ? searcher.search(query, resultLimit) : searcher.search(query, resultLimit, sort);
             log.info("Duration(search) : {} (s)", (System.currentTimeMillis() - startTime)/1000.0);
 
             ScoreDoc[] hits = results.scoreDocs;
@@ -159,8 +179,9 @@ public class SearchingExecutor {
 
         return result;
     }
+
     public static void main(String[] args) throws Exception {
-        SearchingExecutor se = new SearchingExecutor("D:/TravelLocationIndexData");
+        SearchingExecutor se = new SearchingExecutor("D:/TravelLocationIndexData1");
 
         List<String> fieldsToGet = new ArrayList<>();
         for(TravelDataIndexField field : TravelDataIndexField.values())
@@ -171,7 +192,8 @@ public class SearchingExecutor {
                 TravelDataIndexField.OVERVIEW.label()
         };
 
-        SearchResult result = se.search(fieldsToGet.toArray(new String[fieldsToGet.size()]), fieldsToSearch, "dennis", 10);
+        //SearchResult result = se.search(fieldsToGet.toArray(new String[fieldsToGet.size()]), fieldsToSearch, "dennis", 10);
+        SearchResult result = se.search(fieldsToGet.toArray(new String[fieldsToGet.size()]), TravelDataIndexField.LAT_LON_POINT.label(), 35.9292001238, 127.7171970426, 1000.0, 100);
         System.out.println(result);
     }
 }

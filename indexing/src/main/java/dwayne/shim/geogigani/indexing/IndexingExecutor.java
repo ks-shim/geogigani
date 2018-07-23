@@ -30,27 +30,8 @@ public class IndexingExecutor {
 
         // 2. ** start calculate distance ...
         ObjectMapper objectMapper = new ObjectMapper();
-        final double distanceLimit = 20;
         int docCount = 0;
-        LocationDistanceCalculator ldc = new LocationDistanceCalculator();
         File[] docFiles = new File(inDirLocation).listFiles();
-        for(File docFile : docFiles) {
-            Map<String, String> docMap = objectMapper.readValue(docFile, Map.class);
-            // 3-1. add just only allowed document in the list ...
-            if(!allowedContentType(allowedContentTypes, docMap)) continue;
-
-            String contentId = docMap.get(TravelDataIndexField.CONTENT_ID.label());
-            String mapXstr = docMap.get(TravelDataIndexField.MAP_X.label());
-            String mapYstr = docMap.get(TravelDataIndexField.MAP_Y.label());
-
-            if(StringUtils.isBlank(mapXstr) || StringUtils.isBlank(mapYstr)) continue;
-
-            System.out.print("\r Calculating distance : " + ++docCount);
-            ldc.addAndCalculateDistance(contentId, Double.valueOf(mapYstr), Double.valueOf(mapXstr), distanceLimit);
-        }
-
-        Map<String, LocationDistanceCalculator.LocationMapInfo> distanceMap = ldc.asMap();
-
         // 3. ** start indexing ...
         List<Map<String, String>> docList = new ArrayList<>();
         docCount = 0;
@@ -191,11 +172,6 @@ public class IndexingExecutor {
             // 3-4. shorten contents (title and overview)
             shortenContent(docMap, TravelDataIndexField.TITLE.label(), TravelDataIndexField.TITLE_SHORT.label(), 10);
             shortenContent(docMap, TravelDataIndexField.OVERVIEW.label(), TravelDataIndexField.OVERVIEW_SHORT.label(), 50);
-
-            // 3-5. add short distance location info
-            String contentId = docMap.get(TravelDataIndexField.CONTENT_ID.label());
-            addShortDistanceInfo(docMap, distanceMap.get(contentId), 0.0, 5.0, TravelDataIndexField.IN_5KM.label(), 20);
-            addShortDistanceInfo(docMap, distanceMap.get(contentId), 5.0, 10.0, TravelDataIndexField.IN_10KM.label(), 20);
 
             if(++docCount % docSizeLimit != 0) continue;
 
