@@ -85,7 +85,7 @@ public class DustDataCrawler {
         Map<String, Map<String, String>> dustDataMap = new HashMap<>();
         putDataInfoInto(dustDataMap, dBuilder.parse(new InputSource(new StringReader(xml))), todayStr);
 
-        return dustDataMap;
+        return Collections.unmodifiableMap(dustDataMap);
     }
 
     public String todayAsString(Date today) {
