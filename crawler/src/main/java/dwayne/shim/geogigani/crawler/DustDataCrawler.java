@@ -62,7 +62,7 @@ public class DustDataCrawler {
         }
     }
 
-    public void execute(String authKey,
+    public Map<String, Map<String, String>> execute(String authKey,
                         Date today) throws Exception {
 
         // 1. api caller
@@ -85,7 +85,7 @@ public class DustDataCrawler {
         Map<String, Map<String, String>> dustDataMap = new HashMap<>();
         putDataInfoInto(dustDataMap, dBuilder.parse(new InputSource(new StringReader(xml))), todayStr);
 
-        System.out.println(dustDataMap);
+        return dustDataMap;
     }
 
     public String todayAsString(Date today) {
