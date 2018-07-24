@@ -27,6 +27,9 @@ public class LocationDataService {
     @Value("${location.topn}")
     private int topN;
 
+    @Value("${location.tiny-topn}")
+    private int tinyTopN;
+
     @Value("${location.similar.size}")
     private int similarLocationSize;
 
@@ -75,8 +78,10 @@ public class LocationDataService {
         IdWeightSnapshot[] popularLocations = locationStorage.getTopNIdWeights();
 
         // 2. build key to search
+        int idCount = 0;
         StringBuilder sb = new StringBuilder();
         for(IdWeightSnapshot location : popularLocations) {
+            if(++idCount > tinyTopN) break;
             // 2-1. increment impress count  ...
             //locationStorage.impress(location.getId());
             // 2-2. append keyword
@@ -96,7 +101,7 @@ public class LocationDataService {
                 fieldToGetForPopularLocations,
                 fieldToSearchForPopularLocations,
                 ids,
-                topN
+                tinyTopN
         );
 
         Map<String, Map<String, String>> idDocMap = result.asMap(TravelDataIndexField.CONTENT_ID.label());
@@ -302,11 +307,11 @@ public class LocationDataService {
     public List<TravelData> searchLocations(String keywords,
                                             int resultSize) throws Exception {
         return searchLocations(
-                keywords, fieldToSearchForSearchingLocations, fieldToGetForSearchingLocations, topN);
+                keywords, fieldToSearchForSearchingLocations, fieldToGetForSearchingLocations, tinyTopN);
     }
 
     public List<TravelData> searchLocations(String keywords) throws Exception {
-        return searchLocations(keywords, topN);
+        return searchLocations(keywords, tinyTopN);
     }
 
     private List<TravelData> searchLocations(String keywords,

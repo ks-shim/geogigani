@@ -5,6 +5,7 @@ import dwayne.shim.geogigani.allinone.data.service.service.UserPreferenceDataSer
 import dwayne.shim.geogigani.common.data.TravelData;
 import dwayne.shim.geogigani.common.indexing.TravelDataIndexField;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
