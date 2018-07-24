@@ -3,10 +3,19 @@ package dwayne.shim.geogigani.crawler;
 import dwayne.shim.geogigani.crawler.apicaller.ApiCaller;
 import dwayne.shim.geogigani.crawler.apicaller.DefaultApiCaller;
 import lombok.extern.log4j.Log4j2;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.util.Map;
+import java.io.StringReader;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+import static dwayne.shim.geogigani.crawler.DustDataCrawler.ParameterKey.*;
 
 @Log4j2
 public class DustDataCrawler {
@@ -54,15 +63,79 @@ public class DustDataCrawler {
     }
 
     public void execute(String authKey,
-                        String appName,
-                        String osName,
-                        String searchDate) throws Exception {
+                        Date today) throws Exception {
 
-        // 2. api caller
+        // 1. api caller
         ApiCaller apiCaller = new DefaultApiCaller();
-        // 3. xml parser
+        // 2. xml parser
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+        // 3. etc
+        ObjectMapper objectMapper = new ObjectMapper();
+        Map<ParameterKey, String> parameters = new HashMap<>();
+
+        RestApiInfo dustForecastApi = buildDustForecastApiInfo(authKey);
+        String todayStr = todayAsString(today);
+        parameters.put(SEARCH_DATE, todayStr);
+
+        String url = dustForecastApi.asUrlStringWith(parameters);
+        log.info(url);
+
+        String xml = apiCaller.callAsGet(url);
+        Map<String, Map<String, String>> dustDataMap = new HashMap<>();
+        putDataInfoInto(dustDataMap, dBuilder.parse(new InputSource(new StringReader(xml))), todayStr);
+
+        System.out.println(dustDataMap);
+    }
+
+    public String todayAsString(Date today) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        return formatter.format(today);
+    }
+
+    private RestApiInfo buildDustForecastApiInfo(String authKey) {
+
+        // make dust-forecast restapi info ...
+        Map<ParameterKey, String> parameters = new HashMap<>();
+        parameters.put(SERVICE_KEY, authKey);
+        parameters.put(SEARCH_DATE, "");
+
+        RestApiInfo apiInfo = new RestApiInfo(
+                "http://openapi.airkorea.or.kr/openapi/services/rest/ArpltnInforInqireSvc/getMinuDustFrcstDspth", Collections.unmodifiableMap(parameters));
+
+        return apiInfo;
+    }
+
+    private void putDataInfoInto(Map<String, Map<String, String>> dustDataMap,
+                                 Document doc,
+                                 String todayStr) {
+
+        // 1. get all item list ...
+        NodeList nodeList = doc.getElementsByTagName(XMLNode.ITEM.label);
+        int nodeLen = nodeList.getLength();
+        if(nodeLen <= 0) return;
+
+        // 2. traverse all item nodes ...
+        for(int i=0; i<nodeLen; i++) {
+            Element element = (Element)nodeList.item(i);
+
+            // 2-1. read all data for a item ...
+            Map<String, String> newItemValueMap = new HashMap<>();
+            for(XMLNode xmlNode : XMLNode.values()) {
+                NodeList subNodeList = element.getElementsByTagName(xmlNode.label);
+                if(subNodeList == null || subNodeList.getLength() <= 0) continue;
+
+                newItemValueMap.put(xmlNode.label, subNodeList.item(0).getTextContent());
+            }
+
+            // 2-2. get content id if exists ...
+            String informCode = newItemValueMap.get(XMLNode.INFORM_CODE.label);
+            String informData = newItemValueMap.get(XMLNode.INFORM_DATA.label);
+            if(informCode == null || informData == null || !informData.equals(todayStr)) continue;
+
+            // 2-3. add newly or merge with old value map ...
+            dustDataMap.put(informCode, newItemValueMap);
+        }
     }
 
     private static class RestApiInfo {
@@ -96,5 +169,14 @@ public class DustDataCrawler {
 
             return sb.toString();
         }
+    }
+
+    public static void main(String[] args) throws Exception {
+        // 1. reading related variables ...
+        final String authKey =
+                "yUZKBeVTETcH8r9aE%2FHv1uNYXav0MmW%2B37mxGP5A%2FR2fMtWVbGPiKue9KAYV16WKfjiiqmYcOljfYSgpzMdylw%3D%3D";
+
+        DustDataCrawler crawler = new DustDataCrawler();
+        crawler.execute(authKey, new Date());
     }
 }
