@@ -2,15 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
   <head>
-
-    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <script>
-         (adsbygoogle = window.adsbygoogle || []).push({
-              google_ad_client: "ca-pub-4129044928312463",
-              enable_page_level_ads: true
-         });
-    </script>
-
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <meta name="description" content=""/>
@@ -116,18 +107,6 @@
         <div class="intro-text">
           <div class="intro-lead-in">Destination Search and Share</div>
           <div class="intro-heading text-uppercase">거기가니?</div>
-          <!--<div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
-            <form id="search_form" role="form" th:action="@{/search-destinations}" method="get">
-              <div class="form-row">
-                <div class="col-12 col-md-9 mb-2 mb-md-0">
-                  <input id="keywords" name="keywords" type="text" class="form-control form-control-lg" placeholder="Keywords ..." th:onkeypress="'javascript:if(event.keyCode==13) {search(); return false;}'"/>
-                </div>
-                <div class="col-12 col-md-3">
-                  <button type="button" class="btn btn-block btn-lg btn-primary" th:onclick="'javascript:search();'">Find</button>
-                </div>
-              </div>
-            </form>
-          </div>-->
         </div>
       </div>
     </header>
@@ -152,6 +131,8 @@
             <br />
           </div>
         </div>
+
+        <tenping class="adsbytenping" style="width: 100%; margin: 0px auto; display: block; max-width: 580px;" tenping-ad-client="ULkZYhHDonqxNgJx%2bd2t5XgWCcx0QUdnsdGDbY1yMIshP4q34efQL0ddArqjWnF3" tenping-ad-display-type="UD8Mia8gyIoT5Z2MT6VB3Q%3d%3d"></tenping><script async src='//ads.tenping.kr/scripts/adsbytenping.min.js' ></script>
 
         <div class="tab-content">
           <th:block th:each="destlist,iterStat : ${destination_interest_info}" th:if="${destination_interest_info != null}">
@@ -181,7 +162,7 @@
                 <th:block th:each="list,iterStat : ${destlist.destListMap}" th:if="${destlist.destListMap != null}">
                   <div th:class="'tab-pane fade' + ${iterStat.index == 0 ? ' active in show' : ''}" th:id="'interest-ac-tab-' + ${destlist.seq} + '-' + ${iterStat.index}">
                     <div class="row">
-                      <th:block th:each="doc : ${list.value}" th:if="${list.value != null}">
+                      <th:block th:each="doc,iterStat : ${list.value}" th:if="${list.value != null}">
                         <div class="col-md-4 col-sm-6 portfolio2-item">
                           <a class="portfolio2-link" th:onclick="'javascript:show_detail(' + ${doc.contentid} + ')'">
                             <div class="portfolio2-hover">
@@ -234,6 +215,8 @@
           </div>
         </div>
 
+        <tenping class="adsbytenping" style="width: 100%; margin: 0px auto; display: block; max-width: 580px;" tenping-ad-client="ULkZYhHDonqxNgJx%2bd2t5XgWCcx0QUdnsdGDbY1yMIshP4q34efQL0ddArqjWnF3" tenping-ad-display-type="UD8Mia8gyIoT5Z2MT6VB3Q%3d%3d"></tenping><script async src='//ads.tenping.kr/scripts/adsbytenping.min.js' ></script>
+
         <div class="tab-content">
           <th:block th:each="destlist,iterStat : ${destination_info}" th:if="${destination_info != null}">
             <div th:class="'tab-pane fade' + ${iterStat.index == 0 ? ' active in show' : ''}" th:id="'popular-ct-tab' + ${iterStat.index}">
@@ -262,7 +245,7 @@
                 <th:block th:each="list,iterStat : ${destlist.destListMap}" th:if="${destlist.destListMap != null}">
                   <div th:class="'tab-pane fade' + ${iterStat.index == 0 ? ' active in show' : ''}" th:id="'popular-ac-tab-' + ${destlist.seq} + '-' + ${iterStat.index}">
                     <div class="row">
-                    <th:block th:each="doc : ${list.value}" th:if="${list.value != null}">
+                    <th:block th:each="doc,iterStat: ${list.value}" th:if="${list.value != null}">
                       <div class="col-md-4 col-sm-6 portfolio-item">
                         <a class="portfolio-link" th:onclick="'javascript:show_detail(' + ${doc.contentid} + ')'">
                           <div class="portfolio-hover">
@@ -283,6 +266,12 @@
                           </ul>
                         </div>
                       </div>
+
+                      <th:block th:if="${iterStat.index % 8 == 0}">
+                        <div class="col-md-4 col-sm-6 portfolio-item">
+                          <tenping class="adsbytenping" style="width: 100%; margin: 0px auto; display: block; max-width: 768px;" tenping-ad-client="ULkZYhHDonqxNgJx%2bd2t5XgWCcx0QUdnsdGDbY1yMIshP4q34efQL0ddArqjWnF3" tenping-ad-display-type="1LawCE8FqKOhetXZhMopsQ%3d%3d"></tenping><script async src='//ads.tenping.kr/scripts/adsbytenping.min.js' ></script>
+                        </div>
+                      </th:block>
                     </th:block>
                     </div>
                   </div>
@@ -373,6 +362,7 @@
     </section>
 
     <hr/>
+
     <!-- Footer -->
     <footer>
       <div class="container">
@@ -423,6 +413,7 @@
         form.submit();
       }
     </script>
+
   </body>
 
 </html>

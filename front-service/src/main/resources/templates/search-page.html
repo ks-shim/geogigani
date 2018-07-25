@@ -2,13 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
   <head>
-    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <script>
-         (adsbygoogle = window.adsbygoogle || []).push({
-              google_ad_client: "ca-pub-4129044928312463",
-              enable_page_level_ads: true
-         });
-    </script>
 
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
@@ -114,6 +107,8 @@
           </div>
         </div>
 
+        <tenping class="adsbytenping" style="width: 100%; margin: 0px auto; display: block; max-width: 580px;" tenping-ad-client="ULkZYhHDonqxNgJx%2bd2t5XgWCcx0QUdnsdGDbY1yMIshP4q34efQL0ddArqjWnF3" tenping-ad-display-type="UD8Mia8gyIoT5Z2MT6VB3Q%3d%3d"></tenping><script async src='//ads.tenping.kr/scripts/adsbytenping.min.js' ></script>
+
         <div class="tab-content">
           <th:block th:each="destlist,iterStat : ${destination_info}" th:if="${destination_info != null}">
             <div th:class="'tab-pane fade' + ${iterStat.index == 0 ? ' active in show' : ''}" th:id="'search-ct-tab' + ${iterStat.index}">
@@ -142,7 +137,7 @@
                 <th:block th:each="list,iterStat : ${destlist.destListMap}" th:if="${destlist.destListMap != null}">
                   <div th:class="'tab-pane fade' + ${iterStat.index == 0 ? ' active in show' : ''}" th:id="'search-ac-tab-' + ${destlist.seq} + '-' + ${iterStat.index}">
                     <div class="row">
-                      <th:block th:each="doc : ${list.value}" th:if="${list.value != null}">
+                      <th:block th:each="doc,iterStat : ${list.value}" th:if="${list.value != null}">
                         <div class="col-md-4 col-sm-6 portfolio-item">
                           <a class="portfolio-link" th:onclick="'javascript:show_detail(' + ${doc.contentid} + ')'">
                             <div class="portfolio-hover">
@@ -163,6 +158,11 @@
                             </ul>
                           </div>
                         </div>
+                        <th:block th:if="${iterStat.index % 8 == 0}">
+                          <div class="col-md-4 col-sm-6 portfolio-item">
+                            <tenping class="adsbytenping" style="width: 100%; margin: 0px auto; display: block; max-width: 768px;" tenping-ad-client="ULkZYhHDonqxNgJx%2bd2t5XgWCcx0QUdnsdGDbY1yMIshP4q34efQL0ddArqjWnF3" tenping-ad-display-type="1LawCE8FqKOhetXZhMopsQ%3d%3d"></tenping><script async src='//ads.tenping.kr/scripts/adsbytenping.min.js' ></script>
+                          </div>
+                        </th:block>
                       </th:block>
                     </div>
                   </div>
