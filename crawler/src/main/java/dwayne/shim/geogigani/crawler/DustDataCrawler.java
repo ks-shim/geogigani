@@ -1,5 +1,6 @@
 package dwayne.shim.geogigani.crawler;
 
+import dwayne.shim.geogigani.common.data.DustData;
 import dwayne.shim.geogigani.crawler.apicaller.ApiCaller;
 import dwayne.shim.geogigani.crawler.apicaller.DefaultApiCaller;
 import lombok.extern.log4j.Log4j2;
@@ -22,8 +23,7 @@ public class DustDataCrawler {
 
     enum ParameterKey {
         SERVICE_KEY("serviceKey"),
-        SEARCH_DATE("searchDate"),
-        INFORM_CODE("InformCode");
+        SEARCH_DATE("searchDate");
 
         private final String label;
         private ParameterKey(String _label) {
@@ -62,8 +62,8 @@ public class DustDataCrawler {
         }
     }
 
-    public Map<String, Map<String, String>> execute(String authKey,
-                        Date today) throws Exception {
+    public DustData execute(String authKey,
+                            Date today) throws Exception {
 
         // 1. api caller
         ApiCaller apiCaller = new DefaultApiCaller();
@@ -82,10 +82,10 @@ public class DustDataCrawler {
         log.info(url);
 
         String xml = apiCaller.callAsGet(url);
-        Map<String, Map<String, String>> dustDataMap = new HashMap<>();
-        putDataInfoInto(dustDataMap, dBuilder.parse(new InputSource(new StringReader(xml))), todayStr);
+        DustData dustData = new DustData(todayStr);
+        putDataInfoInto(dustData, dBuilder.parse(new InputSource(new StringReader(xml))), todayStr);
 
-        return Collections.unmodifiableMap(dustDataMap);
+        return dustData;
     }
 
     public String todayAsString(Date today) {
@@ -106,7 +106,7 @@ public class DustDataCrawler {
         return apiInfo;
     }
 
-    private void putDataInfoInto(Map<String, Map<String, String>> dustDataMap,
+    private void putDataInfoInto(DustData dustData,
                                  Document doc,
                                  String todayStr) {
 
@@ -114,6 +114,8 @@ public class DustDataCrawler {
         NodeList nodeList = doc.getElementsByTagName(XMLNode.ITEM.label);
         int nodeLen = nodeList.getLength();
         if(nodeLen <= 0) return;
+
+        Map<String, Map<String, String>> regionDustMap = new HashMap();
 
         // 2. traverse all item nodes ...
         for(int i=0; i<nodeLen; i++) {
@@ -131,11 +133,40 @@ public class DustDataCrawler {
             // 2-2. get content id if exists ...
             String informCode = newItemValueMap.get(XMLNode.INFORM_CODE.label);
             String informData = newItemValueMap.get(XMLNode.INFORM_DATA.label);
-            if(informCode == null || informData == null || !informData.equals(todayStr)) continue;
+            String informGrade = newItemValueMap.get(XMLNode.INFORM_GRADE.label);
+            if(informCode == null || informData == null || informGrade == null || !informData.equals(todayStr)) continue;
 
-            // 2-3. add newly or merge with old value map ...
-            dustDataMap.put(informCode, newItemValueMap);
+            informCode = informCode.toLowerCase();
+            informData = informData.toLowerCase();
+            informGrade = informGrade.replaceAll("\\s+", "");
+            String[] informGrades = informGrade.split(",");
+            for(String ig : informGrades) {
+                String[] pieces = ig.split(":");
+                if(pieces == null || pieces.length < 2) continue;
+
+                String regionName = pieces[0];
+                DustData.DustStatus dustStatus;
+                try {
+                    dustStatus = DustData.DustStatus.getDustStatusByLabel(pieces[1]);
+                } catch (Exception e) {
+                    log.error(e);
+                    continue;
+                }
+
+                Map<String, String> oldDustMap = regionDustMap.get(regionName);
+                if(oldDustMap == null) {
+                    oldDustMap = new HashMap<>();
+                    oldDustMap.put("regionname", regionName);
+                    regionDustMap.put(regionName, oldDustMap);
+                }
+
+                oldDustMap.put(informCode + "status", dustStatus.label());
+                oldDustMap.put(informCode + "color", dustStatus.color());
+            }
         }
+
+        for(Map<String, String> regionValue : regionDustMap.values())
+            dustData.addRegionDustData(regionValue);
     }
 
     private static class RestApiInfo {
@@ -177,6 +208,7 @@ public class DustDataCrawler {
                 "yUZKBeVTETcH8r9aE%2FHv1uNYXav0MmW%2B37mxGP5A%2FR2fMtWVbGPiKue9KAYV16WKfjiiqmYcOljfYSgpzMdylw%3D%3D";
 
         DustDataCrawler crawler = new DustDataCrawler();
-        crawler.execute(authKey, new Date());
+        DustData dustData = crawler.execute(authKey, new Date());
+        System.out.println(dustData);
     }
 }

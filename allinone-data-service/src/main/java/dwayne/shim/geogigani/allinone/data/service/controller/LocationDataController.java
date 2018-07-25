@@ -1,5 +1,6 @@
 package dwayne.shim.geogigani.allinone.data.service.controller;
 
+import dwayne.shim.geogigani.allinone.data.service.service.DustDataService;
 import dwayne.shim.geogigani.allinone.data.service.service.LocationDataService;
 import dwayne.shim.geogigani.allinone.data.service.service.UserPreferenceDataService;
 import dwayne.shim.geogigani.common.data.TravelData;
@@ -28,6 +29,9 @@ public class LocationDataController {
 
     @Resource
     private LocationDataService locationDataService;
+
+    @Resource
+    private DustDataService dustDataService;
 
     @RequestMapping(value = {"/popular"}, produces = "application/json; charset=utf8", method = {RequestMethod.GET})
     public ResponseEntity<List<TravelData>> getPopularLocations() {
@@ -165,5 +169,17 @@ public class LocationDataController {
             log.error(e.getMessage());
         }
         log.info("Finished checking user-keywords ttl ...");
+    }
+
+    @Scheduled(fixedRateString = "${common.dust.interval}", initialDelayString = "${common.dust.init-time}")
+    private void getDustInfo() {
+        log.info("Start getting dust info ...");
+        try {
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error(e.getMessage());
+        }
+        log.info("Finished getting dust info ...");
     }
 }
