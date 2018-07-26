@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Log4j2
@@ -29,7 +30,7 @@ public class DustDataService {
         } catch (Exception e) {
             e.printStackTrace();
             log.error(e);
-            newDustData = new DustData();
+            newDustData = new DustData(new Date());
         }
 
         synchronized (dustDataLock) {
@@ -39,6 +40,7 @@ public class DustDataService {
 
     public DustData getDustData() {
         synchronized (dustDataLock) {
+            if(dustData == null) dustData = new DustData(new Date());
             return dustData;
         }
     }

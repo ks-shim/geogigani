@@ -3,6 +3,7 @@ package dwayne.shim.geogigani.crawler.apicaller;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -37,6 +38,14 @@ public class DefaultApiCaller implements ApiCaller {
     public String callAsGet(String url) throws Exception {
 
         HttpGet httpGet = new HttpGet(url);
+
+        RequestConfig config = RequestConfig.custom()
+                .setSocketTimeout(10000)
+                .setConnectTimeout(10000)
+                .setConnectionRequestTimeout(10000)
+                .build();
+
+        httpGet.setConfig(config);
         String responseBody = httpClient.execute(httpGet, responseHandler);
         return responseBody;
     }

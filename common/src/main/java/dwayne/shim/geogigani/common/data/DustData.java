@@ -2,19 +2,17 @@ package dwayne.shim.geogigani.common.data;
 
 import lombok.Data;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Data
 public class DustData {
 
     public enum DustStatus {
-        GOOD("좋음", "blue"),
-        NORMAL("보통", "green"),
-        BAD("나쁨", "orange"),
-        VERY_BAD("매우나쁨", "red");
+        GOOD("좋음", "#337ab7"),
+        NORMAL("보통", "#5cb85c"),
+        BAD("나쁨", "#f0ad4e"),
+        VERY_BAD("매우나쁨", "#d9534f");
 
         private String label;
         private String color;
@@ -46,10 +44,25 @@ public class DustData {
 
     public DustData() {}
 
+    public DustData(Date date) {
+        this.dateTime = todayAsString(date);
+        this.regionDustDataList = new ArrayList<>();
+        this.dustImagesMap = new HashMap<>();
+    }
+
     public DustData(String dateTime) {
         this.dateTime = dateTime;
         this.regionDustDataList = new ArrayList<>();
         this.dustImagesMap = new HashMap<>();
+    }
+
+    public boolean isEmpty() {
+        return regionDustDataList.size() == 0;
+    }
+
+    public static String todayAsString(Date today) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        return formatter.format(today);
     }
 
     public void addRegionDustData(Map<String, String> regionDustData) {
@@ -59,5 +72,9 @@ public class DustData {
     public void addDustImageListMap(String dustName,
                                     Map<String, String> dustImages) {
         dustImagesMap.put(dustName, dustImages);
+    }
+
+    public void sortByRegion() {
+
     }
 }

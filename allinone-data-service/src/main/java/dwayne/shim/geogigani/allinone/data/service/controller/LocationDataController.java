@@ -3,6 +3,7 @@ package dwayne.shim.geogigani.allinone.data.service.controller;
 import dwayne.shim.geogigani.allinone.data.service.service.DustDataService;
 import dwayne.shim.geogigani.allinone.data.service.service.LocationDataService;
 import dwayne.shim.geogigani.allinone.data.service.service.UserPreferenceDataService;
+import dwayne.shim.geogigani.common.data.DustData;
 import dwayne.shim.geogigani.common.data.TravelData;
 import dwayne.shim.geogigani.common.indexing.TravelDataIndexField;
 import lombok.extern.log4j.Log4j2;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Log4j2
@@ -32,6 +34,17 @@ public class LocationDataController {
 
     @Resource
     private DustDataService dustDataService;
+
+    @RequestMapping(value = {"/dust"}, produces = "application/json; charset=utf8", method = {RequestMethod.GET})
+    public ResponseEntity<DustData> getDustData() {
+        DustData dustData;
+        try {
+            dustData = dustDataService.getDustData();
+        } catch (Exception e) {
+            dustData = new DustData(new Date());
+        }
+        return new ResponseEntity(dustData, HttpStatus.OK);
+    }
 
     @RequestMapping(value = {"/popular"}, produces = "application/json; charset=utf8", method = {RequestMethod.GET})
     public ResponseEntity<List<TravelData>> getPopularLocations() {
@@ -175,7 +188,7 @@ public class LocationDataController {
     private void getDustInfo() {
         log.info("Start getting dust info ...");
         try {
-
+            dustDataService.switchDustData();
         } catch (Exception e) {
             e.printStackTrace();
             log.error(e.getMessage());

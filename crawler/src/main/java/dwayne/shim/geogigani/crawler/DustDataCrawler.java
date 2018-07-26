@@ -63,8 +63,7 @@ public class DustDataCrawler {
     }
 
     public DustData execute(String authKey,
-                            Date today) throws Exception {
-
+                            String today) throws Exception {
         // 1. api caller
         ApiCaller apiCaller = new DefaultApiCaller();
         // 2. xml parser
@@ -75,22 +74,21 @@ public class DustDataCrawler {
         Map<ParameterKey, String> parameters = new HashMap<>();
 
         RestApiInfo dustForecastApi = buildDustForecastApiInfo(authKey);
-        String todayStr = todayAsString(today);
-        parameters.put(SEARCH_DATE, todayStr);
+        parameters.put(SEARCH_DATE, today);
 
         String url = dustForecastApi.asUrlStringWith(parameters);
         log.info(url);
 
         String xml = apiCaller.callAsGet(url);
-        DustData dustData = new DustData(todayStr);
-        putDataInfoInto(dustData, dBuilder.parse(new InputSource(new StringReader(xml))), todayStr);
+        DustData dustData = new DustData(today);
+        putDataInfoInto(dustData, dBuilder.parse(new InputSource(new StringReader(xml))), today);
 
         return dustData;
     }
 
-    public String todayAsString(Date today) {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        return formatter.format(today);
+    public DustData execute(String authKey,
+                            Date today) throws Exception {
+        return execute(authKey, DustData.todayAsString(today));
     }
 
     private RestApiInfo buildDustForecastApiInfo(String authKey) {

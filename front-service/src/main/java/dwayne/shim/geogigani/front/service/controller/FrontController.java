@@ -1,5 +1,6 @@
 package dwayne.shim.geogigani.front.service.controller;
 
+import dwayne.shim.geogigani.common.data.DustData;
 import dwayne.shim.geogigani.front.service.constants.ModelField;
 import dwayne.shim.geogigani.front.service.model.DestinationInfo;
 import dwayne.shim.geogigani.front.service.service.FrontService;
@@ -35,6 +36,15 @@ public class FrontController {
         model.addAttribute(ModelField.DESTINATION_INTEREST_INFO.label(), interestResult.size() == 0 ? null : interestResult);
 
         return "main-page";
+    }
+
+    @RequestMapping(value = {"/dust-info"}, produces = "application/json; charset=utf8", method = {RequestMethod.GET})
+    public String showDustDestinations(Model model) {
+
+        DustData dustData = frontService.getDustData();
+        model.addAttribute(ModelField.DUST_INFO.label(), dustData.isEmpty() ? null : dustData);
+
+        return "dust-page";
     }
 
     @RequestMapping(value = {"/destination-detail/{destId}"}, produces = "application/json; charset=utf8", method = {RequestMethod.GET})

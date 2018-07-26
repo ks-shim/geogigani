@@ -2,6 +2,7 @@ package dwayne.shim.geogigani.front.service.service;
 
 import dwayne.shim.geogigani.common.code.AreaCode;
 import dwayne.shim.geogigani.common.code.ContentTypeIdCode;
+import dwayne.shim.geogigani.common.data.DustData;
 import dwayne.shim.geogigani.common.data.TravelData;
 import dwayne.shim.geogigani.common.storage.IdWeightSnapshot;
 import dwayne.shim.geogigani.front.service.constants.DestinationInfoField;
@@ -37,6 +38,9 @@ public class FrontService {
 
     @Value("${rest.interest}")
     private String restInterest;
+
+    @Value("${rest.dust}")
+    private String restDust;
 
     @Autowired
     private RestTemplate restTemplate;
@@ -74,6 +78,11 @@ public class FrontService {
         
         TravelData[] result = restTemplate.getForObject(restInterest + "/" + userId, TravelData[].class);
         return asCategorizedDestInfo(result);
+    }
+
+    public DustData getDustData() {
+        DustData dustData = restTemplate.getForObject(restDust, DustData.class);
+        return dustData;
     }
 
     //****************************************************************************
