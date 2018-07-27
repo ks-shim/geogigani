@@ -92,6 +92,19 @@ public class LocationDataController {
         return new ResponseEntity(result, HttpStatus.OK);
     }
 
+    @RequestMapping(value = {"/top-n-by-areacode/{areaCode}"}, produces = "application/json; charset=utf8", method = {RequestMethod.GET})
+    public ResponseEntity<List<TravelData>> getTopNByAreaCode(@PathVariable(value = "areaCode") String areaCode) {
+
+        List<TravelData> result;
+        try {
+            result = locationDataService.getTopNLocationsByAreaCode(areaCode);
+        } catch (Exception e) {
+            result = new ArrayList<>();
+        }
+
+        return new ResponseEntity(result, HttpStatus.OK);
+    }
+
     @RequestMapping(value = {"/similar/{locationId}"}, produces = "application/json; charset=utf8", method = {RequestMethod.GET})
     public ResponseEntity<List<TravelData>> getSimilarLocations(@PathVariable(value = "locationId") String locationId) {
 
@@ -190,7 +203,6 @@ public class LocationDataController {
         try {
             dustDataService.switchDustData();
         } catch (Exception e) {
-            e.printStackTrace();
             log.error(e.getMessage());
         }
         log.info("Finished getting dust info ...");

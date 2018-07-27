@@ -1,5 +1,6 @@
 package dwayne.shim.geogigani.allinone.data.service.service;
 
+import dwayne.shim.geogigani.common.code.AreaCode;
 import dwayne.shim.geogigani.common.data.TravelData;
 import dwayne.shim.geogigani.common.indexing.TravelDataIndexField;
 import dwayne.shim.geogigani.common.storage.IdWeightSnapshot;
@@ -8,6 +9,9 @@ import dwayne.shim.geogigani.searching.SearchResult;
 import dwayne.shim.geogigani.searching.SearchingExecutor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.collections4.map.LRUMap;
+import org.apache.lucene.index.DirectoryReader;
+import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.store.Directory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -45,15 +49,27 @@ public class LocationDataService {
     @Value("${location.snapshot.dir}")
     private String locationSnapshotDir;
 
-    @Autowired
-    private IdWeightStorage locationStorage;
+    private final IdWeightStorage locationStorage;
 
-    @Autowired
-    private SearchingExecutor searchingExecutor;
+    private final SearchingExecutor searchingExecutor;
 
     private final LRUMap<Object, List<TravelData>> cache;
-    public LocationDataService() {
-        cache = new LRUMap<>(2);
+
+    public LocationDataService(SearchingExecutor searchingExecutor,
+                               IdWeightStorage locationStorage) throws Exception {
+        this.cache = new LRUMap<>(2);
+        this.locationStorage = locationStorage;
+        this.searchingExecutor = searchingExecutor;
+
+        addNewIdAreaCodePair();
+    }
+
+    public void addNewIdAreaCodePair() throws Exception {
+        log.info("Started adding new id-areacode pair ...");
+        Map<String, String> idAreaMap = searchingExecutor.getLocationIdAndAreaCodePair(
+                TravelDataIndexField.CONTENT_ID.label(), TravelDataIndexField.AREA_CODE.label());
+        this.locationStorage.addAllIdAndAreadCode(idAreaMap);
+        log.info("Finished adding new id-areacode pair ...");
     }
 
     private final String[] fieldToSearchForPopularLocations = {TravelDataIndexField.CONTENT_ID.label()};
@@ -80,8 +96,8 @@ public class LocationDataService {
         // 2. build key to search
         int idCount = 0;
         StringBuilder sb = new StringBuilder();
-        for(IdWeightSnapshot location : popularLocations) {
-            if(++idCount > tinyTopN) break;
+        for (IdWeightSnapshot location : popularLocations) {
+            if (++idCount > tinyTopN) break;
             // 2-1. increment impress count  ...
             //locationStorage.impress(location.getId());
             // 2-2. append keyword
@@ -92,9 +108,9 @@ public class LocationDataService {
         // 3. If cached data exists, return it right away !!
         List<TravelData> cachedTravelData = null;
         synchronized (cache) {
-             cachedTravelData = cache.get(popularLocations);
+            cachedTravelData = cache.get(popularLocations);
         }
-        if(cachedTravelData != null) return cachedTravelData;
+        if (cachedTravelData != null) return cachedTravelData;
 
         // 4. If cached data doesn't exist, search from lucene
         SearchResult result = searchingExecutor.search(
@@ -108,20 +124,83 @@ public class LocationDataService {
 
         // 5. create TravelData list ...
         List<TravelData> travelDataList = new ArrayList<>();
-        for(IdWeightSnapshot location : popularLocations) {
+        for (IdWeightSnapshot location : popularLocations) {
             Map<String, String> docMap = idDocMap.get(location.getId());
-            if(docMap == null) continue;
+            if (docMap == null) continue;
             travelDataList.add(new TravelData(location, docMap));
         }
 
         // 6. clear
-        idDocMap.clear(); idDocMap = null;
+        idDocMap.clear();
+        idDocMap = null;
         result.clear();
 
         // 7. put travel-data into the cache !!
         synchronized (cache) {
             cache.put(popularLocations, travelDataList);
         }
+        return travelDataList;
+    }
+
+    //***************************************************************************************
+    // topN location by areaCode
+    //***************************************************************************************
+    private final String[] fieldToSearchTopNLocationsByAreaCode = {TravelDataIndexField.CONTENT_ID.label()};
+    private final String[] fieldToGetTopNLocationsByAreaCode = {
+            TravelDataIndexField.CONTENT_ID.label(),
+            TravelDataIndexField.CONTENT_TYPE_ID.label(),
+            TravelDataIndexField.TITLE.label(),
+            TravelDataIndexField.TITLE_SHORT.label(),
+            TravelDataIndexField.OVERVIEW.label(),
+            TravelDataIndexField.OVERVIEW_SHORT.label(),
+            TravelDataIndexField.ADDR1.label(),
+            TravelDataIndexField.CAT1.label(),
+            TravelDataIndexField.AREA_CODE.label(),
+            TravelDataIndexField.FIRST_IMAGE.label(),
+    };
+    public List<TravelData> getTopNLocationsByAreaCode(String areaCode) throws Exception {
+        // 1. validation
+        AreaCode.isValid(areaCode);
+
+        // 2. get topN id-weights
+        IdWeightSnapshot[] popularLocations = locationStorage.getTopNIdWeights();
+        List<IdWeightSnapshot> validSnapshots = new ArrayList<>();
+        int validLocCount = 0;
+        StringBuilder sb = new StringBuilder();
+        for(IdWeightSnapshot snapshot : popularLocations) {
+            String ac = locationStorage.getAreaCodeBy(snapshot.getId());
+            if(ac == null || !areaCode.equals(ac)) continue;
+
+            if(++validLocCount > tinyTopN) break;
+
+            validSnapshots.add(snapshot);
+            if(sb.length() > 0) sb.append(' ');
+            sb.append(snapshot.getId());
+        }
+
+        if(sb.length() == 0) return new ArrayList<>();
+
+        // 3. search
+        SearchResult result = searchingExecutor.search(
+                fieldToGetTopNLocationsByAreaCode,
+                fieldToSearchTopNLocationsByAreaCode,
+                sb.toString(),
+                tinyTopN
+        );
+
+        Map<String, Map<String, String>> idDocMap = result.asMap(TravelDataIndexField.CONTENT_ID.label());
+
+        // 5. create TravelData list ...
+        List<TravelData> travelDataList = new ArrayList<>();
+        for (IdWeightSnapshot location : validSnapshots) {
+            Map<String, String> docMap = idDocMap.get(location.getId());
+            if (docMap == null) continue;
+            travelDataList.add(new TravelData(location, docMap));
+        }
+
+        validSnapshots.clear();
+        validSnapshots = null;
+
         return travelDataList;
     }
 
@@ -267,9 +346,7 @@ public class LocationDataService {
     };
 
     public TravelData getLocationDetail(String locationId,
-                                        boolean skipSocring) throws Exception {
-        // 1. increment click count
-        if(!skipSocring) locationStorage.click(locationId);
+                                        boolean skipScoring) throws Exception {
 
         SearchResult result = searchingExecutor.search(
                 fieldToGetForLocationDetail,
@@ -277,6 +354,9 @@ public class LocationDataService {
                 locationId,
                 1
         );
+
+        // 1. increment click count
+        if(!skipScoring && result.getTotalHits() > 0) locationStorage.click(locationId);
 
         return new TravelData(locationStorage.getSnapshot(locationId), result.mapAt(0));
     }

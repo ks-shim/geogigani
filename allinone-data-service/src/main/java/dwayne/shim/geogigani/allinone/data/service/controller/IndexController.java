@@ -1,5 +1,6 @@
 package dwayne.shim.geogigani.allinone.data.service.controller;
 
+import dwayne.shim.geogigani.allinone.data.service.service.LocationDataService;
 import dwayne.shim.geogigani.allinone.data.service.util.IndexPathUtil;
 import dwayne.shim.geogigani.searching.SearchingExecutor;
 import lombok.extern.log4j.Log4j2;
@@ -8,6 +9,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
 
 @Log4j2
 @RestController
@@ -29,6 +32,9 @@ public class IndexController {
     @Autowired
     private SearchingExecutor searchingExecutor;
 
+    @Resource
+    private LocationDataService locationDataService;
+
     @RequestMapping(value = {"/to-be-path"}, produces = "application/json; charset=utf8", method = {RequestMethod.GET})
     public String getToBeIndexPath() {
         try {
@@ -45,6 +51,8 @@ public class IndexController {
             searchingExecutor.switchIndexLocation(toBeIndexPath);
             log.info("Switched index path ...");
             indexPathUtil.switchIndexPath(locationIndexPathFile, toBeIndexPath);
+            log.info("Added New id-areacode pair ...");
+            locationDataService.addNewIdAreaCodePair();
             log.info("Switched index path info in the file ...");
         } catch (Exception e) {
             log.error(e);

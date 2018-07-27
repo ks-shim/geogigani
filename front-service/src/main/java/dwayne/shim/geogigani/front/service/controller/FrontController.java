@@ -39,7 +39,7 @@ public class FrontController {
     }
 
     @RequestMapping(value = {"/dust-info"}, produces = "application/json; charset=utf8", method = {RequestMethod.GET})
-    public String showDustDestinations(Model model) {
+    public String showDustInfo(Model model) {
 
         DustData dustData = frontService.getDustData();
         model.addAttribute(ModelField.DUST_INFO.label(), dustData.isEmpty() ? null : dustData);
@@ -47,11 +47,19 @@ public class FrontController {
         return "dust-page";
     }
 
+    @RequestMapping(value = {"/region-based-destinations/{areaCode}"}, produces = "application/json; charset=utf8", method = {RequestMethod.GET})
+    public String showDustDestinations(Model model,
+                                       @PathVariable(value = "areaCode", required = true) String areaCode) {
+
+
+        return "fragments/dust-modal :: dustBasedDestList";
+    }
+
     @RequestMapping(value = {"/destination-detail/{destId}"}, produces = "application/json; charset=utf8", method = {RequestMethod.GET})
     public String showDestinationDetail(Model model,
                                         HttpSession session,
                                         HttpServletRequest request,
-                                        @PathVariable(value = "destId") String destId) {
+                                        @PathVariable(value = "destId", required = true) String destId) {
         String userAgent = request.getHeader("user-agent");
         boolean skipScoring = userAgent == null ? false : userAgent.toLowerCase().contains("googlebot") ? true : false;
 

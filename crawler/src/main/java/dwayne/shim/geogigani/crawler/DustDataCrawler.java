@@ -1,5 +1,6 @@
 package dwayne.shim.geogigani.crawler;
 
+import dwayne.shim.geogigani.common.code.AreaCode;
 import dwayne.shim.geogigani.common.data.DustData;
 import dwayne.shim.geogigani.crawler.apicaller.ApiCaller;
 import dwayne.shim.geogigani.crawler.apicaller.DefaultApiCaller;
@@ -65,25 +66,26 @@ public class DustDataCrawler {
     public DustData execute(String authKey,
                             String today) throws Exception {
         // 1. api caller
-        ApiCaller apiCaller = new DefaultApiCaller();
-        // 2. xml parser
-        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-        // 3. etc
-        ObjectMapper objectMapper = new ObjectMapper();
-        Map<ParameterKey, String> parameters = new HashMap<>();
+        try (ApiCaller apiCaller = new DefaultApiCaller();) {
+            // 2. xml parser
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            // 3. etc
+            ObjectMapper objectMapper = new ObjectMapper();
+            Map<ParameterKey, String> parameters = new HashMap<>();
 
-        RestApiInfo dustForecastApi = buildDustForecastApiInfo(authKey);
-        parameters.put(SEARCH_DATE, today);
+            RestApiInfo dustForecastApi = buildDustForecastApiInfo(authKey);
+            parameters.put(SEARCH_DATE, today);
 
-        String url = dustForecastApi.asUrlStringWith(parameters);
-        log.info(url);
+            String url = dustForecastApi.asUrlStringWith(parameters);
+            log.info(url);
 
-        String xml = apiCaller.callAsGet(url);
-        DustData dustData = new DustData(today);
-        putDataInfoInto(dustData, dBuilder.parse(new InputSource(new StringReader(xml))), today);
+            String xml = apiCaller.callAsGet(url);
+            DustData dustData = new DustData(today);
+            putDataInfoInto(dustData, dBuilder.parse(new InputSource(new StringReader(xml))), today);
 
-        return dustData;
+            return dustData;
+        } finally {}
     }
 
     public DustData execute(String authKey,
@@ -143,8 +145,11 @@ public class DustDataCrawler {
                 if(pieces == null || pieces.length < 2) continue;
 
                 String regionName = pieces[0];
+                if(regionName.isEmpty()) continue;
+                String regionCode;
                 DustData.DustStatus dustStatus;
                 try {
+                    regionCode = AreaCode.getAreaCodeByLabel(regionName).code();
                     dustStatus = DustData.DustStatus.getDustStatusByLabel(pieces[1]);
                 } catch (Exception e) {
                     log.error(e);
@@ -155,6 +160,7 @@ public class DustDataCrawler {
                 if(oldDustMap == null) {
                     oldDustMap = new HashMap<>();
                     oldDustMap.put("regionname", regionName);
+                    oldDustMap.put("regioncode", regionCode);
                     regionDustMap.put(regionName, oldDustMap);
                 }
 

@@ -8,6 +8,7 @@ import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.LatLonDocValuesField;
 import org.apache.lucene.document.LatLonPoint;
+import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
@@ -17,10 +18,7 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Log4j2
 public class SearchingExecutor {
@@ -103,6 +101,36 @@ public class SearchingExecutor {
         BooleanQuery.Builder boolQuery = new BooleanQuery.Builder();
         boolQuery.add(query, BooleanClause.Occur.MUST);
         return boolQuery;
+    }
+
+    //******************************************************************************************************************
+    // Read all indices
+    //******************************************************************************************************************
+    public Map<String, String> getLocationIdAndAreaCodePair(String locationIdField,
+                                                            String areaCodeField) throws Exception {
+        // 1. initialize ...
+        IndexSearcher searcher = getSearcher();
+        IndexReader indexReader = searcher.getIndexReader();
+
+        try {
+            Map<String, String> pairMap = new HashMap<>();
+            int maxDocNum = indexReader.maxDoc();
+            for (int i = 0; i < maxDocNum; i++) {
+                Document doc = indexReader.document(i);
+                String locationId = doc.get(locationIdField);
+                String areaCode = doc.get(areaCodeField);
+
+                if (locationId == null || areaCode == null) continue;
+                locationId = locationId.trim();
+                areaCode = areaCode.trim();
+                if (locationId.isEmpty() || areaCode.isEmpty()) continue;
+
+                pairMap.put(locationId, areaCode);
+            }
+            return Collections.unmodifiableMap(pairMap);
+        } finally {
+            manager.release(searcher);
+        }
     }
 
     //******************************************************************************************************************

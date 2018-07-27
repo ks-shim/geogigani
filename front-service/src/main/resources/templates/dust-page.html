@@ -48,10 +48,20 @@
       a:hover
       {color: #dd3806;}
 
+      <!--.modal.modal-wide .modal-dialog {
+            width: 100%;
+        }
+      .modal-wide .modal-body {
+            overflow-y: auto;
+        }-->
+
+      .modal-lg {
+          max-width: 100% !important;
+      }
     </style>
   </head>
 
-  <body id="page-top" onload="document.getElementById('menu-detail').click();">
+  <body id="page-top" onload="document.getElementById('portfolio').click();">
 
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
@@ -131,6 +141,10 @@
         </div>
 
         <div class="row">
+          <button type="button" class="btn btn-default btn-sm" th:onclick="'javascript:show_region(1)'">
+            <small th:text="서울"></small>
+            <i class="fa fa-search"></i>
+          </button>
           <th:block th:if="${dust_info != null}">
             <div class="col-lg-12 text-center">
               <table class="table table-bordered">
@@ -145,14 +159,10 @@
                 <tbody>
                 <tr class="text-center" th:each="regionDustData,iterStat : ${dust_info.regionDustDataList}">
                   <td bgcolor="#777777">
-                    <button class="btn btn-default btn-sm">
+                    <button type="button" class="btn btn-default btn-sm" th:onclick="'javascript:show_region(' + ${regionDustData.regioncode} + ')'">
                       <small th:text="${regionDustData.regionname}"></small>
                       <i class="fa fa-search"></i>
                     </button>
-                    <!--<a href="#">
-                      <small class="fa fa-link"></small>
-                      <small th:text="${regionDustData.regionname}"></small>
-                    </a>-->
                   </td>
                   <td th:bgcolor="${regionDustData.pm10color}">
                     <small th:text="${regionDustData.pm10status}" style="color:white"></small>
@@ -192,6 +202,44 @@
       </div>
     </footer>
 
+    <!-- Modal -->
+    <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    </div>
+    <!-- /.modal -->
+
+    <!--<div class="portfolio-modal modal fade" id="portfolioModal1" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="close-modal" data-dismiss="modal">
+            <div class="lr">
+              <div class="rl"></div>
+            </div>
+          </div>
+          <div class="container">
+            <div class="row">
+              <div class="col-lg-8 mx-auto">
+                <div class="modal-body">
+                  &lt;!&ndash; Project Details Go Here &ndash;&gt;
+                  <h2 class="text-uppercase">Project Name</h2>
+                  <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
+                  <img class="img-fluid d-block mx-auto" src="img/portfolio/01-full.jpg" alt="">
+                  <p>Use this area to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia expedita beatae cupiditate, maiores repudiandae, nostrum, reiciendis facere nemo!</p>
+                  <ul class="list-inline">
+                    <li>Date: January 2017</li>
+                    <li>Client: Threads</li>
+                    <li>Category: Illustration</li>
+                  </ul>
+                  <button class="btn btn-primary" data-dismiss="modal" type="button">
+                    <i class="fa fa-times"></i>
+                    Close Project</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>-->
+
     <!-- Bootstrap core JavaScript -->
     <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
     <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
@@ -215,15 +263,15 @@
         $("#search_form").submit();
       }
 
-      function show_detail(dest_id) {
-        var url = /*[[@{'/destination-detail/'}]]*/;
-        url = url + dest_id;
-        var form = document.createElement("form");
-        form.setAttribute("method", "GET");
-        form.setAttribute("action", url);
-        document.body.appendChild(form);
-        form.submit();
+      function show_region(area_code) {
+          var url = /*[[@{'/region-based-destinations/'}]]*/;
+          url = url + area_code;
+          $("#myModal").html('');
+          $("#myModal").load(url, function() {
+            $("#myModal").modal('show');
+          });
       }
+
     </script>
 
   </body>

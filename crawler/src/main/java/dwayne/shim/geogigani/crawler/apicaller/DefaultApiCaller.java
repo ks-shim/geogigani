@@ -40,9 +40,9 @@ public class DefaultApiCaller implements ApiCaller {
         HttpGet httpGet = new HttpGet(url);
 
         RequestConfig config = RequestConfig.custom()
-                .setSocketTimeout(10000)
-                .setConnectTimeout(10000)
-                .setConnectionRequestTimeout(10000)
+                .setSocketTimeout(30000)
+                .setConnectTimeout(30000)
+                .setConnectionRequestTimeout(30000)
                 .build();
 
         httpGet.setConfig(config);

@@ -18,6 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class IdWeightStorage {
 
     private IdWeightSnapshot[] topNSnapshots;
+    private final Map<String, String> idAndAreaCodeMap;
     private final Map<String, IdWeight> idWeightMap;
 
     private final Object snapshotLock = new Object();
@@ -25,6 +26,7 @@ public class IdWeightStorage {
     public IdWeightStorage() {
         this.topNSnapshots = new IdWeightSnapshot[0];
         this.idWeightMap = new ConcurrentHashMap<>();
+        this.idAndAreaCodeMap = new ConcurrentHashMap<>();
     }
 
     //******************************************************************
@@ -38,19 +40,36 @@ public class IdWeightStorage {
         idWeightMap.put(iw.getId(), iw);
     }
 
+    public void addAllIdAndAreadCode(Map<String, String> newIdAreaCodeMap) {
+        for(String locationId : newIdAreaCodeMap.keySet()) {
+            String areaCode = newIdAreaCodeMap.get(locationId);
+            idAndAreaCodeMap.putIfAbsent(locationId, areaCode);
+        }
+    }
+
+    public String getAreaCodeBy(String locationId) {
+        return idAndAreaCodeMap.get(locationId);
+    }
+
     //******************************************************************
     // Scoring related methods ...
     //******************************************************************
     public void impress(String id) {
         IdWeight iw = idWeightMap.get(id);
-        if(iw == null) return;
+        if(iw == null) {
+            iw = new IdWeight(id);
+            idWeightMap.put(id, iw);
+        }
 
         iw.impress();
     }
 
     public void click(String id) {
         IdWeight iw = idWeightMap.get(id);
-        if(iw == null) return;
+        if(iw == null) {
+            iw = new IdWeight(id);
+            idWeightMap.put(id, iw);
+        }
 
         iw.click();
     }
