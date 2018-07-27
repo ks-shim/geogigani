@@ -75,7 +75,7 @@
               <a class="nav-link js-scroll-trigger" href="#portfolio">Related</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" th:href="@{/dust-info}">미세먼지</a>
+              <a class="nav-link" th:href="@{/dust-info}"><i class="fa fa-search fa-fw"></i>미세먼지 예보</a>
             </li>
             <li class="nav-item">
               <div class="nav-link col-md-12 col-lg-12 col-xl-12 mx-auto">
@@ -92,6 +92,22 @@
                   </div>
                 </form>
               </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-bottom" id="bottomNav">
+      <div class="container">
+        <div class="logo">
+
+        </div>
+        <div>
+          <ul class="navbar-nav text-uppercase ml-auto">
+            <li class="nav-item">
+              <button type="button" class="btn" style="background-color:#dd3806; opacity:.75; color:#000000" th:onclick="'javascript:show_dust()'"><i class="fa fa-search fa-fw"></i><small>미세먼지 예보를 확인해 보세요.</small></button>
             </li>
           </ul>
         </div>
@@ -857,6 +873,15 @@
       function show_detail(dest_id) {
         var url = /*[[@{'/destination-detail/'}]]*/;
         url = url + dest_id;
+        var form = document.createElement("form");
+        form.setAttribute("method", "GET");
+        form.setAttribute("action", url);
+        document.body.appendChild(form);
+        form.submit();
+      }
+
+      function show_dust() {
+        var url = /*[[@{'/dust-info'}]]*/;
         var form = document.createElement("form");
         form.setAttribute("method", "GET");
         form.setAttribute("action", url);

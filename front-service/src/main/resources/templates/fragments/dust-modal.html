@@ -36,16 +36,16 @@
   <body>
 
     <!-- Modal -->
-    <div th:fragment="dustBasedDestList" class="modal-dialog modal-lg">
+    <div th:fragment="dustBasedDestList" class="modal-dialog modal-lg" style="opacity:.93;">
       <div class="modal-content">
-        <div class="modal-header">
+        <div class="modal-header" style="background-color:#dd3806;border: 1px solid #555555 !important;">
           <div class="row">
-            <h3><i class="fa fa-map-marker fa-fw"></i></h3>
-            <h3 th:text="${region_name}"></h3>
+            <h3><i class="fa fa-map-marker fa-fw" style="color:white;"></i></h3>
+            <h3 th:text="${region_name}" style="color:white"></h3>
           </div>
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body bg-light" style="border: 1px solid #555555 !important;">
           <div class="row">
             <div class="col-lg-8 mx-auto">
               <div class="modal-body">
@@ -101,8 +101,8 @@
             </div>
           </div>
         </div>
-        <div class="modal-footer">
-          <button class="btn btn-primary" data-dismiss="modal" type="button">
+        <div class="modal-footer" style="border: 1px solid #555555 !important;">
+          <button class="btn btn-primary" data-dismiss="modal" type="button" style="background-color:#dd3806;">
             <i class="fa fa-times"></i>
             Close
           </button>
