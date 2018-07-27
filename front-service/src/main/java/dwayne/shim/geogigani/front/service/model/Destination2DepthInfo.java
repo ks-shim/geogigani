@@ -8,15 +8,15 @@ import java.util.List;
 import java.util.Map;
 
 @Data
-public class DestinationInfo {
+public class Destination2DepthInfo {
 
     private String key;
     private int seq;
     private Map<String, List<Map<String, String>>> destListMap;
     private int totalSize;
 
-    public DestinationInfo(String key,
-                           int seq) {
+    public Destination2DepthInfo(String key,
+                                 int seq) {
         this.key = key;
         this.seq = seq;
         this.destListMap = new HashMap<>();

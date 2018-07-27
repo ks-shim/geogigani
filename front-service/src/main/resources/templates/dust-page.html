@@ -56,7 +56,7 @@
         }-->
 
       .modal-lg {
-          max-width: 100% !important;
+          max-width: 95% !important;
       }
     </style>
   </head>
@@ -124,8 +124,8 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-12 text-center">
-            <h2 class="section-heading text-uppercase">미세먼지</h2>
-            <h3 class="section-subheading text-muted" th:if="${dust_info != null}" th:text="${dust_info.dateTime} + ' 의 미세먼지 정보입니다.'"></h3>
+            <h2 class="section-heading text-uppercase">미세먼지 예보</h2>
+            <h3 class="section-subheading text-muted" th:if="${dust_info != null}" th:text="'DATE : ' + ${dust_info.dateTime}"></h3>
             <tenping class="adsbytenping" style="width: 100%; margin: 0px auto; display: block; max-width: 580px;" tenping-ad-client="ULkZYhHDonqxNgJx%2bd2t5XgWCcx0QUdnsdGDbY1yMIshP4q34efQL0ddArqjWnF3" tenping-ad-display-type="UD8Mia8gyIoT5Z2MT6VB3Q%3d%3d"></tenping><script async src='//ads.tenping.kr/scripts/adsbytenping.min.js' ></script>
             <br />
           </div>
@@ -141,10 +141,6 @@
         </div>
 
         <div class="row">
-          <button type="button" class="btn btn-default btn-sm" th:onclick="'javascript:show_region(1)'">
-            <small th:text="서울"></small>
-            <i class="fa fa-search"></i>
-          </button>
           <th:block th:if="${dust_info != null}">
             <div class="col-lg-12 text-center">
               <table class="table table-bordered">
@@ -270,6 +266,16 @@
           $("#myModal").load(url, function() {
             $("#myModal").modal('show');
           });
+      }
+
+      function show_detail(dest_id) {
+        var url = /*[[@{'/destination-detail/'}]]*/;
+        url = url + dest_id;
+        var form = document.createElement("form");
+        form.setAttribute("method", "GET");
+        form.setAttribute("action", url);
+        document.body.appendChild(form);
+        form.submit();
       }
 
     </script>

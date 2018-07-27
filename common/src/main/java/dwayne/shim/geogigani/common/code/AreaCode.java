@@ -64,6 +64,8 @@ public enum AreaCode {
     }
 
     public static void isValid(String _code) {
+        if(_code == null || _code.trim().isEmpty()) throw new NullPointerException();
+
         for(AreaCode areaCode : values())
             if(areaCode.code.equals(_code)) return;
 

@@ -6,13 +6,13 @@ import dwayne.shim.geogigani.common.data.DustData;
 import dwayne.shim.geogigani.common.data.TravelData;
 import dwayne.shim.geogigani.common.storage.IdWeightSnapshot;
 import dwayne.shim.geogigani.front.service.constants.DestinationInfoField;
-import dwayne.shim.geogigani.front.service.model.DestinationInfo;
+import dwayne.shim.geogigani.front.service.model.Destination1DepthInfo;
+import dwayne.shim.geogigani.front.service.model.Destination2DepthInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import javax.validation.constraints.Null;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -42,12 +42,15 @@ public class FrontService {
     @Value("${rest.dust}")
     private String restDust;
 
+    @Value("${rest.area}")
+    private String restArea;
+
     @Autowired
     private RestTemplate restTemplate;
 
-    public List<DestinationInfo> getPopularDestinations() {
+    public List<Destination2DepthInfo> getPopularDestinations() {
         TravelData[] result = restTemplate.getForObject(restPopular, TravelData[].class);
-        return asCategorizedDestInfo(result);
+        return asCategorized2DepthDestInfo(result);
     }
 
     public Map<String, String> getDestinationDetail(String destId,
@@ -58,31 +61,38 @@ public class FrontService {
         return asMap(result);
     }
 
-    public List<DestinationInfo> getSimilarDestinations(String destId) {
+    public List<Destination2DepthInfo> getSimilarDestinations(String destId) {
         TravelData[] result = restTemplate.getForObject(restSimilar + '/' + destId, TravelData[].class);
-        return asCategorizedDestInfo(result);
+        return asCategorized2DepthDestInfo(result);
     }
 
-    public List<DestinationInfo> getShortDistanceDestinations(String destId) {
+    public List<Destination2DepthInfo> getShortDistanceDestinations(String destId) {
         TravelData[] result = restTemplate.getForObject(restShortDistance + '/' + destId, TravelData[].class);
-        return asCategorizedDestInfo(result);
+        return asCategorized2DepthDestInfo(result);
     }
 
-    public List<DestinationInfo> searchDestinations(String keywords) {
+    public List<Destination2DepthInfo> searchDestinations(String keywords) {
         TravelData[] result = restTemplate.getForObject(restSearch + "?keywords=" + keywords, TravelData[].class);
-        return asCategorizedDestInfo(result);
+        return asCategorized2DepthDestInfo(result);
     }
 
-    public List<DestinationInfo> getInterestingDestinations(String userId) {
+    public List<Destination2DepthInfo> getInterestingDestinations(String userId) {
         if(userId == null || userId.trim().isEmpty()) return new ArrayList<>();
         
         TravelData[] result = restTemplate.getForObject(restInterest + "/" + userId, TravelData[].class);
-        return asCategorizedDestInfo(result);
+        return asCategorized2DepthDestInfo(result);
     }
 
     public DustData getDustData() {
         DustData dustData = restTemplate.getForObject(restDust, DustData.class);
         return dustData;
+    }
+
+    public List<Destination1DepthInfo> getDestinationsByAreacode(String areaCode) {
+        if(areaCode == null || areaCode.trim().isEmpty()) return new ArrayList<>();
+
+        TravelData[] result = restTemplate.getForObject(restArea + "/" + areaCode, TravelData[].class);
+        return asCategorized1DepthDestInfo(result);
     }
 
     //****************************************************************************
@@ -111,9 +121,9 @@ public class FrontService {
         return map;
     }
 
-    private List<DestinationInfo> asCategorizedDestInfo(TravelData[] travelDatas) {
+    private List<Destination2DepthInfo> asCategorized2DepthDestInfo(TravelData[] travelDatas) {
 
-        Map<String, DestinationInfo> keyDestMap = new HashMap<>();
+        Map<String, Destination2DepthInfo> keyDestMap = new HashMap<>();
 
         int seq = 0;
         for(TravelData td : travelDatas) {
@@ -133,14 +143,46 @@ public class FrontService {
                 continue;
             }
 
-            DestinationInfo destInfo = keyDestMap.get(contentTypeLabel);
+            Destination2DepthInfo destInfo = keyDestMap.get(contentTypeLabel);
             if(destInfo == null) {
-                destInfo = new DestinationInfo(contentTypeLabel, ++seq);
+                destInfo = new Destination2DepthInfo(contentTypeLabel, ++seq);
                 keyDestMap.put(contentTypeLabel, destInfo);
             }
 
             // 2. categorizing by area
             destInfo.add(areaLabel, docMap);
+        }
+
+        return new ArrayList<>(keyDestMap.values());
+    }
+
+    private List<Destination1DepthInfo> asCategorized1DepthDestInfo(TravelData[] travelDatas) {
+
+        Map<String, Destination1DepthInfo> keyDestMap = new HashMap<>();
+
+        int seq = 0;
+        for(TravelData td : travelDatas) {
+            Map<String, String> docMap = asMap(td);
+
+            // 1. categorizing by content-type
+            String contentTypeId = docMap.get(DestinationInfoField.CONTENT_TYPE_ID.label());
+            if(contentTypeId == null) continue;
+
+            String contentTypeLabel = null;
+            try {
+                contentTypeLabel = ContentTypeIdCode.getTypeIdCode(contentTypeId).label();
+            } catch (Exception e) {
+                continue;
+            }
+
+            Destination1DepthInfo destInfo = keyDestMap.get(contentTypeLabel);
+            if(destInfo == null) {
+                destInfo = new Destination1DepthInfo(contentTypeLabel, ++seq);
+                keyDestMap.put(contentTypeLabel, destInfo);
+            }
+
+            // 2. categorizing by area
+            destInfo.add(docMap);
         }
 
         return new ArrayList<>(keyDestMap.values());
