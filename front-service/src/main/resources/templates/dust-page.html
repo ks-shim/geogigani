@@ -149,7 +149,7 @@
                 <tbody>
                 <tr class="text-center" th:each="regionDustData,iterStat : ${dust_info.regionDustDataList}">
                   <td bgcolor="#777777">
-                    <button type="button" class="btn btn-default btn-sm" th:onclick="'javascript:show_region(' + ${regionDustData.regioncode} + ')'">
+                    <button type="button" class="btn btn-sm" style="background-color:#333333;color:white" th:onclick="'javascript:show_region(' + ${regionDustData.regioncode} + ')'">
                       <small th:text="${regionDustData.regionname}"></small>
                       <i class="fa fa-search"></i>
                     </button>
