@@ -31,7 +31,18 @@
       .post-footer > li{ display: inline-block; line-height:5px; border-right: 1px solid #fff; background: #FFFFFF; }
       .post-footer > li:first-child{ float: left; }
       .post-footer > li:last-child{ border: 0px; float: right; }
-      .post-footer i{ display: inline-block; margin-right: 10px; opacity: .6; font-size: 1.1em; }
+      .post-footer i{ display: inline-block; margin-right: 1px; opacity: .6; font-size: 1.1em; }
+
+      table { table-layout: fixed; }
+      table th, table td {
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      tr td{
+        padding: 1 !important;
+        margin: 0 !important;
+      }
 
       a:link
       {color: #dd3806;}
@@ -43,10 +54,11 @@
       BODY {
          font-family:  'cwTeXHei', 'Jeju Hallasan', serif;
       }
+
     </style>
   </head>
 
-  <body id="page-top" onload="document.getElementById('menu-sr').click();">
+  <body id="page-top" onload="document.getElementById('menu-detail').click();">
 
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
@@ -60,11 +72,11 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav text-uppercase ml-auto">
+            <!--<li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="#services" id="menu-detail" style="font-family: 'cwTeXHei', 'Jeju Hallasan', serif;"><i class="fa fa-tasks fa-fw"></i>여행지 상세정보</a>
+            </li>-->
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#portfolio" id="menu-sr" style="font-family: 'cwTeXHei', 'Jeju Hallasan', serif;"><i class="fa fa-file-text-o fa-fw"></i>검색 결과</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" th:href="'javascript:getLocation()'" style="font-family: 'Jeju Hallasan', serif;"><i class="fa fa-bullseye fa-fw"></i>내 근처 여행지</a>
+              <a class="nav-link js-scroll-trigger" href="#portfolio2" style="font-family: 'cwTeXHei', 'Jeju Hallasan', serif;"><i class="fa fa-arrows-h fa-fw"></i>근거리 여행지</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" th:href="@{/dust-info}" style="font-family: 'cwTeXHei', 'Jeju Hallasan', serif;"><i class="fa fa-cloud fa-fw"></i>미세먼지 예보</a>
@@ -74,7 +86,7 @@
                 <form id="search_form" role="form" th:action="@{/search-destinations}" method="get">
                   <div class="form-row">
                     <div class="col-12 col-md-9 mb-2 mb-md-0">
-                      <input id="keywords" style="font-family: 'cwTeXHei', 'Jeju Hallasan', serif;" name="keywords" type="text" class="form-control form-control-sm" placeholder="Keywords ..." th:onkeypress="'javascript:if(event.keyCode==13) {search(); return false;}'"/>
+                      <input id="keywords" name="keywords" style="font-family: 'cwTeXHei', 'Jeju Hallasan', serif;" type="text" class="form-control form-control-sm" placeholder="Keywords ..." th:onkeypress="'javascript:if(event.keyCode==13) {search(); return false;}'"/>
                     </div>
                     <div class="col-12 col-md-2">
                       <button type="button" class="btn btn-block btn-sm btn-outline-danger" th:onclick="'javascript:search();'">
@@ -116,24 +128,59 @@
       </div>
     </header>
 
-    <!-- Search Results -->
-    <section id="portfolio" name="portfolio" style="padding: 50px 0;">
+    <section class="bg-light" id="services" style="padding: 50px 0;">
+      <div class="container">
+        <div class="modal-content">
+          <div class="container">
+            <div class="row">
+              <div class="col-lg-8 mx-auto">
+                <div class="modal-body">
+                  <!-- Project Details Go Here -->
+                  <div class="text-center">
+                      <span class="fa-stack fa-3x">
+                        <i class="fa fa-stop fa-stack-2x text-info"></i>
+                        <i class="fa fa-bullseye fa-stack-1x fa-inverse"></i>
+                      </span>
+                  </div>
+                  <h4 class="text-uppercase text-center"  style="font-family: 'cwTeXHei', 'Jeju Hallasan', serif;">내 위치</h4>
+                  <hr/>
+                  <th:block th:if="${latitude != null && longitude != null}">
+                    <iframe th:src="'https://maps.google.com/maps?q=' + ${latitude} + ' , ' + ${longitude} + '&iwloc=&ie=UTF8&z=15&output=embed'" width="100%" height="300" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+                    <hr/>
+                  </th:block>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="line-height:50%">
+        <br />
+      </div>
+    </section>
+
+
+
+    <!-- Short Distance -->
+    <section id="portfolio2" style="padding: 50px 0;">
       <div class="container">
         <div class="row">
           <div class="col-lg-12 text-center">
-            <h6 class="section-heading text-uppercase">
-              <span class="fa-stack fa-4x">
-                <i class="fa fa-stop fa-stack-2x text-info"></i>
-                <i class="fa fa-file-text-o fa-stack-1x fa-inverse"></i>
-              </span>
-            </h6>
-            <h3 class="section-subheading text-muted" style="margin-bottom: 30px;font-family: 'cwTeXHei', 'Jeju Hallasan', serif;">검색 결과</h3>
+              <h6 class="section-heading text-uppercase">
+                  <span class="fa-stack fa-4x">
+                    <i class="fa fa-stop fa-stack-2x text-info"></i>
+                    <i class="fa fa-arrows-h fa-stack-1x fa-inverse"></i>
+                  </span>
+              </h6>
+            <h3 class="section-subheading text-muted" style="margin-bottom: 30px;" style="margin-bottom: 30px;font-family: 'cwTeXHei', 'Jeju Hallasan', serif;">근거리 여행지</h3>
             <tenping class="adsbytenping" style="width: 100%; margin: 0px auto; display: block; max-width: 580px;" tenping-ad-client="ULkZYhHDonqxNgJx%2bd2t5XgWCcx0QUdnsdGDbY1yMIshP4q34efQL0ddArqjWnF3" tenping-ad-display-type="UD8Mia8gyIoT5Z2MT6VB3Q%3d%3d"></tenping><script async src='//ads.tenping.kr/scripts/adsbytenping.min.js' ></script>
             <div>
-              <th:block th:if="${destination_info != null}">
+              <th:block th:if="${destination_in10km_info != null}">
                 <ul class="nav nav-tabs">
-                  <li th:each="category,iterStat : ${destination_info}" class="nav-item">
-                    <a th:class="'nav-link' + ${iterStat.index == 0 ? ' active' : ''}" th:href="'#search-ct-tab' + ${iterStat.index}" data-toggle="tab"><small th:text="${category.key} + ' (' + ${category.totalSize} + ')'"></small></a>
+                  <li th:each="category,iterStat : ${destination_in10km_info}" class="nav-item">
+                    <a th:class="'nav-link' + ${iterStat.index == 0 ? ' active' : ''}" th:href="'#short-ct-tab' + ${iterStat.index}" data-toggle="tab"><small th:text="${category.key} + ' (' + ${category.totalSize} + ')'"></small></a>
                   </li>
                 </ul>
               </th:block>
@@ -143,8 +190,8 @@
         </div>
 
         <div class="tab-content">
-          <th:block th:each="destlist,iterStat : ${destination_info}" th:if="${destination_info != null}">
-            <div th:class="'tab-pane fade' + ${iterStat.index == 0 ? ' active in show' : ''}" th:id="'search-ct-tab' + ${iterStat.index}">
+          <th:block th:each="destlist,iterStat : ${destination_in10km_info}" th:if="${destination_in10km_info != null}">
+            <div th:class="'tab-pane fade' + ${iterStat.index == 0 ? ' active in show' : ''}" th:id="'short-ct-tab' + ${iterStat.index}">
 
               <th:block th:if="${destlist.destListMap != null}">
                 <table class="table table-striped table-bordered">
@@ -158,7 +205,7 @@
                     <td class="align-middle">
                       <ul class="nav nav-pills">
                         <li th:each="ac,iterStat : ${destlist.destListMap}" class="nav-item">
-                          <a th:class="'nav-link' + ${iterStat.index == 0 ? ' active' : ''}" th:href="'#search-ac-tab-' + ${destlist.seq} + '-' + ${iterStat.index}" data-toggle="tab"><small th:text="${ac.key} + ' (' + ${ac.value.size()} + ')'"></small></a>
+                          <a th:class="'nav-link' + ${iterStat.index == 0 ? ' active' : ''}" th:href="'#short-ac-tab-' + ${destlist.seq} + '-' + ${iterStat.index}" data-toggle="tab"><small th:text="${ac.key} + ' (' + ${ac.value.size()} + ')'"></small></a>
                         </li>
                       </ul>
                     </td>
@@ -168,13 +215,13 @@
 
               <div class="tab-content">
                 <th:block th:each="list,iterStat : ${destlist.destListMap}" th:if="${destlist.destListMap != null}">
-                  <div th:class="'tab-pane fade' + ${iterStat.index == 0 ? ' active in show' : ''}" th:id="'search-ac-tab-' + ${destlist.seq} + '-' + ${iterStat.index}">
+                  <div th:class="'tab-pane fade' + ${iterStat.index == 0 ? ' active in show' : ''}" th:id="'short-ac-tab-' + ${destlist.seq} + '-' + ${iterStat.index}">
                     <div class="row">
                       <th:block th:each="doc,iterStat : ${list.value}" th:if="${list.value != null}">
-                        <div class="col-md-4 col-sm-6 portfolio-item">
-                          <a class="portfolio-link" th:onclick="'javascript:show_detail(' + ${doc.contentid} + ')'">
-                            <div class="portfolio-hover">
-                              <div class="portfolio-hover-content">
+                        <div class="col-md-4 col-sm-6 portfolio2-item">
+                          <a class="portfolio2-link" th:onclick="'javascript:show_detail(' + ${doc.contentid} + ')'">
+                            <div class="portfolio2-hover">
+                              <div class="portfolio2-hover-content">
                                 <i class="fa fa-plus fa-3x"></i>
                               </div>
                             </div>
@@ -182,13 +229,14 @@
                             <img class="img-fluid" th:src="${(doc.firstimage != null) ? doc.firstimage : '/img/no_image_available.png'}" th:alt="${doc.title}"/>
 
                           </a>
-                          <div class="portfolio-caption">
+                          <div class="portfolio2-caption">
                             <h5 th:text="${doc.titleshort}" style="font-family: 'cwTeXHei', 'Jeju Hallasan', serif;"></h5>
                             <div class="text-left">
                               <small class="text-muted" th:text="${doc.overviewshort}"></small>
                             </div>
                             <hr/>
-                            <ul class="post-footer">
+                            <ul class="post-footer" style="margin: 0; padding: 0;">
+                              <li class="fa fa-arrows-h" style="color:#dd3806;" th:text="' ' +${doc.distance}"></li>
                               <li class="fa fa-eye" th:text="' ' +${doc.clickcount}"></li>
                             </ul>
                           </div>
@@ -241,9 +289,9 @@
 
     <script th:inline="javascript">
       function search() {
-        var text = $("#keywords").val();
-        text = text.trim();
-        if(text == '') return;
+        var keywords = $("#keywords").val();
+        keywords = keywords.trim();
+        if(keywords == '') return;
 
         $("#search_form").submit();
       }
@@ -266,51 +314,8 @@
         document.body.appendChild(form);
         form.submit();
       }
-
-
-      function getLocation() {
-          if (navigator.geolocation) {
-              navigator.geolocation.getCurrentPosition(showPosition, handleError, {
-                enableHighAccuracy: true,
-                maximumAge: 0,
-                timeout: 10000
-              });
-          } else {
-              alert('Geolocation is not supported by this browser.');
-          }
-      }
-
-      function showPosition(position) {
-          var url = /*[[@{'/short-dist-destinations-from-me/'}]]*/;
-          url = url + position.coords.latitude + '/' + position.coords.longitude;
-
-          var form = document.createElement("form");
-          form.setAttribute("method", "GET");
-          form.setAttribute("action", url);
-          document.body.appendChild(form);
-          form.submit();
-      }
-
-      function handleError(error) {
-        switch(error.code) {
-        case error.PERMISSION_DENIED:
-            alert('PERMISSION DENIED');
-            break;
-        case error.POSITION_UNAVAILABLE:
-            // 위치 정보 사용이 불가능할 때
-            alert('POSITION UNAVAILABLE');
-            break;
-        case error.TIMEOUT:
-            // 위치 정보를 가져오려 시도했지만, 시간이 초과되었을 때
-            alert('TIMEOUT');
-            break;
-        case error.UNKNOWN_ERROR:
-            // 기타 알 수 없는 오류가 발생하였을 때
-            alert('UNKNOWN ERROR');
-            break;
-        }
-      }
     </script>
+
   </body>
 
 </html>

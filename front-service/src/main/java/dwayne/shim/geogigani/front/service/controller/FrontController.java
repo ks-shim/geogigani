@@ -2,10 +2,12 @@ package dwayne.shim.geogigani.front.service.controller;
 
 import dwayne.shim.geogigani.common.code.AreaCode;
 import dwayne.shim.geogigani.common.data.DustData;
+import dwayne.shim.geogigani.common.util.LocationDistance;
 import dwayne.shim.geogigani.front.service.constants.ModelField;
 import dwayne.shim.geogigani.front.service.model.Destination1DepthInfo;
 import dwayne.shim.geogigani.front.service.model.Destination2DepthInfo;
 import dwayne.shim.geogigani.front.service.service.FrontService;
+import org.apache.lucene.geo.GeoUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -97,5 +99,25 @@ public class FrontController {
         List<Destination2DepthInfo> result = frontService.searchDestinations(keywords);
         model.addAttribute(ModelField.DESTINATION_INFO.label(), result.size() == 0 ? null : result);
         return "search-page";
+    }
+
+    @RequestMapping(value = {"/short-dist-destinations-from-me/{latitude}/{longitude:.+}"}, produces = "application/json; charset=utf8", method = {RequestMethod.GET})
+    public String showShortDistDestinationsFromMe(Model model,
+                                                  @PathVariable(value = "latitude", required = true) Double latitude,
+                                                  @PathVariable(value = "longitude", required = true) Double longitude) {
+        try {
+            GeoUtils.checkLatitude(latitude);
+            GeoUtils.checkLongitude(longitude);
+        } catch (Exception e) {
+            return "short-dist-from-me-page";
+        }
+
+        model.addAttribute(ModelField.LATITUDE.label(), latitude);
+        model.addAttribute(ModelField.LONGITUDE.label(), longitude);
+
+        List<Destination2DepthInfo> shortDistResult = frontService.getShortDistanceDestinationsFromMe(String.valueOf(latitude), String.valueOf(longitude));
+        model.addAttribute(ModelField.DESTINATION_IN10KM_INFO.label(), shortDistResult.size() == 0 ? null : shortDistResult);
+
+        return "short-dist-from-me-page";
     }
 }

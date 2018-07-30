@@ -36,6 +36,9 @@ public class FrontService {
     @Value("${rest.short-dist}")
     private String restShortDistance;
 
+    @Value("${rest.short-dist-from-me}")
+    private String restShortDistanceFromMe;
+
     @Value("${rest.interest}")
     private String restInterest;
 
@@ -68,6 +71,11 @@ public class FrontService {
 
     public List<Destination2DepthInfo> getShortDistanceDestinations(String destId) {
         TravelData[] result = restTemplate.getForObject(restShortDistance + '/' + destId, TravelData[].class);
+        return asCategorized2DepthDestInfo(result);
+    }
+
+    public List<Destination2DepthInfo> getShortDistanceDestinationsFromMe(String latitude, String longitude) {
+        TravelData[] result = restTemplate.getForObject(restShortDistanceFromMe + '/' + latitude + '/' + longitude, TravelData[].class);
         return asCategorized2DepthDestInfo(result);
     }
 

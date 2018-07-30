@@ -131,6 +131,20 @@ public class LocationDataController {
         return new ResponseEntity(result, HttpStatus.OK);
     }
 
+    @RequestMapping(value = {"/short-distance-from-me/{latitude}/{longitude}"}, produces = "application/json; charset=utf8", method = {RequestMethod.GET})
+    public ResponseEntity<List<TravelData>> getShortDistanceLocations(@PathVariable(value = "latitude") String latitude,
+                                                                      @PathVariable(value = "longitude") String longitude) {
+
+        List<TravelData> result;
+        try {
+            result = locationDataService.getShortDistanceLocations(latitude, longitude);
+        } catch (Exception e) {
+            result = new ArrayList<>();
+        }
+
+        return new ResponseEntity(result, HttpStatus.OK);
+    }
+
     private final TravelDataIndexField[] fieldsForUserKeywords = {
             TravelDataIndexField.TITLE_KEYWORDS,
             TravelDataIndexField.ADDR1

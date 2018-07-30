@@ -11,7 +11,9 @@ public enum ModelField {
     DESTINATION_INTEREST_INFO("destination_interest_info"),
 
     DUST_INFO("dust_info"),
-    REGION_NAME("region_name");
+    REGION_NAME("region_name"),
+    LATITUDE("latitude"),
+    LONGITUDE("longitude");
 
     private String label;
     private ModelField(String _label) {

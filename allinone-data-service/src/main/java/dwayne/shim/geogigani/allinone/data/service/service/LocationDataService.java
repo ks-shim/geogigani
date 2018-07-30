@@ -522,10 +522,20 @@ public class LocationDataService {
         Map<String, String> docMap = result.mapAt(0);
         String latitude = docMap.get(TravelDataIndexField.MAP_Y.label());
         String longitude = docMap.get(TravelDataIndexField.MAP_X.label());
+
+        return getShortDistanceLocations(latitude, longitude, locationId);
+    }
+
+    public List<TravelData> getShortDistanceLocations(String latitude, String longitude) throws Exception {
+        return getShortDistanceLocations(latitude, longitude, "");
+    }
+
+    public List<TravelData> getShortDistanceLocations(String latitude, String longitude, String locationId) throws Exception {
+
         if(latitude == null || longitude == null) throw new NullPointerException("LAT : " + latitude + " LONG : " + longitude);
 
         // 3. search similar location by keywords ...
-        result = searchingExecutor.search(
+        SearchResult result = searchingExecutor.search(
                 fieldToGetForShortDistanceLocations2,
                 TravelDataIndexField.LAT_LON_POINT.label(),
                 locationId,
