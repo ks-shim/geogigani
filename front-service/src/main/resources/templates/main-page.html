@@ -54,6 +54,10 @@
       a:hover
       {color: #dd3806;}
 
+      BODY {
+         font-family:  'cwTeXHei', 'Jeju Hallasan', serif;
+      }
+
     </style>
   </head>
 
@@ -202,7 +206,9 @@
                           </a>
                           <div class="portfolio2-caption">
                             <h6 th:text="${doc.titleshort}" style="font-family: 'cwTeXHei', 'Jeju Hallasan', serif;"></h6>
-                            <small class="text-muted" th:text="${doc.overviewshort}" style="font-family: 'cwTeXHei', 'Jeju Hallasan', serif;"></small>
+                            <div class="text-left">
+                              <small class="text-muted" th:text="${doc.overviewshort}"></small>
+                            </div>
                             <hr/>
                             <ul class="post-footer">
                               <li class="fa fa-eye" th:text="' ' +${doc.clickcount}"></li>
@@ -291,8 +297,10 @@
 
                         </a>
                         <div class="portfolio-caption">
-                          <h6 th:text="${doc.titleshort}" style="font-family: 'cwTeXHei', 'Jeju Hallasan', serif;"></h6>
-                          <small class="text-muted" th:text="${doc.overviewshort}" style="font-family: 'cwTeXHei', 'Jeju Hallasan', serif;"></small>
+                          <h5 th:text="${doc.titleshort}" style="font-family: 'cwTeXHei', 'Jeju Hallasan', serif;"></h5>
+                          <div class="text-left">
+                            <small class="text-muted" th:text="${doc.overviewshort}"></small>
+                          </div>
                           <hr/>
                           <ul class="post-footer">
                             <li class="fa fa-eye" th:text="' ' +${doc.clickcount}"></li>
