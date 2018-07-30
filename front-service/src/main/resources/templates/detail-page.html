@@ -31,7 +31,7 @@
       .post-footer > li{ display: inline-block; line-height:5px; border-right: 1px solid #fff; background: #FFFFFF; }
       .post-footer > li:first-child{ float: left; }
       .post-footer > li:last-child{ border: 0px; float: right; }
-      .post-footer i{ display: inline-block; margin-right: 10px; opacity: .6; font-size: 1.1em; }
+      .post-footer i{ display: inline-block; margin-right: 1px; opacity: .6; font-size: 1.1em; }
 
       table { table-layout: fixed; }
       table th, table td {
@@ -741,9 +741,12 @@
                           </a>
                           <div class="portfolio2-caption">
                             <h5 th:text="${doc.titleshort}" style="font-family: 'cwTeXHei', 'Jeju Hallasan', serif;"></h5>
-                            <small class="text-muted" th:text="${doc.overviewshort}"></small>
+                            <div class="text-left">
+                              <small class="text-muted" th:text="${doc.overviewshort}"></small>
+                            </div>
                             <hr/>
-                            <ul class="post-footer">
+                            <ul class="post-footer" style="margin: 0; padding: 0;">
+                              <li class="fa fa-arrows-h" style="color:#dd3806;" th:text="' ' +${doc.distance}"></li>
                               <li class="fa fa-eye" th:text="' ' +${doc.clickcount}"></li>
                             </ul>
                           </div>

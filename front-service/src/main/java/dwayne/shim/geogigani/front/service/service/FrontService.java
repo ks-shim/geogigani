@@ -127,6 +127,8 @@ public class FrontService {
 
         int seq = 0;
         for(TravelData td : travelDatas) {
+            td.regularizeDistance();
+
             Map<String, String> docMap = asMap(td);
 
             // 1. categorizing by content-type

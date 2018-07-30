@@ -144,7 +144,9 @@ public class SearchingExecutor {
                                int resultLimit) throws Exception {
 
         Query query = LatLonPoint.newDistanceQuery(fieldToSearch, latitude, longitude, radiusMeters);
-        return search(fieldsToGet, query, new Sort(LatLonDocValuesField.newDistanceSort(TravelDataIndexField.LAT_LON_VALUE.label(), latitude, longitude)), resultLimit);
+        return search(fieldsToGet, query,
+                new Sort(LatLonDocValuesField.newDistanceSort(TravelDataIndexField.LAT_LON_VALUE.label(), latitude, longitude)),
+                resultLimit, true);
     }
 
     public SearchResult search(String[] fieldsToGet,
@@ -167,13 +169,14 @@ public class SearchingExecutor {
     private SearchResult search(String[] fieldsToGet,
                                 Query query,
                                 int resultLimit) throws Exception {
-        return search(fieldsToGet, query, null, resultLimit);
+        return search(fieldsToGet, query, null, resultLimit, false);
     }
 
     private SearchResult search(String[] fieldsToGet,
                                 Query query,
                                 Sort sort,
-                                int resultLimit) throws Exception {
+                                int resultLimit,
+                                boolean aboutDistance) throws Exception {
         // 1. initialize ...
         IndexSearcher searcher = getSearcher();
 
@@ -195,7 +198,12 @@ public class SearchingExecutor {
             for(ScoreDoc hit : hits) {
                 Document doc = searcher.doc(hit.doc);
                 Map<String, String> docMap = new HashMap<>();
+
+                if(aboutDistance && hit instanceof FieldDoc && ((FieldDoc) hit).fields.length > 0)
+                    docMap.put(LuceneResultField.DISTANCE.label(), String.valueOf(((FieldDoc) hit).fields[0]));
+
                 docMap.put(LuceneResultField.SCORE.label(), String.valueOf(hit.score));
+
                 result.addDocMap(docMap);
 
                 for(String fieldName : fieldsToGet)

@@ -41,4 +41,17 @@ public class TravelData implements Comparable<TravelData>, Serializable {
         double compScore = o.getLuceneScore() + Math.log10(o.idWeightSnapshot.getScore()) * 5;
         return selfScore > compScore ? -1 : selfScore == compScore ? 0 : 1;
     }
+
+    public void regularizeDistance() {
+        String distanceStr = infoMap.get(LuceneResultField.DISTANCE.label());
+        if(distanceStr == null || distanceStr.trim().isEmpty()) return;
+
+        try {
+            double distance = Double.parseDouble(distanceStr.trim());
+            infoMap.put(LuceneResultField.DISTANCE.label(), String.format("%.2f", distance / 1000.0) + " km");
+        } catch (Exception e) {
+            e.printStackTrace();
+            // ignore ...
+        }
+    }
 }
