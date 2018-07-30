@@ -20,6 +20,9 @@
     <link th:href='@{https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic}' rel='stylesheet' type='text/css'/>
     <link th:href='@{https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700}' rel='stylesheet' type='text/css'/>
 
+    <link rel="stylesheet" th:href="@{http://fonts.googleapis.com/earlyaccess/cwtexhei.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{http://fonts.googleapis.com/earlyaccess/jejuhallasan.css}" type="text/css">
+
     <!-- Custom styles for this template -->
     <link th:href="@{/css/agency.min.css}" rel="stylesheet"/>
 
@@ -58,6 +61,10 @@
       .modal-lg {
           max-width: 95% !important;
       }
+
+      BODY {
+         font-family:  'cwTeXHei', 'Jeju Hallasan', serif;
+      }
     </style>
   </head>
 
@@ -76,7 +83,7 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav text-uppercase ml-auto">
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#portfolio" id="menu-dust">미세먼지</a>
+              <a class="nav-link js-scroll-trigger" href="#portfolio" id="menu-dust" style="font-family: 'cwTeXHei', 'Jeju Hallasan', serif;"><i class="fa fa-cloud fa-fw"></i>미세먼지 예보</a>
             </li>
             <li class="nav-item">
               <div class="nav-link col-md-12 col-lg-12 col-xl-12 mx-auto">
@@ -104,7 +111,7 @@
       <div class="container">
         <div class="intro-text">
           <div class="intro-lead-in">Destination Search and Share</div>
-          <div class="intro-heading text-uppercase">거기가니?</div>
+          <div class="intro-heading text-uppercase" style="font-family: 'cwTeXHei', 'Jeju Hallasan', serif;">거기가니?</div>
         </div>
       </div>
     </header>
@@ -114,8 +121,13 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-12 text-center">
-            <h2 class="section-heading text-uppercase">미세먼지 예보</h2>
-            <h3 class="section-subheading text-muted" th:if="${dust_info != null}" th:text="'DATE : ' + ${dust_info.dateTime}" style="margin-bottom: 30px;"></h3>
+            <h6 class="section-heading text-uppercase">
+              <span class="fa-stack fa-4x">
+                <i class="fa fa-stop fa-stack-2x text-info"></i>
+                <i class="fa fa-cloud fa-stack-1x fa-inverse"></i>
+              </span>
+            </h6>
+            <h3 class="section-subheading text-muted" th:if="${dust_info != null}" th:text="'미세먼지 : ' + ${dust_info.dateTime}" style="margin-bottom: 30px;font-family: 'cwTeXHei', 'Jeju Hallasan', serif;"></h3>
             <tenping class="adsbytenping" style="width: 100%; margin: 0px auto; display: block; max-width: 580px;" tenping-ad-client="ULkZYhHDonqxNgJx%2bd2t5XgWCcx0QUdnsdGDbY1yMIshP4q34efQL0ddArqjWnF3" tenping-ad-display-type="UD8Mia8gyIoT5Z2MT6VB3Q%3d%3d"></tenping><script async src='//ads.tenping.kr/scripts/adsbytenping.min.js' ></script>
             <br />
           </div>
@@ -124,11 +136,11 @@
         <div class="row">
           <div class="col-lg-12 text-center">
             <blockquote class="fa fa-database">
-              <small >본 미세먼지 정보는 한국환경공단에서 제공하는 공공데이터를 활용하였습니다.</small>
+              <small style="font-family: 'cwTeXHei', 'Jeju Hallasan', serif;">본 미세먼지 정보는 한국환경공단에서 제공하는 공공데이터를 활용하였습니다.</small>
             </blockquote>
             <br />
             <blockquote class="fa fa-search">
-              <small class="text-danger">지역 컬럼의 버튼을 클릭하시면 해당 지역의 인기 여행지를 보실 수 있습니다.</small>
+              <small class="text-danger" style="font-family: 'cwTeXHei', 'Jeju Hallasan', serif;">지역 컬럼의 버튼을 클릭하시면 해당 지역의 인기 여행지를 보실 수 있습니다.</small>
             </blockquote>
             <br />
           </div>
@@ -140,7 +152,7 @@
               <table class="table table-bordered">
                 <thead>
                 <tr class="text-center">
-                  <th bgcolor="#444444" style="width:100px"><small style="color:white">지역</small></th>
+                  <th bgcolor="#444444" style="width:100px"><small style="color:white">지역/검색</small></th>
                   <th bgcolor="#444444" ><small style="color:white">미세먼지</small></th>
                   <th bgcolor="#444444" ><small style="color:white">초미세먼지</small></th>
                   <th bgcolor="#444444" ><small style="color:white">오존</small></th>
@@ -148,10 +160,10 @@
                 </thead>
                 <tbody>
                 <tr class="text-center" th:each="regionDustData,iterStat : ${dust_info.regionDustDataList}">
-                  <td bgcolor="#777777">
-                    <button type="button" class="btn btn-sm" style="background-color:#333333;color:white" th:onclick="'javascript:show_region(' + ${regionDustData.regioncode} + ')'">
-                      <small th:text="${regionDustData.regionname}"></small>
+                  <td bgcolor="#AAAAAA">
+                    <button type="button" class="btn btn-sm" style="background-color:#333333;color:white;font-family: 'cwTeXHei', 'Jeju Hallasan', serif;"th:onclick="'javascript:show_region(' + ${regionDustData.regioncode} + ')'">
                       <i class="fa fa-search"></i>
+                      <small th:text="${regionDustData.regionname}"></small>
                     </button>
                   </td>
                   <td th:bgcolor="${regionDustData.pm10color}">
@@ -186,7 +198,7 @@
 
         <div class="row">
           <div class="col-md-6 mx-auto text-center">
-            <span class="copyright">Copyright &copy; 2018 GeoGiGaNi All Rights Reserved.</span>
+            <span class="copyright" style="font-family: 'cwTeXHei', 'Jeju Hallasan', serif;">Copyright &copy; 2018 GeoGiGaNi All Rights Reserved.</span>
           </div>
         </div>
       </div>
