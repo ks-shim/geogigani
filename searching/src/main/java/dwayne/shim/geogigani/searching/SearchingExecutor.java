@@ -11,6 +11,7 @@ import org.apache.lucene.document.LatLonPoint;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.index.Term;
 import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.*;
@@ -138,13 +139,18 @@ public class SearchingExecutor {
     //******************************************************************************************************************
     public SearchResult search(String[] fieldsToGet,
                                String fieldToSearch,
+                               String srcContentId,
                                double latitude,
                                double longitude,
                                double radiusMeters,
                                int resultLimit) throws Exception {
 
         Query query = LatLonPoint.newDistanceQuery(fieldToSearch, latitude, longitude, radiusMeters);
-        return search(fieldsToGet, query,
+        BooleanQuery.Builder boolQuery = new BooleanQuery.Builder();
+        boolQuery.add(query, BooleanClause.Occur.MUST);
+        boolQuery.add(new TermQuery(new Term(TravelDataIndexField.CONTENT_ID.label(), srcContentId)), BooleanClause.Occur.MUST_NOT);
+
+        return search(fieldsToGet, boolQuery.build(),
                 new Sort(LatLonDocValuesField.newDistanceSort(TravelDataIndexField.LAT_LON_VALUE.label(), latitude, longitude)),
                 resultLimit, true);
     }
@@ -229,7 +235,7 @@ public class SearchingExecutor {
         };
 
         //SearchResult result = se.search(fieldsToGet.toArray(new String[fieldsToGet.size()]), fieldsToSearch, "dennis", 10);
-        SearchResult result = se.search(fieldsToGet.toArray(new String[fieldsToGet.size()]), TravelDataIndexField.LAT_LON_POINT.label(), 35.9292001238, 127.7171970426, 1000.0, 100);
+        SearchResult result = se.search(fieldsToGet.toArray(new String[fieldsToGet.size()]), TravelDataIndexField.LAT_LON_POINT.label(), "", 35.9292001238, 127.7171970426, 1000.0, 100);
         System.out.println(result);
     }
 }

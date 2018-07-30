@@ -528,6 +528,7 @@ public class LocationDataService {
         result = searchingExecutor.search(
                 fieldToGetForShortDistanceLocations2,
                 TravelDataIndexField.LAT_LON_POINT.label(),
+                locationId,
                 Double.valueOf(latitude),
                 Double.valueOf(longitude),
                 shortDistRadiusMeter,
