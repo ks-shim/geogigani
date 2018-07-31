@@ -13,7 +13,9 @@ public enum ModelField {
     DUST_INFO("dust_info"),
     REGION_NAME("region_name"),
     LATITUDE("latitude"),
-    LONGITUDE("longitude");
+    LONGITUDE("longitude"),
+
+    STATISTICS_AREA("statistics_area");
 
     private String label;
     private ModelField(String _label) {
