@@ -74,7 +74,7 @@
                 <form id="search_form" role="form" th:action="@{/search-destinations}" method="get">
                   <div class="form-row">
                     <div class="col-12 col-md-9 mb-2 mb-md-0">
-                      <input id="keywords" style="font-family: 'cwTeXHei', 'Jeju Hallasan', serif;" name="keywords" type="text" class="form-control form-control-sm" placeholder="Keywords ..." th:onkeypress="'javascript:if(event.keyCode==13) {search(); return false;}'"/>
+                      <input id="keywords" style="font-family: 'cwTeXHei', 'Jeju Hallasan', serif;" name="keywords" style="font-family: 'cwTeXHei', 'Jeju Hallasan', serif;" type="text" class="form-control form-control-sm" placeholder="Keywords ..." th:onkeypress="'javascript:if(event.keyCode==13) {search(); return false;}'"/>
                     </div>
                     <div class="col-12 col-md-2">
                       <button type="button" class="btn btn-block btn-sm btn-outline-danger" th:onclick="'javascript:search();'">
