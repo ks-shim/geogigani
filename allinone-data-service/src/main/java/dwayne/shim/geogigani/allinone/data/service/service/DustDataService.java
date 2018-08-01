@@ -34,7 +34,7 @@ public class DustDataService {
         }
 
         synchronized (dustDataLock) {
-            dustData = newDustData;
+            if(!newDustData.isEmpty()) dustData = newDustData;
         }
     }
 
