@@ -16,7 +16,9 @@ public enum ModelField {
     LONGITUDE("longitude"),
 
     STATISTICS_AREA_LABELS("statistics_area_labels"),
-    STATISTICS_AREA_VALUES("statistics_area_values");
+    STATISTICS_AREA_VALUES("statistics_area_values"),
+    STATISTICS_CONTENT_TYPE_LABELS("statistics_content_type_labels"),
+    STATISTICS_CONTENT_TYPE_VALUES("statistics_content_type_values");
 
     private String label;
     private ModelField(String _label) {

@@ -44,6 +44,10 @@
         margin: 0 !important;
       }
 
+      hr.style-my {
+        color: #FFFFFF;
+      }
+
       a:link
       {color: #dd3806;}
       a:visited
@@ -68,7 +72,7 @@
     </style>
   </head>
 
-  <body id="page-top" onload="document.getElementById('menu-dust').click();">
+  <body id="page-top" onload="document.getElementById('menu-statistics').click();">
 
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
@@ -86,7 +90,10 @@
               <a class="nav-link" th:href="'javascript:getLocation()'" style="font-family: 'Jeju Hallasan', serif;"><i class="fa fa-bullseye fa-fw"></i>내 근처 여행지</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#portfolio" id="menu-dust" style="font-family: 'cwTeXHei', 'Jeju Hallasan', serif;"><i class="fa fa-cloud fa-fw"></i>미세먼지 예보</a>
+              <a class="nav-link" th:href="@{/dust-info}" style="font-family: 'Jeju Hallasan', serif;"><i class="fa fa-cloud fa-fw"></i>미세먼지 예보</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="#portfolio" id="menu-statistics" style="font-family: 'Jeju Hallasan', serif;"><i class="fa fa-bar-chart-o fa-fw"></i>통계 정보</a>
             </li>
             <li class="nav-item">
               <div class="nav-link col-md-12 col-lg-12 col-xl-12 mx-auto">
@@ -127,10 +134,10 @@
             <h6 class="section-heading text-uppercase">
               <span class="fa-stack fa-4x">
                 <i class="fa fa-stop fa-stack-2x text-info"></i>
-                <i class="fa fa-cloud fa-stack-1x fa-inverse"></i>
+                <i class="fa fa-bar-chart-o fa-stack-1x fa-inverse"></i>
               </span>
             </h6>
-            <h3 class="section-subheading text-muted" th:if="${dust_info != null}" th:text="'미세먼지 : ' + ${dust_info.dateTime}" style="margin-bottom: 30px;font-family: 'cwTeXHei', 'Jeju Hallasan', serif;"></h3>
+            <h3 class="section-subheading text-muted" style="margin-bottom: 30px;font-family: 'cwTeXHei', 'Jeju Hallasan', serif;">통계 정보</h3>
             <tenping class="adsbytenping" style="width: 100%; margin: 0px auto; display: block; max-width: 580px;" tenping-ad-client="ULkZYhHDonqxNgJx%2bd2t5XgWCcx0QUdnsdGDbY1yMIshP4q34efQL0ddArqjWnF3" tenping-ad-display-type="UD8Mia8gyIoT5Z2MT6VB3Q%3d%3d"></tenping><script async src='//ads.tenping.kr/scripts/adsbytenping.min.js' ></script>
             <br />
           </div>
@@ -138,25 +145,27 @@
 
         <div class="row">
           <div class="col-lg-12 text-center">
-            <blockquote class="fa fa-database">
-              <small style="font-family: 'cwTeXHei', 'Jeju Hallasan', serif;"></small>
-            </blockquote>
-            <br />
+            <canvas id="area-statistics-chart" width="878" height="900" style="border: 1px solid #CCCCCC;"></canvas>
           </div>
         </div>
 
-        <div class="row" style="border: 1px;">
+        <hr />
+
+        <div class="row">
           <div class="col-lg-12 text-center">
-            <canvas id="area-statistics-chart" width="878" height="900"></canvas>
+            <canvas id="ct-statistics-chart" width="878" height="900" style="border: 1px solid #CCCCCC;"></canvas>
           </div>
         </div>
+
+        <hr />
 
         <tenping class="adsbytenping" style="width: 100%; margin: 0px auto; display: block; max-width: 768px;" tenping-ad-client="ULkZYhHDonqxNgJx%2bd2t5XgWCcx0QUdnsdGDbY1yMIshP4q34efQL0ddArqjWnF3" tenping-ad-display-type="67%2be3LHzHbblsB9oLrOpWQ%3d%3d"></tenping><script async src='//ads.tenping.kr/scripts/adsbytenping.min.js' ></script>
 
       </div>
     </section>
 
-    <hr/>
+    <hr />
+
     <!-- Footer -->
     <footer>
       <div class="container">
@@ -230,6 +239,58 @@
 
       function getAreaData() {
         var data = /*[[${statistics_area_values}]]*/;
+        return data;
+      }
+
+      function getRandomColors(count) {
+          var data =[];
+          for (var i = 0; i < count; i++) {
+              data.push(getRandomColor());
+          }
+          return data;
+      }
+
+      function getRandomColor() {
+          var letters = '0123456789ABCDEF'.split('');
+          var color = '#';
+          for (var i = 0; i < 6; i++ ) {
+              color += letters[Math.floor(Math.random() * 16)];
+          }
+          return Chart.helpers.color(color).alpha(0.5).rgbString();
+      }
+    </script>
+
+    <!-- contentType statistics -->
+    <script th:inline="javascript">
+      var ctx = document.getElementById("ct-statistics-chart").getContext('2d');
+      var myChart = new Chart(document.getElementById("ct-statistics-chart"), {
+          type: 'horizontalBar',
+          data: {
+            labels: getCTLabels(),
+            datasets: [
+              {
+                label: "인기도",
+                backgroundColor: getRandomColors(10),
+                data: getCTData()
+              }
+            ]
+          },
+          options: {
+            legend: { display: false },
+            title: {
+              display: true,
+              text: '여행지 유형별 인기도'
+            }
+          }
+      });
+
+      function getCTLabels() {
+        var data = /*[[${statistics_content_type_labels}]]*/;
+        return data;
+      }
+
+      function getCTData() {
+        var data = /*[[${statistics_content_type_values}]]*/;
         return data;
       }
 

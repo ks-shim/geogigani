@@ -9,6 +9,7 @@ public enum DestinationInfoField {
     LAST_ACCESS_TIME("lastaccesstime"),
     CONTENT_ID("contentid"),
     CONTENT_TYPE_ID("contenttypeid"),
+    CONTENT_TYPE_LABEL("contenttypelabel"),
     TITLE("title"),
     TITLE_KEYWORDS("titlekeywords"),
     TITLE_SHORT("titleshort"),

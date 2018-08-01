@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -23,13 +24,26 @@ public class FrontStatisticsController {
     @RequestMapping(value = {"/statistics"}, produces = "application/json; charset=utf8", method = {RequestMethod.GET})
     public String showAreaStatistics(Model model) {
 
-        List<IdFreq> result = statisticsService.getAreaStatistics();
-        String[] ids = new String[result.size()];
-        String[] freqs = new String[result.size()];
-        getEachIdAndFreqArrays(result, ids, freqs);
+        // 1. get result from ...
+        List<IdFreq> areaResultList = new ArrayList<>();
+        List<IdFreq> contentTypeResultList = new ArrayList<>();
+        statisticsService.getAreaAndContentTypeStatistics(areaResultList, contentTypeResultList);
 
-        model.addAttribute(ModelField.STATISTICS_AREA_LABELS.label(), ids);
-        model.addAttribute(ModelField.STATISTICS_AREA_VALUES.label(), freqs);
+        // 2. do job for area
+        String[] areaIds = new String[areaResultList.size()];
+        String[] areaFreqs = new String[areaResultList.size()];
+        getEachIdAndFreqArrays(areaResultList, areaIds, areaFreqs);
+
+        model.addAttribute(ModelField.STATISTICS_AREA_LABELS.label(), areaIds);
+        model.addAttribute(ModelField.STATISTICS_AREA_VALUES.label(), areaFreqs);
+
+        // 3. do job for content type ...
+        String[] ctIds = new String[contentTypeResultList.size()];
+        String[] ctFreqs = new String[contentTypeResultList.size()];
+        getEachIdAndFreqArrays(contentTypeResultList, ctIds, ctFreqs);
+
+        model.addAttribute(ModelField.STATISTICS_CONTENT_TYPE_LABELS.label(), ctIds);
+        model.addAttribute(ModelField.STATISTICS_CONTENT_TYPE_VALUES.label(), ctFreqs);
 
         return "statistics-page";
     }
