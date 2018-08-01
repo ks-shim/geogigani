@@ -6,6 +6,8 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -23,6 +25,9 @@ public class UserPreferenceDataService {
 
     @Value("${user.keywords.entry.limit}")
     private long userEntryLimit;
+
+    @Resource
+    private StatisticsDataService statisticsDataService;
 
     private final ConcurrentMap<String, UserKeywordsData> userKeywordsMap;
     public UserPreferenceDataService() {
@@ -82,8 +87,10 @@ public class UserPreferenceDataService {
                                 String keywords) {
         UserKeywordsData data = userKeywordsMap.get(userId);
         if(data == null) {
+            // This means 'new session'
             data = new UserKeywordsData(userId);
             userKeywordsMap.putIfAbsent(userId, data);
+            statisticsDataService.incrementSessionCount(new Date());
         }
 
         data.appendKeywords(keywords, userKeywordsSize);

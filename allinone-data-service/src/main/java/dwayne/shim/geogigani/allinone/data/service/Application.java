@@ -1,6 +1,7 @@
 package dwayne.shim.geogigani.allinone.data.service;
 
 import dwayne.shim.geogigani.allinone.data.service.util.IndexPathUtil;
+import dwayne.shim.geogigani.common.data.statistics.SessionCountData;
 import dwayne.shim.geogigani.core.storage.IdWeightStorage;
 import dwayne.shim.geogigani.crawler.DustDataCrawler;
 import dwayne.shim.geogigani.searching.SearchingExecutor;
@@ -10,18 +11,28 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.validation.Validator;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
+import javax.sql.DataSource;
 import java.io.File;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 @Log4j2
 @SpringBootApplication
 @EnableScheduling
+@EnableTransactionManagement
 @PropertySource("classpath:config/allinone.properties")
 public class Application extends SpringBootServletInitializer {
 
@@ -87,6 +98,26 @@ public class Application extends SpringBootServletInitializer {
     @Bean
     public SearchingExecutor searchingExecutor(IndexPathUtil indexPathUtil) throws Exception {
         return new SearchingExecutor(indexPathUtil.getCurrentIndexPath(locationIndexPathFile, locationIndexDir1));
+    }
+
+    @Bean
+    @Primary
+    @ConfigurationProperties("spring.datasource")
+    public DataSourceProperties hikariDataSourceProperties() {
+        return new DataSourceProperties();
+    }
+
+    @Bean
+    @Primary
+    @ConfigurationProperties("spring.datasource.hikari")
+    public DataSource hikariDataSource() {
+        return hikariDataSourceProperties().initializeDataSourceBuilder().build();
+    }
+
+    @Bean
+    @Primary
+    public Validator validator() {
+        return new LocalValidatorFactoryBean();
     }
 
     @Bean
