@@ -222,7 +222,7 @@
     <!-- area statistics -->
     <script th:inline="javascript">
       var ctx = document.getElementById("area-statistics-chart").getContext('2d');
-      var myChart = new Chart(document.getElementById("area-statistics-chart"), {
+      var myChart = new Chart(ctx, {
           type: 'horizontalBar',
           data: {
             labels: getAreaLabels(),
@@ -274,7 +274,7 @@
     <!-- contentType statistics -->
     <script th:inline="javascript">
       var ctx = document.getElementById("ct-statistics-chart").getContext('2d');
-      var myChart = new Chart(document.getElementById("ct-statistics-chart"), {
+      var myChart = new Chart(ctx, {
           type: 'horizontalBar',
           data: {
             labels: getCTLabels(),
@@ -302,6 +302,76 @@
 
       function getCTData() {
         var data = /*[[${statistics_content_type_values}]]*/;
+        return data;
+      }
+
+      function getRandomColors(count) {
+          var data =[];
+          for (var i = 0; i < count; i++) {
+              data.push(getRandomColor());
+          }
+          return data;
+      }
+
+      function getRandomColor() {
+          var letters = '0123456789ABCDEF'.split('');
+          var color = '#';
+          for (var i = 0; i < 6; i++ ) {
+              color += letters[Math.floor(Math.random() * 16)];
+          }
+          return Chart.helpers.color(color).alpha(0.5).rgbString();
+      }
+    </script>
+
+    <!-- session count statistics -->
+    <script th:inline="javascript">
+      var ctx = document.getElementById("sc-statistics-chart").getContext('2d');
+      var myChart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: getSCLabels(),
+            datasets: [
+              {
+                label: "사용자(세션)",
+                type: "line",
+                borderColor: "#006600",
+                fill: false,
+                data: getSCData()
+              },
+              {
+                label: "사용자(세션)",
+                type: "bar",
+                backgroundColor: "rgba(000,102,000,0.2)",
+                backgroundColorHover: "#3e95cd",
+                data: getSCData()
+              },
+            ]
+          },
+          options: {
+            legend: { display: false },
+            title: {
+              display: true,
+              text: '사용자(세션단위) 수'
+            },
+            scales: {
+              xAxes: [{
+                  ticks: {
+                      autoSkip: false,
+                      maxRotation: 80,
+                      minRotation: 45
+                  }
+              }]
+            }
+          }
+      });
+
+      function getSCLabels() {
+        var data = /*[[${statistics_session_count_labels}]]*/;
+        return data;
+      }
+
+      function getSCData() {
+        var data = /*[[${statistics_session_count_values}]]*/;
         return data;
       }
 

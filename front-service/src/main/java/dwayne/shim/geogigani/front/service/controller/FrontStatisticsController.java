@@ -60,7 +60,7 @@ public class FrontStatisticsController {
         }
 
         model.addAttribute(ModelField.STATISTICS_SESSION_COUNT_LABELS.label(), sessionLabelList);
-        model.addAttribute(ModelField.STATISTICS_SESSION_COUNT_VALUES.label(), sessionLabelList);
+        model.addAttribute(ModelField.STATISTICS_SESSION_COUNT_VALUES.label(), sessionCountList);
 
         return "statistics-page";
     }
