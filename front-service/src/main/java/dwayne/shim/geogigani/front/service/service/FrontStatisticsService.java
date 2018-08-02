@@ -3,6 +3,7 @@ package dwayne.shim.geogigani.front.service.service;
 import dwayne.shim.geogigani.common.code.AreaCode;
 import dwayne.shim.geogigani.common.code.ContentTypeIdCode;
 import dwayne.shim.geogigani.common.data.TravelData;
+import dwayne.shim.geogigani.common.data.statistics.SessionCountData;
 import dwayne.shim.geogigani.common.storage.IdWeightSnapshot;
 import dwayne.shim.geogigani.front.service.constants.DestinationInfoField;
 import dwayne.shim.geogigani.front.service.model.IdFreq;
@@ -19,18 +20,24 @@ public class FrontStatisticsService {
     @Value("${rest.popular}")
     private String restPopular;
 
+    @Value("${rest.stat-session-count}")
+    private String restStatSessionCount;
+
     @Autowired
     private RestTemplate restTemplate;
 
+    //**********************************************************************************
+    // Area and ContentType statistics ...
+    //**********************************************************************************
     public void getAreaAndContentTypeStatistics(List<IdFreq> areaIdFreqList,
-                                                List<IdFreq> contentTypeFreqList) {
+                                                List<IdFreq> contentTypeFreqList) throws Exception {
         // 1. get TravelData from server ..
         TravelData[] result = restTemplate.getForObject(restPopular, TravelData[].class);
         getAreaStatistics(result, areaIdFreqList);
         getContentTypeStatistics(result, contentTypeFreqList);
     }
 
-    public void getAreaStatistics(TravelData[] result,
+    private void getAreaStatistics(TravelData[] result,
                                   List<IdFreq> idFreqList) {
         // 1. make TravelData as id-freq pairs ...
         asIdFreqList(result, idFreqList, DestinationInfoField.AREA_LABEL);
@@ -39,8 +46,8 @@ public class FrontStatisticsService {
         Collections.sort(idFreqList);
     }
 
-    public void getContentTypeStatistics(TravelData[] result,
-                                         List<IdFreq> idFreqList) {
+    private void getContentTypeStatistics(TravelData[] result,
+                                          List<IdFreq> idFreqList) {
         // 1. make TravelData as id-freq pairs ...
         asIdFreqList(result, idFreqList, DestinationInfoField.CONTENT_TYPE_LABEL);
 
@@ -48,9 +55,27 @@ public class FrontStatisticsService {
         Collections.sort(idFreqList);
     }
 
+    //**********************************************************************************
+    // count statistics ...
+    //**********************************************************************************
+    public void getSessionCount(List<String> labelList,
+                                List<Integer> valueList) throws Exception {
+        SessionCountData[] datas = restTemplate.getForObject(restStatSessionCount, SessionCountData[].class);
+        for(int i=datas.length-1; i>=0; i--) {
+            SessionCountData data = datas[i];
+            if(data.hasError()) continue;
+
+            labelList.add(data.getDate());
+            valueList.add(data.getCount());
+        }
+    }
+
+    //**********************************************************************************
+    // Common methods ...
+    //**********************************************************************************
     private void asIdFreqList(TravelData[] travelDatas,
-                                      List<IdFreq> idFreqList,
-                                      DestinationInfoField keyField) {
+                              List<IdFreq> idFreqList,
+                              DestinationInfoField keyField) {
 
         Map<String, IdFreq> idFreqMap = new HashMap<>();
         for (TravelData td : travelDatas) {

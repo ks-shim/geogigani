@@ -11,4 +11,8 @@ public class SessionCountData {
     public SessionCountData(String date) {
         this.date = date;
     }
+
+    public boolean hasError() {
+        return date == null || date.trim().isEmpty();
+    }
 }
