@@ -90,22 +90,7 @@
             <li class="nav-item">
               <a class="nav-link" th:href="@{/statistics}" style="font-family: 'Jeju Hallasan', serif;"><i class="fa fa-bar-chart-o fa-fw"></i>통계</a>
             </li>
-            <li class="nav-item">
-              <div class="nav-link col-md-12 col-lg-12 col-xl-12 mx-auto">
-                <form id="search_form" role="form" th:action="@{/search-destinations}" method="get">
-                  <div class="form-row">
-                    <div class="col-12 col-md-9 mb-2 mb-md-0">
-                      <input id="keywords" name="keywords" style="font-family: 'cwTeXHei', 'Jeju Hallasan', serif;" type="text" class="form-control form-control-sm" placeholder="Keywords ..." th:onkeypress="'javascript:if(event.keyCode==13) {search(); return false;}'"/>
-                    </div>
-                    <div class="col-12 col-md-2">
-                      <button type="button" class="btn btn-block btn-sm btn-outline-danger" th:onclick="'javascript:search();'">
-                        <i class="fa fa-search"></i>
-                      </button>
-                    </div>
-                  </div>
-                </form>
-              </div>
-            </li>
+
           </ul>
         </div>
       </div>
@@ -117,13 +102,26 @@
         <div class="logo">
 
         </div>
-        <div>
-          <ul class="navbar-nav text-uppercase ml-auto">
-            <li class="nav-item">
-              <button type="button" class="btn" style="background-color:#dd3806; opacity:.75; color:#000000" th:onclick="'javascript:show_dust()'"><i class="fa fa-search fa-fw"></i><small style="font-family: 'Jeju Hallasan', serif;">미세먼지 예보를 확인해 보세요.</small></button>
-            </li>
-          </ul>
-        </div>
+          <div>
+              <ul class="navbar-nav text-uppercase ml-auto">
+                  <li class="nav-item">
+                      <div class="nav-link col-md-12 col-lg-12 col-xl-12 mx-auto">
+                          <form id="search_form" role="form" th:action="@{/search-destinations}" method="get">
+                              <div class="form-group">
+                                  <div class="input-group">
+                                      <input id="keywords" name="keywords" style="border-color: #dd3806;opacity: .85;font-family: 'Jeju Hallasan', serif;" type="text" class="form-control" placeholder="검색어를 입력하세요..." th:onkeypress="'javascript:if(event.keyCode==13) {search(); return false;}'"/>
+                                      <div class="input-group-append">
+                                          <button type="button" class="btn btn-block btn-sm" style="background-color: #dd3806;opacity: .85;"th:onclick="'javascript:search();'">
+                                              <i class="fa fa-search"></i>
+                                          </button>
+                                      </div>
+                                  </div>
+                              </div>
+                          </form>
+                      </div>
+                  </li>
+              </ul>
+          </div>
       </div>
     </nav>
 

@@ -9,7 +9,8 @@ public enum ContentTypeIdCode {
     LEPORTS("레포츠", "28"),
     LODGING("숙박", "32"),
     SHOPPING("쇼핑", "38"),
-    FOOD("음식점", "39");
+    FOOD("음식점", "39"),
+    LOTTO("로또명당", "777");
 
     private String label;
     private String code;
