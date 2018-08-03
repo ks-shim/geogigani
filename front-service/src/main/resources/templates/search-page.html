@@ -292,7 +292,7 @@
       function getLocation() {
           if (navigator.geolocation) {
               navigator.geolocation.getCurrentPosition(showPosition, handleError, {
-                enableHighAccuracy: true,
+                enableHighAccuracy: false,
                 maximumAge: 0,
                 timeout: 20000
               });
