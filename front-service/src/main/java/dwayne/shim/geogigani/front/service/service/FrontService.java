@@ -117,6 +117,9 @@ public class FrontService {
     private Map<String, String> asMap(TravelData td) {
         Map<String, String> map = new HashMap<>();
 
+        Map<String, String> infoMap = td.getInfoMap();
+        if(infoMap.isEmpty()) return map;
+
         // 1. get info from snapshot
         IdWeightSnapshot snapshot = td.getIdWeightSnapshot();
         map.put(DestinationInfoField.IMPRESSION_COUNT.label(), String.valueOf(snapshot.getImpressionCount()));
@@ -124,7 +127,7 @@ public class FrontService {
         map.put(DestinationInfoField.SCORE.label(), String.valueOf(snapshot.getScore()));
 
         // 2. get info from map
-        map.putAll(td.getInfoMap());
+        map.putAll(infoMap);
 
         return map;
     }
