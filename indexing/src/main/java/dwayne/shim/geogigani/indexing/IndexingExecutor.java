@@ -47,6 +47,8 @@ public class IndexingExecutor {
             // 3-2. remove html tags
             removeHtmlTags(docMap, TravelDataIndexField.TITLE.label());
             removeHtmlTags(docMap, TravelDataIndexField.OVERVIEW.label());
+
+            replaceHttpToHttps(docMap, TravelDataIndexField.FIRST_IMAGE.label());
             /*removeHtmlTags(docMap, TravelDataIndexField.ACCOM_COUNT.label());
             removeHtmlTags(docMap, TravelDataIndexField.CHK_BABY_CARRIAGE.label());
             removeHtmlTags(docMap, TravelDataIndexField.CHK_CREDIT_CARD.label());
@@ -203,6 +205,15 @@ public class IndexingExecutor {
         if(StringUtils.isBlank(shortDistances)) return;
 
         docMap.put(targetFieldName, shortDistances);
+    }
+
+    private void replaceHttpToHttps(Map<String, String> docMap,
+                                    String fieldName) throws Exception {
+        String content = docMap.get(fieldName);
+        if(content == null) return;
+
+        content = content.replaceAll("http:", "https:");
+        docMap.put(fieldName, content);
     }
 
     private void removeHtmlTags(Map<String, String> docMap,
