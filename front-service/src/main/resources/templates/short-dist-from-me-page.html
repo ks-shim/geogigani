@@ -232,18 +232,20 @@
                     <div class="row">
                       <th:block th:each="doc,iterStat : ${list.value}" th:if="${list.value != null}">
                         <div class="col-md-4 col-sm-6 portfolio2-item">
-                          <a class="portfolio2-link" th:onclick="'javascript:show_detail(' + ${doc.contentid} + ')'">
-                            <div class="portfolio2-hover">
-                              <div class="portfolio2-hover-content">
-                                <i class="fa fa-plus fa-3x"></i>
-                              </div>
-                            </div>
 
-                            <img class="img-fluid" th:src="${(doc.firstimage != null) ? doc.firstimage : '/img/no_image_available.png'}" th:alt="${doc.title}"/>
-
-                          </a>
                           <div class="portfolio2-caption">
-                            <h5 th:text="${doc.titleshort}" style="font-family: 'cwTeXHei', 'Jeju Hallasan', serif;"></h5>
+                            <a class="portfolio2-link" th:onclick="'javascript:show_detail(' + ${doc.contentid} + ')'">
+                              <div class="portfolio2-hover">
+                                <div class="portfolio2-hover-content">
+                                  <i class="fa fa-plus fa-3x"></i>
+                                </div>
+                              </div>
+
+                              <img class="img-fluid" th:src="${(doc.firstimage2 != null) ? doc.firstimage2 : '/img/no_image_available.png'}" th:alt="${doc.title}"/>
+
+                            </a>
+
+                            <h6 th:text="${doc.titleshort}" style="font-family: 'cwTeXHei', 'Jeju Hallasan', serif;"></h6>
                             <div class="text-left">
                               <small class="text-muted" th:text="${doc.overviewshort}"></small>
                             </div>

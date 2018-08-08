@@ -49,6 +49,8 @@ public class IndexingExecutor {
             removeHtmlTags(docMap, TravelDataIndexField.OVERVIEW.label());
 
             replaceHttpToHttps(docMap, TravelDataIndexField.FIRST_IMAGE.label());
+            replaceHttpToHttps(docMap, TravelDataIndexField.FIRST_IMAGE2.label());
+
             /*removeHtmlTags(docMap, TravelDataIndexField.ACCOM_COUNT.label());
             removeHtmlTags(docMap, TravelDataIndexField.CHK_BABY_CARRIAGE.label());
             removeHtmlTags(docMap, TravelDataIndexField.CHK_CREDIT_CARD.label());

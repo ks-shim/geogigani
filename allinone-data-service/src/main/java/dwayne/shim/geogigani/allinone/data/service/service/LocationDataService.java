@@ -84,6 +84,7 @@ public class LocationDataService {
             TravelDataIndexField.CAT1.label(),
             TravelDataIndexField.AREA_CODE.label(),
             TravelDataIndexField.FIRST_IMAGE.label(),
+            TravelDataIndexField.FIRST_IMAGE2.label(),
     };
 
     //***************************************************************************************
@@ -157,6 +158,7 @@ public class LocationDataService {
             TravelDataIndexField.CAT1.label(),
             TravelDataIndexField.AREA_CODE.label(),
             TravelDataIndexField.FIRST_IMAGE.label(),
+            TravelDataIndexField.FIRST_IMAGE2.label()
     };
     public List<TravelData> getTopNLocationsByAreaCode(String areaCode) throws Exception {
         // 1. validation
@@ -382,6 +384,7 @@ public class LocationDataService {
             TravelDataIndexField.CAT1.label(),
             TravelDataIndexField.AREA_CODE.label(),
             TravelDataIndexField.FIRST_IMAGE.label(),
+            TravelDataIndexField.FIRST_IMAGE2.label()
     };
 
     public List<TravelData> searchLocations(String keywords,
@@ -446,6 +449,7 @@ public class LocationDataService {
             TravelDataIndexField.CAT1.label(),
             TravelDataIndexField.AREA_CODE.label(),
             TravelDataIndexField.FIRST_IMAGE.label(),
+            TravelDataIndexField.FIRST_IMAGE2.label()
     };
 
     public List<TravelData> getSimilarLocations(String locationId) throws Exception {
@@ -509,6 +513,7 @@ public class LocationDataService {
             TravelDataIndexField.CAT1.label(),
             TravelDataIndexField.AREA_CODE.label(),
             TravelDataIndexField.FIRST_IMAGE.label(),
+            TravelDataIndexField.FIRST_IMAGE2.label()
     };
     public List<TravelData> getShortDistanceLocations(String locationId) throws Exception {
         // 1. get keywords data of the location ...
@@ -581,6 +586,7 @@ public class LocationDataService {
             TravelDataIndexField.CAT1.label(),
             TravelDataIndexField.AREA_CODE.label(),
             TravelDataIndexField.FIRST_IMAGE.label(),
+            TravelDataIndexField.FIRST_IMAGE2.label()
     };
     public List<TravelData> interestingLocations(String keywords) throws Exception {
         return searchLocations(
