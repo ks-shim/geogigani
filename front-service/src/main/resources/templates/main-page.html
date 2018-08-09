@@ -58,6 +58,17 @@
          font-family:  'cwTeXHei', 'Jeju Hallasan', serif;
       }
 
+      img:not([src]) {
+			visibility: hidden;
+		}
+
+		/* Fixes Firefox anomaly during image load */
+		@-moz-document url-prefix() {
+			img:-moz-loading {
+				visibility: hidden;
+			}
+		}
+
     </style>
   </head>
 
@@ -220,7 +231,7 @@
                                 </div>
                               </div>
 
-                              <img class="img-fluid" style="border: 1px solid #aaaaaa;" th:data-src="${(doc.firstimage2 != null) ? doc.firstimage2 : '/img/no_image_available.png'}" th:alt="${doc.title}"/>
+                              <img class="img-fluid lazy" style="border: 1px solid #aaaaaa;" th:attr="data-src=${(doc.firstimage2 != null) ? doc.firstimage2 : '/img/no_image_available.png'}" th:alt="${doc.title}"/>
 
                             </a>
 
@@ -313,7 +324,7 @@
                               </div>
                             </div>
 
-                            <img class="img-fluid" style="border: 1px solid #aaaaaa;" th:src="${(doc.firstimage2 != null) ? doc.firstimage2 : '/img/no_image_available.png'}" th:alt="${doc.title}"/>
+                            <img class="img-fluid lazy" style="border: 1px solid #aaaaaa;" th:attr="data-src=${(doc.firstimage2 != null) ? doc.firstimage2 : '/img/no_image_available.png'}" th:alt="${doc.title}"/>
 
                           </a>
 
@@ -452,8 +463,6 @@
     </footer>
 
 
-
-
     <!-- Bootstrap core JavaScript -->
     <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
     <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
@@ -469,13 +478,10 @@
     <script th:src="@{/js/agency.min.js}"></script>
 
     <!-- image lazy loading -->
-    <script th:src="@{/vendor/jquery/jquery.lazy.min.js}"></script>
-    <script th:src="@{/vendor/jquery/jquery.lazy.plugins.min.js}"></script>
+    <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/vanilla-lazyload/8.14.0/lazyload.min.js}"></script>
 
     <script>
-        $(function() {
-            $('.lazy').lazy();
-        });
+        new LazyLoad();
     </script>
 
     <script th:inline="javascript">

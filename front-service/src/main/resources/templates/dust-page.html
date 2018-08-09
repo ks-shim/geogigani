@@ -65,6 +65,17 @@
       BODY {
          font-family:  'cwTeXHei', 'Jeju Hallasan', serif;
       }
+
+        img:not([src]) {
+			visibility: hidden;
+		}
+
+		/* Fixes Firefox anomaly during image load */
+		@-moz-document url-prefix() {
+			img:-moz-loading {
+				visibility: hidden;
+			}
+		}
     </style>
   </head>
 
@@ -255,6 +266,13 @@
     <!-- Custom scripts for this template -->
     <script th:src="@{/js/agency.min.js}"></script>
 
+    <!-- image lazy loading -->
+    <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/vanilla-lazyload/8.14.0/lazyload.min.js}"></script>
+
+    <!--<script th:inline="javascript">
+        new LazyLoad();
+    </script>-->
+
     <script th:inline="javascript">
       function search() {
         var keywords = $("#keywords").val();
@@ -272,13 +290,23 @@
             $("#search_form_header").submit();
         }
 
+      var modalLazyLoad;
       function show_region(area_code) {
           var url = /*[[@{'/region-based-destinations/'}]]*/;
+
           url = url + area_code;
           $("#myModal").html('');
           $("#myModal").load(url, function() {
             $("#myModal").modal('show');
           });
+          $("#myModal").bind('shown.bs.modal', function () {
+                modalLazyLoad = new LazyLoad({
+                    container: this
+                });
+            })
+            .bind('hidden.bs.modal', function () {
+                modalLazyLoad.destroy();
+            });
       }
 
       function show_detail(dest_id) {
