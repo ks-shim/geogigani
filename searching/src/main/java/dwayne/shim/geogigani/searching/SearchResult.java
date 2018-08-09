@@ -1,5 +1,6 @@
 package dwayne.shim.geogigani.searching;
 
+import dwayne.shim.geogigani.common.indexing.TravelDataIndexField;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -37,6 +38,11 @@ public class SearchResult {
         return docMapList.get(index);
     }
 
+    public void print() {
+        for(Map<String, String> doc : docMapList) {
+            System.out.println(doc.get(TravelDataIndexField.TITLE.label()));
+        }
+    }
     public void clear() {
         docMapList.clear();
         docMapList = null;

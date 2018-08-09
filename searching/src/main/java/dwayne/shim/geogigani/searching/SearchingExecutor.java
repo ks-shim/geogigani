@@ -1,9 +1,14 @@
 package dwayne.shim.geogigani.searching;
 
+import dwayne.shim.geogigani.common.data.TravelData;
 import dwayne.shim.geogigani.common.indexing.TravelDataIndexField;
 import dwayne.shim.geogigani.common.searching.LuceneResultField;
 import lombok.extern.log4j.Log4j2;
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.cjk.CJKAnalyzer;
+import org.apache.lucene.analysis.core.KeywordAnalyzer;
+import org.apache.lucene.analysis.core.SimpleAnalyzer;
+import org.apache.lucene.analysis.core.WhitespaceAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.LatLonDocValuesField;
@@ -43,7 +48,7 @@ public class SearchingExecutor {
 
         // 1. Initialize ...
         this.bufferSize = bufferSize;
-        this.analyzer = new StandardAnalyzer();
+        this.analyzer = new CJKAnalyzer();
 
         try {
             init(indexDirectoryLocation);
@@ -59,7 +64,7 @@ public class SearchingExecutor {
 
         // 1. configration for indexWriter ...
         Directory directory = FSDirectory.open(Paths.get(indexDirectoryLocation));
-        IndexWriterConfig config = new IndexWriterConfig(new StandardAnalyzer());
+        IndexWriterConfig config = new IndexWriterConfig(new CJKAnalyzer());
         config.setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND);
         config.setRAMBufferSizeMB(bufferSize);
 
@@ -231,11 +236,14 @@ public class SearchingExecutor {
 
         String[] fieldsToSearch = {
                 TravelDataIndexField.TITLE.label(),
-                TravelDataIndexField.OVERVIEW.label()
+                TravelDataIndexField.OVERVIEW.label(),
+                TravelDataIndexField.TITLE_KEYWORDS.label(),
+                TravelDataIndexField.OVERVIEW_KEYWORDS.label()
         };
 
-        //SearchResult result = se.search(fieldsToGet.toArray(new String[fieldsToGet.size()]), fieldsToSearch, "dennis", 10);
-        SearchResult result = se.search(fieldsToGet.toArray(new String[fieldsToGet.size()]), TravelDataIndexField.LAT_LON_POINT.label(), "", 35.9292001238, 127.7171970426, 1000.0, 100);
-        System.out.println(result);
+        SearchResult result = se.search(fieldsToGet.toArray(new String[fieldsToGet.size()]), fieldsToSearch, "두부두루치기", 100);
+        //SearchResult result = se.search(fieldsToGet.toArray(new String[fieldsToGet.size()]), TravelDataIndexField.LAT_LON_POINT.label(), "", 35.9292001238, 127.7171970426, 1000.0, 100);
+        //System.out.println(result);
+        result.print();
     }
 }
