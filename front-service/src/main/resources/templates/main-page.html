@@ -220,7 +220,7 @@
                                 </div>
                               </div>
 
-                              <img class="img-fluid" th:src="${(doc.firstimage2 != null) ? doc.firstimage2 : '/img/no_image_available.png'}" th:alt="${doc.title}"/>
+                              <img class="img-fluid" style="border: 1px solid #aaaaaa;" th:data-src="${(doc.firstimage2 != null) ? doc.firstimage2 : '/img/no_image_available.png'}" th:alt="${doc.title}"/>
 
                             </a>
 
@@ -306,7 +306,6 @@
                     <th:block th:each="doc,iterStat: ${list.value}" th:if="${list.value != null}">
                       <div class="col-md-4 col-sm-6 portfolio-item">
                         <div class="portfolio-caption">
-
                           <a class="portfolio-link" th:onclick="'javascript:show_detail(' + ${doc.contentid} + ')'">
                             <div class="portfolio-hover">
                               <div class="portfolio-hover-content">
@@ -314,7 +313,7 @@
                               </div>
                             </div>
 
-                            <img class="img-fluid" th:src="${(doc.firstimage2 != null) ? doc.firstimage2 : '/img/no_image_available.png'}" th:alt="${doc.title}"/>
+                            <img class="img-fluid" style="border: 1px solid #aaaaaa;" th:src="${(doc.firstimage2 != null) ? doc.firstimage2 : '/img/no_image_available.png'}" th:alt="${doc.title}"/>
 
                           </a>
 
@@ -452,6 +451,9 @@
       </div>
     </footer>
 
+
+
+
     <!-- Bootstrap core JavaScript -->
     <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
     <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
@@ -465,6 +467,16 @@
 
     <!-- Custom scripts for this template -->
     <script th:src="@{/js/agency.min.js}"></script>
+
+    <!-- image lazy loading -->
+    <script th:src="@{/vendor/jquery/jquery.lazy.min.js}"></script>
+    <script th:src="@{/vendor/jquery/jquery.lazy.plugins.min.js}"></script>
+
+    <script>
+        $(function() {
+            $('.lazy').lazy();
+        });
+    </script>
 
     <script th:inline="javascript">
       function search() {

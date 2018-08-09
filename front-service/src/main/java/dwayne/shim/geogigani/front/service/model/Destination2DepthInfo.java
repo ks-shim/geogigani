@@ -2,10 +2,7 @@ package dwayne.shim.geogigani.front.service.model;
 
 import lombok.Data;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Data
 public class Destination2DepthInfo {
@@ -19,7 +16,7 @@ public class Destination2DepthInfo {
                                  int seq) {
         this.key = key;
         this.seq = seq;
-        this.destListMap = new HashMap<>();
+        this.destListMap = new TreeMap<>();
     }
 
     public void add(String subKey,
