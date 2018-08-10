@@ -1,0 +1,35 @@
+git clone https://github.com/letsencrypt/letsencrypt
+
+./letsencrypt-auto certonly --manual --email dwayne.shim@gmail.com -d www.geogigani.com
+
+--- 위 진행하면서 마지막에
+--- http://www.geogigani.com/.well-known/acme-challenge/askdijioasdoiikjasdkljflkajsdlkfjalksdjfl
+--- 작성 후 엔터 눌러야 함
+
+cd /etc/letsencrypt/live/www.geogigani.com
+# openssl rsa -in privkey.pem -text > devbit.key
+# openssl x509 -inform PEM -in fullchain.pem -out devbit.crt
+# openssl pkcs12 -export -in devbit.crt -inkey devbit.key -out devbit.p12 -name tomcat
+# keytool -list -v -keystore devbit.p12 -storetype pkcs12
+openssl pkcs12 -export -in fullchain.pem -inkey privkey.pem -out devbit.p12 -name tomcat -CAfile chain.pem -caname root
+
+
+
+<Connector port="80" enableLookups="false" redirectPort="443" />
+<Connector port="443" protocol="org.apache.coyote.http11.Http11Protocol"
+       maxThreads="150" SSLEnabled="true" scheme="https" secure="true"
+       clientAuth="false" sslProtocol="TLS" keystoreFile="/etc/letsencrypt/live/www.geogigani.com/devbit.p12" keystoreType="PKCS12" keystorePass="qlalfssl!35" keyAlias="tomcat"
+URIEncoding="UTF-8" />
+--- server.xml 수정
+
+<security-constraint>
+<web-resource-collection>
+<web-resource-name>Secured</web-resource-name>
+<url-pattern>/*</url-pattern>
+</web-resource-collection>
+<!-- auth-constraint goes here if you requre authentication -->
+<user-data-constraint>
+<transport-guarantee>CONFIDENTIAL</transport-guarantee>
+</user-data-constraint>
+</security-constraint>
+--- web.xml에 추가
