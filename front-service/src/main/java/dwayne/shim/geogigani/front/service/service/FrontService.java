@@ -13,10 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class FrontService {
@@ -171,7 +168,7 @@ public class FrontService {
 
     private List<Destination1DepthInfo> asCategorized1DepthDestInfo(TravelData[] travelDatas) {
 
-        Map<String, Destination1DepthInfo> keyDestMap = new HashMap<>();
+        Map<String, Destination1DepthInfo> keyDestMap = new TreeMap<>();
 
         int seq = 0;
         for(TravelData td : travelDatas) {
