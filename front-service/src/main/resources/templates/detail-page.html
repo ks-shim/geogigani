@@ -181,7 +181,7 @@
                     <hr/>
                   </th:block>
 
-                  <small th:text="${destination_detail_info.overview}"></small>
+                  <small th:utext="${destination_detail_info.overview}"></small>
                   <hr/>
                   <div class="text-right">
                     <a th:href="'https://search.naver.com/search.naver?where=nexearch&sm=tab_jum&query=' + ${destination_detail_info.title}" target="_blank">

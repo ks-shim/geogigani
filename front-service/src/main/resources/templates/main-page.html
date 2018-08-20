@@ -238,7 +238,7 @@
 
                             <h6 th:text="${doc.titleshort}" style="font-family: 'cwTeXHei', 'Jeju Hallasan', serif;"></h6>
                             <div class="text-left">
-                              <small class="text-muted" th:text="${doc.overviewshort}"></small>
+                              <small class="text-muted" th:utext="${doc.overviewshort}"></small>
                             </div>
                             <hr/>
                             <ul class="post-footer">
@@ -331,7 +331,7 @@
 
                           <h6 th:text="${doc.titleshort}" style="font-family: 'cwTeXHei', 'Jeju Hallasan', serif;"></h6>
                           <div class="text-left">
-                            <small class="text-muted" th:text="${doc.overviewshort}"></small>
+                            <small class="text-muted" th:utext="${doc.overviewshort}"></small>
                           </div>
                           <hr/>
                           <ul class="post-footer">
