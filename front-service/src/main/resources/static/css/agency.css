@@ -185,15 +185,15 @@ header.masthead {
 }
 
 header.masthead .intro-text {
-  padding-top: 150px;
-  padding-bottom: 100px;
+  padding-top: 80px;
+  padding-bottom: 10px;
 }
 
 header.masthead .intro-text .intro-lead-in {
   font-size: 22px;
   font-style: italic;
   line-height: 22px;
-  margin-bottom: 25px;
+  margin-bottom: 5px;
   font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
