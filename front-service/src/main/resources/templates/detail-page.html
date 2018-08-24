@@ -21,7 +21,7 @@
     <link th:href='@{https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700}' rel='stylesheet' type='text/css'/>
 
     <link rel="stylesheet" th:href="@{https://fonts.googleapis.com/earlyaccess/cwtexhei.css}" type="text/css">
-    <link rel="stylesheet" th:href="@{https://fonts.googleapis.com/earlyaccess/jejuhallasan.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{https://fonts.googleapis.com/earlyaccess/notosanskr.css}" type="text/css">
 
     <!-- Custom styles for this template -->
     <link th:href="@{/css/agency.min.css}" rel="stylesheet"/>
@@ -52,7 +52,7 @@
       {color: #dd3806;}
 
       BODY {
-         font-family:  'cwTeXHei', 'Jeju Hallasan', serif;
+         font-family:  'cwTeXHei', 'Noto Sans KR', serif;
       }
 
             img:not([src]) {
@@ -84,22 +84,22 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav text-uppercase ml-auto">
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#services" id="menu-detail" style="font-family: 'cwTeXHei', 'Jeju Hallasan', serif;"><i class="fa fa-tasks fa-fw"></i>여행지 상세정보</a>
+              <a class="nav-link js-scroll-trigger" href="#services" id="menu-detail" style="font-family: 'cwTeXHei', 'Noto Sans KR', serif;"><i class="fa fa-tasks fa-fw"></i>여행지 상세정보</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#portfolio2" style="font-family: 'cwTeXHei', 'Jeju Hallasan', serif;"><i class="fa fa-arrows-h fa-fw"></i>근거리 여행지</a>
+              <a class="nav-link js-scroll-trigger" href="#portfolio2" style="font-family: 'cwTeXHei', 'Noto Sans KR', serif;"><i class="fa fa-arrows-h fa-fw"></i>근거리 여행지</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#portfolio" style="font-family: 'cwTeXHei', 'Jeju Hallasan', serif;"><i class="fa fa-link fa-fw"></i>관련 여행지</a>
+              <a class="nav-link js-scroll-trigger" href="#portfolio" style="font-family: 'cwTeXHei', 'Noto Sans KR', serif;"><i class="fa fa-link fa-fw"></i>관련 여행지</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" th:href="'javascript:getLocation()'" style="font-family: 'Jeju Hallasan', serif;"><i class="fa fa-bullseye fa-fw"></i>내 근처 여행지</a>
+              <a class="nav-link" th:href="'javascript:getLocation()'" style="font-family: 'Noto Sans KR', serif;"><i class="fa fa-bullseye fa-fw"></i>내 근처 여행지</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" th:href="@{/dust-info}" style="font-family: 'cwTeXHei', 'Jeju Hallasan', serif;"><i class="fa fa-cloud fa-fw"></i>미세먼지 예보</a>
+              <a class="nav-link" th:href="@{/dust-info}" style="font-family: 'cwTeXHei', 'Noto Sans KR', serif;"><i class="fa fa-cloud fa-fw"></i>미세먼지 예보</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" th:href="@{/statistics}" style="font-family: 'Jeju Hallasan', serif;"><i class="fa fa-bar-chart-o fa-fw"></i>통계</a>
+              <a class="nav-link" th:href="@{/statistics}" style="font-family: 'Noto Sans KR', serif;"><i class="fa fa-bar-chart-o fa-fw"></i>통계</a>
             </li>
 
           </ul>
@@ -120,7 +120,7 @@
                           <form id="search_form" role="form" th:action="@{/search-destinations}" method="get">
                               <div class="form-group">
                                   <div class="input-group">
-                                      <input id="keywords" name="keywords" style="border-color: #555555;opacity: .85;font-family: 'Jeju Hallasan', serif;" type="text" class="form-control" placeholder="검색어를 입력하세요..." th:onkeypress="'javascript:if(event.keyCode==13) {search(); return false;}'"/>
+                                      <input id="keywords" name="keywords" style="border-color: #555555;opacity: .85;font-family: 'Noto Sans KR', serif;" type="text" class="form-control" placeholder="검색어를 입력하세요..." th:onkeypress="'javascript:if(event.keyCode==13) {search(); return false;}'"/>
                                       <div class="input-group-append">
                                           <button type="button" class="btn btn-block btn-sm" style="border-color: #555555;background-color: #aaaaaa;opacity: .85;"th:onclick="'javascript:search();'">
                                               <i class="fa fa-search"></i>
@@ -140,12 +140,12 @@
     <header class="masthead">
         <div class="container">
             <div class="intro-text">
-                <div class="intro-lead-in">Destination Search and Share</div>
-                <div class="intro-heading text-uppercase" style="font-family: 'cwTeXHei', 'Jeju Hallasan', serif;">거기가니?</div>
+                <div class="intro-lead-in">똑똑한 여행 도우미</div>
+                <div class="intro-heading text-uppercase" style="font-family: 'cwTeXHei', 'Noto Sans KR', serif;">거기가니?</div>
                 <form id="search_form_header" role="form" th:action="@{/search-destinations}" method="get">
                     <div class="form-group">
                         <div class="input-group" s>
-                            <input id="keywords-header" name="keywords" style="border-color: #555555;opacity: .75;font-family: 'Jeju Hallasan', serif;" type="text" class="form-control" placeholder="" th:onkeypress="'javascript:if(event.keyCode==13) {search_header(); return false;}'"/>
+                            <input id="keywords-header" name="keywords" style="border-color: #555555;opacity: .75;font-family: 'Noto Sans KR', serif;" type="text" class="form-control" placeholder="" th:onkeypress="'javascript:if(event.keyCode==13) {search_header(); return false;}'"/>
                             <div class="input-group-append">
                                 <button type="button" class="btn btn-block" style="fon-size: 18px;border-color: #555555;background-color: #aaaaaa;opacity: .65;" th:onclick="'javascript:search_header();'">
                                     <i class="fa fa-search fa-2x"></i>
@@ -158,7 +158,7 @@
         </div>
     </header>
 
-    <section class="bg-light" id="services" style="padding: 50px 0;">
+    <section class="bg-light" id="services" style="padding: 20px 0;">
       <div class="container">
         <div class="modal-content">
           <div class="container">
@@ -172,7 +172,7 @@
                         <i class="fa fa-tasks fa-stack-1x fa-inverse"></i>
                       </span>
                   </div>
-                  <h4 class="text-uppercase text-center"  style="font-family: 'cwTeXHei', 'Jeju Hallasan', serif;" th:text="${destination_detail_info.title}"></h4>
+                  <h4 class="text-uppercase text-center"  style="font-family: 'cwTeXHei', 'Noto Sans KR', serif;" th:text="${destination_detail_info.title}"></h4>
                   <hr/>
                   <img class="img-fluid d-block mx-auto" th:src="${(destination_detail_info.firstimage != null) ? destination_detail_info.firstimage : '/img/no_image_available.png'}" th:alt="${destination_detail_info.title}"/>
                   <hr/>
@@ -185,7 +185,7 @@
                   <hr/>
                   <div class="text-right">
                     <a th:href="'https://search.naver.com/search.naver?where=nexearch&sm=tab_jum&query=' + ${destination_detail_info.title}" target="_blank">
-                      <button class="btn btn-success btn-sm" style="font-family: 'cwTeXHei', 'Jeju Hallasan', serif;"><i class="fa fa-search"></i><small> 네이버 검색</small></button>
+                      <button class="btn btn-success btn-sm" style="font-family: 'cwTeXHei', 'Noto Sans KR', serif;"><i class="fa fa-search"></i><small> 네이버 검색</small></button>
                     </a>
                   </div>
 
@@ -701,17 +701,17 @@
 
 
     <!-- Short Distance -->
-    <section id="portfolio2" style="padding: 50px 0;">
+    <section id="portfolio2" style="padding: 20px 0;">
       <div class="container">
         <div class="row">
           <div class="col-lg-12 text-center">
               <h6 class="section-heading text-uppercase">
-                  <span class="fa-stack fa-4x">
+                  <span class="fa-stack fa-2x">
                     <i class="fa fa-stop fa-stack-2x text-info"></i>
                     <i class="fa fa-arrows-h fa-stack-1x fa-inverse"></i>
                   </span>
               </h6>
-            <h3 class="section-subheading text-muted" style="margin-bottom: 30px;" style="margin-bottom: 30px;font-family: 'cwTeXHei', 'Jeju Hallasan', serif;">근거리 여행지</h3>
+            <h3 class="section-subheading" style="margin-bottom: 30px;" style="margin-bottom: 30px;font-family: 'cwTeXHei', 'Noto Sans KR', serif;">근거리 여행지</h3>
             <!--<tenping class="adsbytenping" style="width: 100%; margin: 0px auto; display: block; max-width: 580px;" tenping-ad-client="ULkZYhHDonqxNgJx%2bd2t5XgWCcx0QUdnsdGDbY1yMIshP4q34efQL0ddArqjWnF3" tenping-ad-display-type="UD8Mia8gyIoT5Z2MT6VB3Q%3d%3d"></tenping><script async src='//ads.tenping.kr/scripts/adsbytenping.min.js' ></script>-->
             <div>
               <th:block th:if="${destination_in10km_info != null}">
@@ -769,7 +769,7 @@
 
                             </a>
 
-                            <h6 th:text="${doc.titleshort}" style="font-family: 'cwTeXHei', 'Jeju Hallasan', serif;"></h6>
+                            <h6 th:text="${doc.titleshort}" style="font-family: 'cwTeXHei', 'Noto Sans KR', serif;"></h6>
                             <div class="text-left">
                               <small class="text-muted" th:text="${doc.overviewshort}"></small>
                             </div>
@@ -795,18 +795,18 @@
     </section>
 
     <!-- Related -->
-    <section class="bg-light" id="portfolio" style="padding: 50px 0;">
+    <section class="bg-light" id="portfolio" style="padding: 20px 0;">
 
       <div class="container">
         <div class="row">
           <div class="col-lg-12 text-center">
               <h6 class="section-heading text-uppercase">
-                  <span class="fa-stack fa-4x">
+                  <span class="fa-stack fa-2x">
                     <i class="fa fa-stop fa-stack-2x text-info"></i>
                     <i class="fa fa-link fa-stack-1x fa-inverse"></i>
                   </span>
               </h6>
-            <h3 class="section-subheading text-muted" style="margin-bottom: 30px;font-family: 'cwTeXHei', 'Jeju Hallasan', serif;">관련 여행지</h3>
+            <h3 class="section-subheading" style="margin-bottom: 30px;font-family: 'cwTeXHei', 'Noto Sans KR', serif;">관련 여행지</h3>
             <!--<tenping class="adsbytenping" style="width: 100%; margin: 0px auto; display: block; max-width: 580px;" tenping-ad-client="ULkZYhHDonqxNgJx%2bd2t5XgWCcx0QUdnsdGDbY1yMIshP4q34efQL0ddArqjWnF3" tenping-ad-display-type="UD8Mia8gyIoT5Z2MT6VB3Q%3d%3d"></tenping><script async src='//ads.tenping.kr/scripts/adsbytenping.min.js' ></script>-->
             <div>
               <th:block th:if="${destination_similar_info != null}">
@@ -864,7 +864,7 @@
 
                             </a>
 
-                            <h6 th:text="${doc.titleshort}" style="font-family: 'cwTeXHei', 'Jeju Hallasan', serif;"></h6>
+                            <h6 th:text="${doc.titleshort}" style="font-family: 'cwTeXHei', 'Noto Sans KR', serif;"></h6>
                             <div class="text-left">
                               <small class="text-muted" th:text="${doc.overviewshort}"></small>
                             </div>
@@ -900,7 +900,7 @@
 
         <div class="row">
           <div class="col-md-6 mx-auto text-center">
-            <span class="copyright" style="font-family: 'cwTeXHei', 'Jeju Hallasan', serif;">Copyright &copy; 2018 GeoGiGaNi All Rights Reserved.</span>
+            <span class="copyright" style="font-family: 'cwTeXHei', 'Noto Sans KR', serif;">Copyright &copy; 2018 GeoGiGaNi All Rights Reserved.</span>
           </div>
         </div>
       </div>

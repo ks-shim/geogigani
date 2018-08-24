@@ -20,7 +20,7 @@
     <link th:href='@{https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700}' rel='stylesheet' type='text/css'/>
 
     <link rel="stylesheet" th:href="@{https://fonts.googleapis.com/earlyaccess/cwtexhei.css}" type="text/css">
-    <link rel="stylesheet" th:href="@{https://fonts.googleapis.com/earlyaccess/jejuhallasan.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{https://fonts.googleapis.com/earlyaccess/notosanskr.css}" type="text/css">
 
     <!-- Custom styles for this template -->
     <link th:href="@{/css/agency.min.css}" rel="stylesheet"/>
@@ -34,7 +34,7 @@
       {color: #dd3806;}
 
       BODY {
-         font-family:  'cwTeXHei', 'Jeju Hallasan', serif;
+         font-family:  'cwTeXHei', 'Noto Sans KR', serif;
       }
 
  img:not([src]) {
@@ -58,7 +58,7 @@
         <div class="modal-header" style="background-color:#dd3806;border: 1px solid #555555 !important;">
           <div class="row">
             <h3><i class="fa fa-map-marker fa-fw" style="color:white;"></i></h3>
-            <h3 th:text="${region_name}" style="color:white;font-family: 'cwTeXHei', 'Jeju Hallasan', serif;"></h3>
+            <h3 th:text="${region_name}" style="color:white;font-family: 'cwTeXHei', 'Noto Sans KR', serif;"></h3>
           </div>
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         </div>
@@ -102,7 +102,7 @@
 
                                   </a>
 
-                                  <h6 th:text="${doc.titleshort}" style="font-family: 'cwTeXHei', 'Jeju Hallasan', serif;"></h6>
+                                  <h6 th:text="${doc.titleshort}" style="font-family: 'cwTeXHei', 'Noto Sans KR', serif;"></h6>
                                   <div class="text-left">
                                     <small class="text-muted" th:utext="${doc.overviewshort}"></small>
                                   </div>
