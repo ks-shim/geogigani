@@ -114,7 +114,7 @@ public class LocationDataService {
         if (cachedTravelData != null) return cachedTravelData;
 
         // 4. If cached data doesn't exist, search from lucene
-        SearchResult result = searchingExecutor.search(
+        SearchResult result = searchingExecutor.searchById(
                 fieldToGetForPopularLocations,
                 fieldToSearchForPopularLocations,
                 ids,
@@ -183,7 +183,7 @@ public class LocationDataService {
         if(sb.length() == 0) return new ArrayList<>();
 
         // 3. search
-        SearchResult result = searchingExecutor.search(
+        SearchResult result = searchingExecutor.searchById(
                 fieldToGetTopNLocationsByAreaCode,
                 fieldToSearchTopNLocationsByAreaCode,
                 sb.toString(),
@@ -350,7 +350,7 @@ public class LocationDataService {
     public TravelData getLocationDetail(String locationId,
                                         boolean skipScoring) throws Exception {
 
-        SearchResult result = searchingExecutor.search(
+        SearchResult result = searchingExecutor.searchById(
                 fieldToGetForLocationDetail,
                 fieldToSearchForLocationDetail,
                 locationId,
@@ -454,7 +454,7 @@ public class LocationDataService {
 
     public List<TravelData> getSimilarLocations(String locationId) throws Exception {
         // 1. get keywords data of the location ...
-        SearchResult result = searchingExecutor.search(
+        SearchResult result = searchingExecutor.searchById(
                 fieldToGetForSimilarLocations1,
                 fieldToSearchForSimilarLocations1,
                 locationId,
@@ -517,7 +517,7 @@ public class LocationDataService {
     };
     public List<TravelData> getShortDistanceLocations(String locationId) throws Exception {
         // 1. get keywords data of the location ...
-        SearchResult result = searchingExecutor.search(
+        SearchResult result = searchingExecutor.searchById(
                 fieldToGetForShortDistanceLocations1,
                 fieldToSearchForShortDistanceLocations1,
                 locationId,

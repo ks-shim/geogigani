@@ -1,15 +1,11 @@
 package dwayne.shim.geogigani.searching;
 
 import dwayne.shim.geogigani.common.analyzer.NGramAnalyzer;
-import dwayne.shim.geogigani.common.data.TravelData;
 import dwayne.shim.geogigani.common.indexing.TravelDataIndexField;
 import dwayne.shim.geogigani.common.searching.LuceneResultField;
 import lombok.extern.log4j.Log4j2;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.cjk.CJKAnalyzer;
-import org.apache.lucene.analysis.core.KeywordAnalyzer;
-import org.apache.lucene.analysis.core.SimpleAnalyzer;
-import org.apache.lucene.analysis.core.WhitespaceAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.LatLonDocValuesField;
@@ -34,6 +30,7 @@ public class SearchingExecutor {
     private IndexWriter indexWriter;
 
     private final Analyzer analyzer;
+    private final Analyzer analyzerForId;
     private final double bufferSize;
 
     private final Object lock = new Object();
@@ -50,6 +47,7 @@ public class SearchingExecutor {
         // 1. Initialize ...
         this.bufferSize = bufferSize;
         this.analyzer = new NGramAnalyzer();
+        this.analyzerForId = new StandardAnalyzer();
 
         try {
             init(indexDirectoryLocation);
@@ -164,9 +162,19 @@ public class SearchingExecutor {
     public SearchResult search(String[] fieldsToGet,
                                String[] fieldsToSearch,
                                String keywords,
-                               int resultLimt) throws Exception {
+                               int resultLimit) throws Exception {
 
-        return search(fieldsToGet, buildBoolQuery(fieldsToSearch, keywords).build(), resultLimt);
+        return search(fieldsToGet, buildBoolQuery(fieldsToSearch, keywords).build(), resultLimit);
+    }
+
+    public SearchResult searchById(String[] fieldsToGet,
+                                   String[] fieldsToSearch,
+                                   String ids,
+                                   int resultLimit) throws Exception {
+
+        QueryParser parser = new MultiFieldQueryParser(fieldsToSearch, analyzerForId);
+        Query query = parser.parse(ids);
+        return search(fieldsToGet, query, resultLimit);
     }
 
     public SearchResult search(String[] fieldsToGet,

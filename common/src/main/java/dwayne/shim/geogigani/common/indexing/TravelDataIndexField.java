@@ -11,13 +11,13 @@ public enum TravelDataIndexField {
     CONTENT_ID("contentid") {
         @Override
         public Field buildField(String value) {
-            return new TextField(label(), value, Field.Store.YES);
+            return new StringField(label(), value, Field.Store.YES);
         }
     },
     CONTENT_TYPE_ID("contenttypeid") { // 12 관광지, 14 문화시설, 15 축제공연행사, 25 여행코스, 28 레포츠, 32 숙박, 38 쇼핑, 39 음식점
         @Override
         public Field buildField(String value) {
-            return new TextField(label(), value, Field.Store.YES);
+            return new StringField(label(), value, Field.Store.YES);
         }
     },
     TITLE("title") {
@@ -89,19 +89,19 @@ public enum TravelDataIndexField {
     FIRST_IMAGE("firstimage") {
         @Override
         public Field buildField(String value) {
-            return new TextField(label(), value, Field.Store.YES);
+            return new StringField(label(), value, Field.Store.YES);
         }
     },
     FIRST_IMAGE2("firstimage2") {
         @Override
         public Field buildField(String value) {
-            return new TextField(label(), value, Field.Store.YES);
+            return new StringField(label(), value, Field.Store.YES);
         }
     },
     HOMEPAGE("homepage") {
         @Override
         public Field buildField(String value) {
-            return new TextField(label(), value, Field.Store.YES);
+            return new StringField(label(), value, Field.Store.YES);
         }
     },
     AREA_CODE("areacode") {
