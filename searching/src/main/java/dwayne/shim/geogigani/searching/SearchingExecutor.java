@@ -1,5 +1,6 @@
 package dwayne.shim.geogigani.searching;
 
+import dwayne.shim.geogigani.common.analyzer.NGramAnalyzer;
 import dwayne.shim.geogigani.common.data.TravelData;
 import dwayne.shim.geogigani.common.indexing.TravelDataIndexField;
 import dwayne.shim.geogigani.common.searching.LuceneResultField;
@@ -48,7 +49,7 @@ public class SearchingExecutor {
 
         // 1. Initialize ...
         this.bufferSize = bufferSize;
-        this.analyzer = new CJKAnalyzer();
+        this.analyzer = new NGramAnalyzer();
 
         try {
             init(indexDirectoryLocation);

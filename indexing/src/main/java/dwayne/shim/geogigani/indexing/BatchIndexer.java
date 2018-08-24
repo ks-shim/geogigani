@@ -1,5 +1,6 @@
 package dwayne.shim.geogigani.indexing;
 
+import dwayne.shim.geogigani.common.analyzer.NGramAnalyzer;
 import dwayne.shim.geogigani.common.indexing.TravelDataIndexField;
 import org.apache.lucene.analysis.cjk.CJKAnalyzer;
 import org.apache.lucene.analysis.core.KeywordAnalyzer;
@@ -32,7 +33,7 @@ public class BatchIndexer implements Closeable {
 
         try {
             Directory directory = FSDirectory.open(Paths.get(outDirectory));
-            IndexWriterConfig config = new IndexWriterConfig(new CJKAnalyzer());
+            IndexWriterConfig config = new IndexWriterConfig(new NGramAnalyzer());
 
             config.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
             config.setRAMBufferSizeMB(bufferSize);
