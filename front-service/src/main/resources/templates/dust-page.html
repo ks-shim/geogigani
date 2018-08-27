@@ -254,6 +254,11 @@
     </div>
     <!-- /.modal -->
 
+
+
+    <!-- kakao -->
+    <script th:src="@{https://developers.kakao.com/sdk/js/kakao.min.js}"></script>
+
     <!-- Bootstrap core JavaScript -->
     <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
     <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
@@ -274,6 +279,44 @@
     <!--<script th:inline="javascript">
         new LazyLoad();
     </script>-->
+
+    <script th:inline="javascript">
+      function sendLink(title, img, url) {
+          var img_url = img.startsWith("http") ? '' : 'https://www.geogigani.com';
+          img_url = img_url + img;
+
+          sendLinkIn(title, img_url, 'https://www.geogigani.com' + url);
+      }
+
+      //<![CDATA[
+        // // 사용할 앱의 JavaScript 키를 설정해 주세요.
+        Kakao.init('883a7ac41344384b003e3b226f1ee346');
+        // // 카카오링크 버튼을 생성합니다. 처음 한번만 호출하면 됩니다.
+        function sendLinkIn(title, img, url) {
+          Kakao.Link.sendDefault({
+            objectType: 'feed',
+            content: {
+              title: title,
+              imageUrl: img,
+              link: {
+                mobileWebUrl: url,
+                webUrl: url
+              }
+            },
+            buttons: [
+              {
+                title: '웹으로 보기',
+                link: {
+                  mobileWebUrl: url,
+                  webUrl: url
+                }
+              }
+            ]
+          });
+        }
+      //]]>
+
+    </script>
 
     <script th:inline="javascript">
 
