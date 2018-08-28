@@ -15,6 +15,7 @@ public enum ModelField {
     LATITUDE("latitude"),
     LONGITUDE("longitude"),
 
+    STATISTICS_MAP_VALUES("statistics_map_values"),
     STATISTICS_AREA_LABELS("statistics_area_labels"),
     STATISTICS_AREA_VALUES("statistics_area_values"),
     STATISTICS_CONTENT_TYPE_LABELS("statistics_content_type_labels"),

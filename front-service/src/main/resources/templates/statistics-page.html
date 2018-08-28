@@ -28,6 +28,8 @@
     <link th:href="@{/css/loading.css}" rel="stylesheet"/>
     <link th:href="@{/css/loading-btn.css}" rel="stylesheet"/>
 
+
+
     <style>
       .post-footer{ position: relative; bottom: 0; left: 0; right: 0; text-align: center; }
       .post-footer > li{ display: inline-block; line-height:5px; border-right: 1px solid #fff; background: #FFFFFF; }
@@ -173,6 +175,14 @@
           </div>
         </div>
 
+        <div class="row">
+          <div class="col-lg-12 text-center">
+            <div id="map-container" width="878" height="900" style="border: 1px solid #CCCCCC;"></div>
+          </div>
+        </div>
+
+        <hr />
+
         <!-- area statistics -->
         <div class="row">
           <div class="col-lg-12 text-center">
@@ -220,11 +230,6 @@
       </div>
     </footer>
 
-    <!-- Modal -->
-    <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-    </div>
-    <!-- /.modal -->
-
     <!-- Bootstrap core JavaScript -->
     <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
     <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
@@ -245,6 +250,53 @@
     <script th:src="@{/vendor/chartjs/Chart.js}"></script>
     <script th:src="@{/vendor/chartjs/Chart.min.js}"></script>
 
+    <!-- Hightcharts -->
+    <script th:src="@{/js/highmaps.js}"></script>
+    <script th:src="@{/js/kr-all.js}"></script>
+
+    <script th:inline="javascript">
+      var data = /*[[${statistics_map_values}]]*/;
+
+      // Create the chart
+      Highcharts.mapChart('map-container', {
+          chart: {
+              map: 'countries/kr/kr-all',
+              style: {
+                fontFamily: 'Noto Sans KR'
+              }
+          },
+
+          title: {
+              text: '지역별 인기도(map)'
+          },
+
+          mapNavigation: {
+              enabled: true
+          },
+
+          legend: {
+            enabled: false
+          },
+
+          series: [{
+              name: 'South Korea',
+              color: '#E0E0E0',
+              enableMouseTracking: false,
+          }, {
+              type: 'mapbubble',
+              name: '인기도',
+              color: '#dd3806',
+              joinBy: ['hc-key','code3'],
+              data: data,
+              minSize: 4,
+              maxSize: '12%',
+              tooltip: {
+                pointFormat: '{point.label} : {point.z}'
+              }
+          }]
+      });
+    </script>
+
     <!-- area statistics -->
     <script th:inline="javascript">
       var ctx = document.getElementById("area-statistics-chart").getContext('2d');
@@ -264,7 +316,7 @@
             legend: { display: false },
             title: {
               display: true,
-              text: '지역별 인기도'
+              text: '지역별 인기도(bar chart)'
             }
           }
       });

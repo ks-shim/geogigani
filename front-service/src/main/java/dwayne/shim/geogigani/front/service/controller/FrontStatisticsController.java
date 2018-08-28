@@ -1,5 +1,6 @@
 package dwayne.shim.geogigani.front.service.controller;
 
+import dwayne.shim.geogigani.common.code.AreaCode;
 import dwayne.shim.geogigani.front.service.constants.ModelField;
 import dwayne.shim.geogigani.front.service.model.IdFreq;
 import dwayne.shim.geogigani.front.service.service.FrontStatisticsService;
@@ -8,10 +9,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import sun.misc.resources.Messages_pt_BR;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Log4j2
 @Controller
@@ -62,6 +66,9 @@ public class FrontStatisticsController {
         model.addAttribute(ModelField.STATISTICS_SESSION_COUNT_LABELS.label(), sessionLabelList);
         model.addAttribute(ModelField.STATISTICS_SESSION_COUNT_VALUES.label(), sessionCountList);
 
+        // 5. make map chart data
+        model.addAttribute(ModelField.STATISTICS_MAP_VALUES.label(), asMapChartData(areaResultList));
+
         return "statistics-page";
     }
 
@@ -74,4 +81,24 @@ public class FrontStatisticsController {
         }
     }
 
+    private List<Map<String, Object>> asMapChartData(List<IdFreq> idFreqList) {
+        List<Map<String, Object>> dataList = new ArrayList<>();
+        for(IdFreq idFreq : idFreqList) {
+            try {
+                String areaLabel = idFreq.getId(); // should be 'label'
+                int count = (int) idFreq.getFreq(); // should be 'z'
+                String code3 = AreaCode.getAreaCodeByLabel(areaLabel).code3();
+
+                Map<String, Object> dataMap = new HashMap<>();
+                dataMap.put("code3", code3);
+                dataMap.put("z", count);
+                dataMap.put("label", areaLabel);
+                dataList.add(dataMap);
+            } catch (Exception e) {
+                continue;
+            }
+        }
+
+        return dataList;
+    }
 }
