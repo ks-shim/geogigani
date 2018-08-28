@@ -153,7 +153,7 @@
           <div class="intro-heading text-uppercase" style="font-family: 'cwTeXHei', 'Noto Sans KR', serif;">거기가니?</div>
           <form id="search_form_header" role="form" th:action="@{/search-destinations}" method="get">
             <div class="form-group">
-              <div class="input-group" s>
+              <div class="input-group">
                 <input id="keywords-header" name="keywords" style="border-color: #555555;opacity: .75;font-family: 'Noto Sans KR', serif;" type="text" class="form-control" placeholder="" th:onkeypress="'javascript:if(event.keyCode==13) {search_header(); return false;}'"/>
                 <div class="input-group-append">
                   <button type="button" class="btn btn-block" style="fon-size: 18px;border-color: #555555;background-color: #aaaaaa;opacity: .65;" th:onclick="'javascript:search_header();'">
@@ -183,7 +183,25 @@
                 <i class="fa fa-user fa-stack-1x fa-inverse"></i>
               </span>
             </h6>
-            <h3 class="section-subheading" style="margin-bottom: 30px;font-family: 'cwTeXHei', 'Noto Sans KR', serif;">맞춤 여행지</h3>
+            <h3 class="section-subheading" style="margin-bottom: 20px;font-family: 'cwTeXHei', 'Noto Sans KR', serif;">맞춤 여행지</h3>
+
+            <div class="row" style="display:flex;margin-left:auto; margin-right:auto; padding-top:0.2rem; padding-bottom:0.2rem; padding-left:0.3rem;padding-right:0.3rem;border: 1px solid #777; max-width:400px; background-color:#333;">
+              <div style="width:50px; height:50px;">
+                <a href="https://www.gongochatni.com" target="_blank">
+                  <img th:src="${'/img/logos/gonggochatni_icon_48x48.png'}"/>
+                </a>
+              </div>
+              <div class="text-left" style="height:40px;margin-left:10px;font-size:13px;padding-top:5px;">
+                <a href="https://www.gongochatni.com" target="_blank" style="color:white;">
+                  <text>[똑똑한 취업 도우미]</text><br/>
+                  <text>나와 맞는 채용공고 추천</text>
+                </a>
+              </div>
+            </div>
+            <div class="row" style="margin-bottom:10px;">
+
+            </div>
+
             <!--<tenping class="adsbytenping" style="width: 100%; margin: 0px auto; display: block; max-width: 580px;" tenping-ad-client="ULkZYhHDonqxNgJx%2bd2t5XgWCcx0QUdnsdGDbY1yMIshP4q34efQL0ddArqjWnF3" tenping-ad-display-type="UD8Mia8gyIoT5Z2MT6VB3Q%3d%3d"></tenping><script async src='//ads.tenping.kr/scripts/adsbytenping.min.js' ></script>-->
             <div>
               <th:block th:if="${destination_interest_info != null}">
@@ -291,7 +309,25 @@
                 <i class="fa fa-group fa-stack-1x fa-inverse"></i>
               </span>
             </h6>
-            <h3 class="section-subheading" style="margin-bottom: 30px;font-family: 'Noto Sans KR', serif;">인기 여행지</h3>
+            <h3 class="section-subheading" style="margin-bottom: 20px;font-family: 'Noto Sans KR', serif;">인기 여행지</h3>
+
+            <div class="row" style="display:flex;margin-left:auto; margin-right:auto; padding-top:0.2rem; padding-bottom:0.2rem; padding-left:0.3rem;padding-right:0.3rem;border: 1px solid #777; max-width:400px; background-color:#333;">
+              <div style="width:50px; height:50px;">
+                <a href="https://www.gongochatni.com" target="_blank">
+                  <img th:src="${'/img/logos/gonggochatni_icon_48x48.png'}"/>
+                </a>
+              </div>
+              <div class="text-left" style="height:40px;margin-left:10px;font-size:13px;padding-top:5px;">
+                <a href="https://www.gongochatni.com" target="_blank" style="color:white;">
+                  <text>[똑똑한 취업 도우미]</text><br/>
+                  <text>나와 맞는 채용공고 추천</text>
+                </a>
+              </div>
+            </div>
+            <div class="row" style="margin-bottom:10px;">
+
+            </div>
+
             <!--<tenping class="adsbytenping" style="width: 100%; margin: 0px auto; display: block; max-width: 580px;" tenping-ad-client="ULkZYhHDonqxNgJx%2bd2t5XgWCcx0QUdnsdGDbY1yMIshP4q34efQL0ddArqjWnF3" tenping-ad-display-type="UD8Mia8gyIoT5Z2MT6VB3Q%3d%3d"></tenping><script async src='//ads.tenping.kr/scripts/adsbytenping.min.js' ></script>-->
             <div>
               <th:block th:if="${destination_info != null}">

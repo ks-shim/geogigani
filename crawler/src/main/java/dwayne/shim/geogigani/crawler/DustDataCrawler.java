@@ -115,7 +115,7 @@ public class DustDataCrawler {
         int nodeLen = nodeList.getLength();
         if(nodeLen <= 0) return;
 
-        Map<String, Map<String, String>> regionDustMap = new HashMap();
+        Map<String, Map<String, String>> regionDustMap = new TreeMap<>();
 
         // 2. traverse all item nodes ...
         for(int i=0; i<nodeLen; i++) {
