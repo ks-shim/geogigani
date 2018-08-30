@@ -11,8 +11,8 @@ public class DustData {
     public enum DustStatus {
         GOOD("좋음", "#337ab7", 1),
         NORMAL("보통", "#5cb85c", 0),
-        BAD("나쁨", "#f0ad4e", -1),
-        VERY_BAD("매우나쁨", "#d9534f", -2);
+        BAD("나쁨", "#f0ad4e", -2),
+        VERY_BAD("매우나쁨", "#d9534f", -4);
 
         private String label;
         private String color;
