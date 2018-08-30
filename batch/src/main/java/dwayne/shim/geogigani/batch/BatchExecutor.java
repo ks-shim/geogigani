@@ -64,7 +64,6 @@ public class BatchExecutor {
             prop.load(in);
         }
 
-
         final String appName = "geogigani";
         final String osName = "AND";
         String authKey = prop.getProperty("tourapi.authkey");

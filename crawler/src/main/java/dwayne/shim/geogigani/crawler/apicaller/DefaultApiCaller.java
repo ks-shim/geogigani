@@ -60,6 +60,26 @@ public class DefaultApiCaller implements ApiCaller {
     }
 
     @Override
+    public String callAsGet(String url, Map<String, String> headerMap) throws Exception {
+
+        HttpGet httpGet = new HttpGet(url);
+
+        RequestConfig config = RequestConfig.custom()
+                .setSocketTimeout(30000)
+                .setConnectTimeout(30000)
+                .setConnectionRequestTimeout(30000)
+                .build();
+
+        httpGet.setConfig(config);
+
+        for(String key : headerMap.keySet())
+            httpGet.addHeader(key, headerMap.get(key));
+
+        String responseBody = httpClient.execute(httpGet, responseHandler);
+        return responseBody;
+    }
+
+    @Override
     public void close() {
         try {
             if(httpClient != null) httpClient.close();
