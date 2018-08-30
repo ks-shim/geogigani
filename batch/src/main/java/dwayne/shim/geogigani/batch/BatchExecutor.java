@@ -1,20 +1,44 @@
 package dwayne.shim.geogigani.batch;
 
+import dwayne.shim.geogigani.common.indexing.TravelDataIndexField;
 import dwayne.shim.geogigani.core.keyword.KeywordExtractor;
 import dwayne.shim.geogigani.crawler.TravelDataCrawler;
 import dwayne.shim.geogigani.crawler.apicaller.ApiCaller;
 import dwayne.shim.geogigani.crawler.apicaller.DefaultApiCaller;
 import dwayne.shim.geogigani.indexing.IndexingExecutor;
+import lombok.extern.log4j.Log4j2;
+import org.apache.commons.io.FileDeleteStrategy;
 import org.apache.commons.lang3.StringUtils;
+import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.util.HashSet;
-import java.util.Properties;
-import java.util.Set;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
+@Log4j2
 public class BatchExecutor {
+
+    public void executeStepInit(String locationDataDir) throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+        String today = dateFormat.format(new Date());
+
+        for(File file : new File(locationDataDir).listFiles()) {
+            try {
+                Map<String, Object> docMap = objectMapper.readValue(file, Map.class);
+                Object value = docMap.get(TravelDataIndexField.EVENT_END_DATE.label());
+                if (value == null) continue;
+                String dateValue = String.valueOf(value);
+                if (dateValue.length() != 8) continue;
+                if (today.compareTo(dateValue) < 1) continue;
+
+                FileDeleteStrategy.FORCE.delete(file);
+                System.out.println("Deleted " + file.getName());
+            } catch (Exception e) {}
+        }
+    }
 
     public void executeStep1(String authKey,
                              String appName,
@@ -72,12 +96,17 @@ public class BatchExecutor {
 
         System.out.println("End reading properties ...");
 
+        BatchExecutor batchExecutor = new BatchExecutor();
+        //-------------------------------------------------------------------------------
+        // 2. execute batch step 0
+        //    - delete expired ones ...
+        //-------------------------------------------------------------------------------
+        batchExecutor.executeStepInit(locationDataDir);
+
         //-------------------------------------------------------------------------------
         // 2. execute batch step 1
         //    - crawl location data using tour-api
         //-------------------------------------------------------------------------------
-        BatchExecutor batchExecutor = new BatchExecutor();
-
         boolean enableCrawling = Boolean.parseBoolean(prop.getProperty("crawl.enable"));
         if(enableCrawling) {
             System.out.println("\n\nStart executing step-1 ...");
