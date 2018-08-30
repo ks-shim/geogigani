@@ -9,16 +9,18 @@ import java.util.*;
 public class DustData {
 
     public enum DustStatus {
-        GOOD("좋음", "#337ab7"),
-        NORMAL("보통", "#5cb85c"),
-        BAD("나쁨", "#f0ad4e"),
-        VERY_BAD("매우나쁨", "#d9534f");
+        GOOD("좋음", "#337ab7", 1),
+        NORMAL("보통", "#5cb85c", 0),
+        BAD("나쁨", "#f0ad4e", -1),
+        VERY_BAD("매우나쁨", "#d9534f", -2);
 
         private String label;
         private String color;
-        private DustStatus(String _label, String _color) {
+        private int score;
+        private DustStatus(String _label, String _color, int _score) {
             label = _label;
             color = _color;
+            score = _score;
         }
 
         public String label() {
@@ -35,6 +37,21 @@ public class DustData {
             }
 
             throw new IllegalStateException(_label + " isn't valid status.");
+        }
+
+        public static DustStatus asColor(String... _labels) {
+            int totalScore = 0;
+            for(String _label : _labels) {
+                if(_label == null || _label.isEmpty()) continue;
+
+                DustStatus ds = getDustStatusByLabel(_label);
+                totalScore += ds.score;
+            }
+
+            for(DustStatus ds : values())
+                if(totalScore >= ds.score) return ds;
+
+            return VERY_BAD;
         }
     }
 

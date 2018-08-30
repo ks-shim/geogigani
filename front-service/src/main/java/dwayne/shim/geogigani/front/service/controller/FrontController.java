@@ -6,6 +6,7 @@ import dwayne.shim.geogigani.common.util.LocationDistance;
 import dwayne.shim.geogigani.front.service.constants.ModelField;
 import dwayne.shim.geogigani.front.service.model.Destination1DepthInfo;
 import dwayne.shim.geogigani.front.service.model.Destination2DepthInfo;
+import dwayne.shim.geogigani.front.service.model.IdFreq;
 import dwayne.shim.geogigani.front.service.service.FrontService;
 import org.apache.lucene.geo.GeoUtils;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -48,8 +50,45 @@ public class FrontController {
 
         DustData dustData = frontService.getDustData();
         model.addAttribute(ModelField.DUST_INFO.label(), dustData.isEmpty() ? null : dustData);
-
+        model.addAttribute(ModelField.DUST_MAP_INFO.label(), asMapChartData(dustData.getRegionDustDataList()));
         return "dust-page";
+    }
+
+    private List<Map<String, Object>> asMapChartData(List<Map<String, String>> regionDustMap) {
+        Map<String, Map<String, Object>> dataMap = new HashMap();
+        if(regionDustMap == null) return new ArrayList<>();
+
+        for(Map<String, String> dustMap : regionDustMap) {
+            try {
+                String regionName = dustMap.get("regionname");
+                String regionCode = dustMap.get("regioncode");
+                String pm10status = dustMap.get("pm10status");
+                String pm25status = dustMap.get("pm25status");
+                String o3status = dustMap.get("o3status");
+
+                AreaCode ac = AreaCode.getBaseAreaCodeByLabel(regionName);
+                regionName = ac.label();
+                String code3 = ac.code3();
+
+                // read existing data like '경기북부' & '경기남부' = '경기도'
+                // merge '경기북부' and '경기남부'
+                Map<String, Object> oldDataMap = dataMap.get(regionName);
+                String oldStatus = oldDataMap == null ? null : (String)oldDataMap.get("status");
+                DustData.DustStatus ds = DustData.DustStatus.asColor(pm10status, pm25status, o3status, oldStatus);
+
+                Map<String, Object> oneDataMap = new HashMap<>();
+                oneDataMap.put("hc-key", code3);
+                oneDataMap.put("color", ds.color());
+                oneDataMap.put("status", ds.label());
+                oneDataMap.put("regioncode", regionCode);
+                oneDataMap.put("regionname", regionName);
+                dataMap.put(regionName, oneDataMap);
+            } catch (Exception e) {
+                continue;
+            }
+        }
+
+        return new ArrayList<>(dataMap.values());
     }
 
     @RequestMapping(value = {"/region-based-destinations/{areaCode}"}, produces = "application/json; charset=utf8", method = {RequestMethod.GET})

@@ -214,6 +214,12 @@
         </div>
 
         <div class="row">
+          <div class="col-lg-12 text-center">
+            <div id="map-container" width="878" height="900" style="border: 1px solid #CCCCCC;"></div>
+          </div>
+        </div>
+
+        <div class="row" style="margin-top:20px;">
           <th:block th:if="${dust_info != null}">
             <div class="col-lg-12 text-center">
               <table class="table table-bordered">
@@ -298,6 +304,62 @@
     <!--<script th:inline="javascript">
         new LazyLoad();
     </script>-->
+
+    <!-- Hightcharts -->
+    <script th:src="@{/js/highmaps.js}"></script>
+    <script th:src="@{/js/kr-all.js}"></script>
+
+    <script th:inline="javascript">
+      var data = /*[[${dust_map_info}]]*/;
+
+      // Create the chart
+      Highcharts.mapChart('map-container', {
+          chart: {
+              map: 'countries/kr/kr-all',
+              style: {
+                fontFamily: 'Noto Sans KR'
+              }
+          },
+
+          title: {
+              text: '미세먼지 정보(map)'
+          },
+
+          mapNavigation: {
+              enabled: true
+          },
+
+          legend: {
+            enabled: false
+          },
+
+          plotOptions: {
+                series: {
+                    point: {
+                        events: {
+                            click: function (e) {
+                                show_region(e.point.regioncode);
+                            }
+                        }
+                    }
+                }
+            },
+
+          series: [{
+              name: '미세먼지',
+              color: '{point.color}',
+              data: data,
+              enableMouseTracking: true,
+              tooltip: {
+                pointFormat: '{point.regionname} : {point.status}'
+              },
+              dataLabels: {
+                enabled: true,
+                format: '{point.regionname}'
+              }
+          }]
+      });
+    </script>
 
     <script th:inline="javascript">
       function sendLink(title, img, url) {

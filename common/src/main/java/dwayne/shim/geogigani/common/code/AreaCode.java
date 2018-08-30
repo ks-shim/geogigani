@@ -69,6 +69,18 @@ public enum AreaCode {
         throw new RuntimeException("Label (" + _label + ") doesn't exist ...");
     }
 
+    public static AreaCode getBaseAreaCodeByLabel(String _label) {
+        for(AreaCode areaCode : values()) {
+            if (!areaCode.label.equals(_label)) continue;
+
+            if(areaCode == KYUNGGI_NAMBU || areaCode == KYUNGGI_BUKBU) return KYUNGGI;
+            else if(areaCode == KANGWON_WEST || areaCode == KANGWON_EAST) return KANGWON;
+            else return areaCode;
+        }
+
+        throw new RuntimeException("Label (" + _label + ") doesn't exist ...");
+    }
+
     public static void isValid(String _code) {
         if(_code == null || _code.trim().isEmpty()) throw new NullPointerException();
 
