@@ -17,6 +17,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Log4j2
 @RestController
@@ -165,6 +166,20 @@ public class LocationDataController {
                     userId, result.getInfoMap(), fieldsForUserKeywords);
         } catch (Exception e) {
             result = TravelData.dummyTravelData(locationId);
+        }
+
+        return new ResponseEntity(result, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = {"/blog/{locationId}"}, produces = "application/json; charset=utf8", method = {RequestMethod.GET})
+    public ResponseEntity<List<Map<String, String>>> getLocationBlog(@PathVariable(value = "locationId") String locationId) {
+
+        List<Map<String, String>> result;
+        try {
+            // 1. get location detail data ...
+            result = locationDataService.getLocationBlog(locationId);
+        } catch (Exception e) {
+            result = new ArrayList<>();
         }
 
         return new ResponseEntity(result, HttpStatus.OK);

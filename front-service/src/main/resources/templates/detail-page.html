@@ -68,6 +68,22 @@
 			}
 		}
 
+      blockquote {
+          padding-top: 0px;
+          padding-bottom: 0px;
+          padding-left:10px;
+          padding-right:0px;
+          margin: 0 0 20px;
+          font-size: 17.5px;
+          border-left: 5px solid #28a745;;
+      }
+
+      p {
+        line-height: 1.3;
+        font-size: 13px;
+        margin-top: 0.4rem;
+        margin-bottom: 0.4rem;
+      }
     </style>
   </head>
 
@@ -193,12 +209,15 @@
                       </a>
                     </div>
                   </div>
+
                   <div class="row" style="margin-bottom:10px;">
 
                   </div>
 
                   <hr/>
+
                   <img class="img-fluid d-block mx-auto" th:src="${(destination_detail_info.firstimage != null) ? destination_detail_info.firstimage : '/img/no_image_available.png'}" th:alt="${destination_detail_info.title}"/>
+
                   <hr/>
                   <th:block th:if="${destination_detail_info.mapy != null && destination_detail_info.mapx != null}">
                     <iframe th:src="'https://maps.google.com/maps?q=' + ${destination_detail_info.mapy} + ' , ' + ${destination_detail_info.mapx} + '&iwloc=&ie=UTF8&z=15&output=embed'" width="100%" height="300" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
@@ -207,6 +226,24 @@
 
                   <small th:utext="${destination_detail_info.overview}"></small>
                   <hr/>
+
+                  <!-- blog -->
+                  <th:block th:if="${destination_blog_info != null}">
+                    <div class="row" style="display:flex; flex-direction:column;margin-left:auto; margin-right:auto;">
+                      <h6 class="fa fa-camera" style="color:#000;font-weight:bold;"> 관련 블로그</h6>
+
+                        <blockquote th:each="blog,iterStat : ${destination_blog_info}">
+                          <div style="border: 1px solid #eee;padding-left:10px;padding-right:10px;">
+                            <p style="font-size:16px;"><a th:href="${blog.link}" th:utext="${blog.title}" target="_blank" style="color:#333;"></a></p>
+                            <p style="color:#888;" th:utext="${blog.description}"></p>
+                            <p style="color:#ccc;" th:utext="'Posted on ' + ${blog.postdate}"></p>
+                          </div>
+                        </blockquote>
+                    </div>
+
+                    <hr/>
+                  </th:block>
+
                   <div class="text-right">
                     <a th:href="'https://search.naver.com/search.naver?where=nexearch&sm=tab_jum&query=' + ${destination_detail_info.title}" target="_blank">
                       <button class="btn btn-success btn-sm" style="font-family: 'cwTeXHei', 'Noto Sans KR', serif;"><i class="fa fa-search"></i><small> 네이버 검색</small></button>

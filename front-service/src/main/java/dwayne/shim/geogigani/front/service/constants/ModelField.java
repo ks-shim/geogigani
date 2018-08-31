@@ -5,6 +5,7 @@ public enum ModelField {
     DESTINATION_INFO("destination_info"),
     DESTINATION_ADD_INFO("destination_add_info"),
     DESTINATION_DETAIL_INFO("destination_detail_info"),
+    DESTINATION_BLOG_INFO("destination_blog_info"),
     DESTINATION_SIMILAR_INFO("destination_similar_info"),
     DESTINATION_IN5KM_INFO("destination_in5km_info"),
     DESTINATION_IN10KM_INFO("destination_in10km_info"),

@@ -12,10 +12,12 @@ import org.apache.commons.collections4.map.LRUMap;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.store.Directory;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -49,11 +51,17 @@ public class LocationDataService {
     @Value("${location.snapshot.dir}")
     private String locationSnapshotDir;
 
+    @Value("${location.blog.dir}")
+    private String locationBlogDir;
+
     private final IdWeightStorage locationStorage;
 
     private final SearchingExecutor searchingExecutor;
 
     private final LRUMap<Object, List<TravelData>> cache;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     public LocationDataService(SearchingExecutor searchingExecutor,
                                IdWeightStorage locationStorage) throws Exception {
@@ -361,6 +369,20 @@ public class LocationDataService {
         if(!skipScoring && result.getTotalHits() > 0) locationStorage.click(locationId);
 
         return new TravelData(locationStorage.getSnapshot(locationId), result.mapAt(0));
+    }
+
+    public List<Map<String, String>> getLocationBlog(String locationId) throws Exception {
+        File dir = new File(locationBlogDir);
+        File targetFile = new File(dir, locationId);
+        if(!targetFile.exists()) return new ArrayList<>();
+
+        try {
+            Map<String, Object> docMap = objectMapper.readValue(targetFile, Map.class);
+            List<Map<String, String>> itemList = (List)docMap.get("items");
+            return itemList;
+        } catch (Exception e) {
+            return new ArrayList<>();
+        }
     }
 
     //***************************************************************************************

@@ -129,6 +129,15 @@ public class FrontController {
         List<Destination2DepthInfo> shortDistResult = frontService.getShortDistanceDestinations(destId);
         model.addAttribute(ModelField.DESTINATION_IN10KM_INFO.label(), shortDistResult.size() == 0 ? null : shortDistResult);
 
+        Map<String, String> docMap = new HashMap<>();
+        docMap.put("title", "[<b>경기도</b>광주 쌀국수] 백종원... 퇴촌 포사이 쌀국수 월남<b>쌈도</b> 굿굿");
+        docMap.put("link", "http://blog.naver.com/syjr0118?Redirect=Log&amp;logNo=221299211697");
+        docMap.put("description", "<b>경기도</b> 광주 퇴촌에 포사이 쌀국수입니다!!! 여기는 백종원의 3대천왕에 나오기 전에도 워낙 인기가... 아주 맛있게 먹고왔습니다~~~ 영업시간 평일_ 10:00 ~ 20:30 주말_ 10:00 ~ 20:00 주소 <b>경기도</b> 광주시 퇴촌면... ");
+        docMap.put("postdate", "20180615");
+        List<Map<String, String>> list = new ArrayList<>();
+        list.add(docMap);
+        model.addAttribute(ModelField.DESTINATION_BLOG_INFO.label(), list);
+
         return "detail-page";
     }
 
