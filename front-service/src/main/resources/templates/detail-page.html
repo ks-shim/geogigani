@@ -230,18 +230,19 @@
                   <!-- blog -->
                   <th:block th:if="${destination_blog_info != null}">
                     <div class="row" style="display:flex; flex-direction:column;margin-left:auto; margin-right:auto;">
-                      <h6 class="fa fa-camera" style="color:#000;font-weight:bold;"> 관련 블로그</h6>
+                      <h6 class="fa fa-camera" style="color:#28a745;font-weight:bold;"> 관련 NAVER 블로그</h6>
 
                         <blockquote th:each="blog,iterStat : ${destination_blog_info}">
-                          <div style="border: 1px solid #eee;padding-left:10px;padding-right:10px;">
-                            <p style="font-size:16px;"><a th:href="${blog.link}" th:utext="${blog.title}" target="_blank" style="color:#333;"></a></p>
-                            <p style="color:#888;" th:utext="${blog.description}"></p>
-                            <p style="color:#ccc;" th:utext="'Posted on ' + ${blog.postdate}"></p>
+                          <div style="border: 1px dashed #ccc;padding-left:10px;padding-right:10px;">
+                            <p style="font-size:14px;"><a th:href="${blog.link}" th:utext="${blog.title}" target="_blank" style="color:#111;"></a></p>
+                            <hr style="margin-top:0.2rem;margin-bottom:0.2rem;"/>
+                            <p style="color:#999;" th:utext="${blog.description}"></p>
+                            <p style="color:#ccc;" th:utext="'Posted on ' + ${blog.postdate}" class="text-right"></p>
                           </div>
                         </blockquote>
                     </div>
 
-                    <hr/>
+                    <hr style="margin-top:0.1rem;margin-bottom:0.8rem;"/>
                   </th:block>
 
                   <div class="text-right">

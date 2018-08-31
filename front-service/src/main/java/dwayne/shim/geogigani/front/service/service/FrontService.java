@@ -24,6 +24,9 @@ public class FrontService {
     @Value("${rest.detail}")
     private String restDetail;
 
+    @Value("${rest.blog}")
+    private String restBlog;
+
     @Value("${rest.search}")
     private String restSearch;
 
@@ -59,6 +62,22 @@ public class FrontService {
         String url = restDetail + '/' + destId + ((userId == null || userId.isEmpty()) ? "" : "?userId=" + userId + "&skipScoring=" + skipScoring);
         TravelData result = restTemplate.getForObject(url, TravelData.class);
         return asMap(result);
+    }
+
+    public List<Map<String, String>> getDestinationBlog(String destId) {
+        String url = restBlog + '/' + destId;
+        List<Map<String, String>> result = restTemplate.getForObject(url, List.class);
+        editLink(result);
+        return result;
+    }
+
+    private void editLink(List<Map<String, String>> blogList) {
+        for(Map<String, String> blog : blogList) {
+            String link = blog.get("link");
+            if(link == null) continue;
+
+            blog.put("link", link.replace("?Redirect=Log&amp;logNo=", "/"));
+        }
     }
 
     public List<Destination2DepthInfo> getSimilarDestinations(String destId) {
