@@ -186,7 +186,7 @@
           <div class="container">
             <div class="row" th:if="${destination_detail_info != null}">
               <div class="col-lg-8 mx-auto">
-                <div class="modal-body" >
+                <div class="modal-body" style="padding-bottom:0.3rem;" >
                   <!-- Project Details Go Here -->
                   <div class="text-center">
                       <span class="fa-stack fa-3x">
@@ -745,7 +745,10 @@
 
                 <!--<tenping class="adsbytenping" style="width: 100%; margin: 0px auto; display: block; max-width: 768px;" tenping-ad-client="ULkZYhHDonqxNgJx%2bd2t5XgWCcx0QUdnsdGDbY1yMIshP4q34efQL0ddArqjWnF3" tenping-ad-display-type="67%2be3LHzHbblsB9oLrOpWQ%3d%3d"></tenping><script async src='//ads.tenping.kr/scripts/adsbytenping.min.js' ></script>-->
 
-                <div class="modal-footer">
+                <div class="modal-footer" style="display:flex;justify-content:space-between;padding-top:0.3rem;">
+                  <a th:href="'javascript:sendLink(\'' + ${destination_detail_info.title} + '\',\'' + ${(destination_detail_info.firstimage2 != null) ? destination_detail_info.firstimage2 : #httpServletRequest.getContextPath() + '/img/no_image_available.png'} + '\',\'' + ${#httpServletRequest.getContextPath() + '/destination-detail/' + {destination_detail_info.contentid}} + '\')'" style="display:block;">
+                    <img src="//developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_small.png" style="width:20px; height:20px;border: 1px solid #111111;"/>
+                  </a>
                   <p class="fa fa-eye" th:text="' ' +${destination_detail_info.clickcount}"></p>
                 </div>
               </div>
