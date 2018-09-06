@@ -19,10 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("/")
@@ -111,13 +108,14 @@ public class FrontController {
         return "fragments/dust-modal :: dustBasedDestList";
     }
 
+    private final Set<String> botSet = new HashSet<>(Arrays.asList(new String[]{"googlebot", "daum", "naver"}));
     @RequestMapping(value = {"/destination-detail/{destId}"}, produces = "application/json; charset=utf8", method = {RequestMethod.GET})
     public String showDestinationDetail(Model model,
                                         HttpSession session,
                                         HttpServletRequest request,
                                         @PathVariable(value = "destId", required = true) String destId) {
         String userAgent = request.getHeader("user-agent");
-        boolean skipScoring = userAgent == null ? false : userAgent.toLowerCase().contains("googlebot") ? true : false;
+        boolean skipScoring = userAgent == null ? false : botSet.contains(userAgent.toLowerCase()) ? true : false;
 
         String userId = session.getId();
         Map<String, String> detailResult = frontService.getDestinationDetail(destId, userId, skipScoring);
