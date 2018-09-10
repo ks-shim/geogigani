@@ -108,14 +108,13 @@ public class FrontController {
         return "fragments/dust-modal :: dustBasedDestList";
     }
 
-    private final Set<String> botSet = new HashSet<>(Arrays.asList(new String[]{"googlebot", "daum", "naver"}));
     @RequestMapping(value = {"/destination-detail/{destId}"}, produces = "application/json; charset=utf8", method = {RequestMethod.GET})
     public String showDestinationDetail(Model model,
                                         HttpSession session,
                                         HttpServletRequest request,
                                         @PathVariable(value = "destId", required = true) String destId) {
         String userAgent = request.getHeader("user-agent");
-        boolean skipScoring = userAgent == null ? false : botSet.contains(userAgent.toLowerCase()) ? true : false;
+        boolean skipScoring = userAgent == null ? false : isBot(userAgent)? true : false;
 
         String userId = session.getId();
         Map<String, String> detailResult = frontService.getDestinationDetail(destId, userId, skipScoring);
@@ -131,6 +130,13 @@ public class FrontController {
         model.addAttribute(ModelField.DESTINATION_BLOG_INFO.label(), blogResult.size() == 0 ? null : blogResult);
 
         return "detail-page";
+    }
+
+    private boolean isBot(String userAgent) {
+        if(userAgent == null) return false;
+
+        userAgent = userAgent.toLowerCase();
+        return userAgent.contains("googlebot") || userAgent.contains("daum") || userAgent.contains("naver");
     }
 
     @RequestMapping(value = {"/search-destinations"}, produces = "application/json; charset=utf8", method = {RequestMethod.GET})
