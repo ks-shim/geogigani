@@ -185,6 +185,20 @@ public class LocationDataController {
         return new ResponseEntity(result, HttpStatus.OK);
     }
 
+    @RequestMapping(value = {"/youtube/{locationId}"}, produces = "application/json; charset=utf8", method = {RequestMethod.GET})
+    public ResponseEntity<List<Map<String, String>>> getLocationYoutube(@PathVariable(value = "locationId") String locationId) {
+
+        List<Map<String, String>> result;
+        try {
+            // 1. get location detail data ...
+            result = locationDataService.getLocationYoutube(locationId);
+        } catch (Exception e) {
+            result = new ArrayList<>();
+        }
+
+        return new ResponseEntity(result, HttpStatus.OK);
+    }
+
     @Scheduled(fixedRateString = "${common.inertia.interval}", initialDelayString = "${common.inertia.init-time}")
     private void applyInertia() {
         log.info("Start applying inertia ...");

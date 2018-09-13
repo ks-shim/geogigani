@@ -54,6 +54,9 @@ public class LocationDataService {
     @Value("${location.blog.dir}")
     private String locationBlogDir;
 
+    @Value("${location.youtube.dir}")
+    private String locationYouTubeDir;
+
     private final IdWeightStorage locationStorage;
 
     private final SearchingExecutor searchingExecutor;
@@ -380,6 +383,19 @@ public class LocationDataService {
             Map<String, Object> docMap = objectMapper.readValue(targetFile, Map.class);
             List<Map<String, String>> itemList = (List)docMap.get("items");
             return itemList;
+        } catch (Exception e) {
+            return new ArrayList<>();
+        }
+    }
+
+    public List<Map<String, String>> getLocationYoutube(String locationId) throws Exception {
+        File dir = new File(locationYouTubeDir);
+        File targetFile = new File(dir, locationId);
+        if(!targetFile.exists()) return new ArrayList<>();
+
+        try {
+            List<Map<String, String>> docMapList = objectMapper.readValue(targetFile, List.class);
+            return docMapList;
         } catch (Exception e) {
             return new ArrayList<>();
         }
