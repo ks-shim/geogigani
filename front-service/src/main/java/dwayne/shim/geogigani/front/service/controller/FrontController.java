@@ -129,6 +129,9 @@ public class FrontController {
         List<Map<String, String>> blogResult = frontService.getDestinationBlog(destId);
         model.addAttribute(ModelField.DESTINATION_BLOG_INFO.label(), blogResult.size() == 0 ? null : blogResult);
 
+        List<Map<String, String>> youTubeResult = frontService.getDestinationYouTube(destId);
+        model.addAttribute(ModelField.DESTINATION_YOUTUBE_INFO.label(), youTubeResult.size() == 0 ? null : youTubeResult);
+
         return "detail-page";
     }
 

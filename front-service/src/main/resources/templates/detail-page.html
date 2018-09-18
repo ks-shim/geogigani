@@ -41,6 +41,11 @@
         text-overflow: ellipsis;
       }
 
+      p {
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
       tr td{
         padding: 1 !important;
         margin: 0 !important;
@@ -200,9 +205,11 @@
 
                   <img class="img-fluid d-block mx-auto" th:src="${(destination_detail_info.firstimage != null) ? destination_detail_info.firstimage : '/img/no_image_available.png'}" th:alt="${destination_detail_info.title}"/>
 
-                  <div class="embed-responsive embed-responsive-16by9" style="margin-top:0.3rem;">
-                    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/WON56Uv1YdA?rel=0" allowfullscreen=""></iframe>
-                  </div>
+                  <th:block th:if="${destination_youtube_info != null}">
+                    <div th:each="youtube,iterStat : ${destination_youtube_info}" class="embed-responsive embed-responsive-16by9" style="margin-top:0.5rem;">
+                      <iframe class="embed-responsive-item" th:src="${youtube.url}" allowfullscreen=""></iframe>
+                    </div>
+                  </th:block>
 
                   <hr/>
                   <th:block th:if="${destination_detail_info.mapy != null && destination_detail_info.mapx != null}">

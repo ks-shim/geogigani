@@ -27,6 +27,9 @@ public class FrontService {
     @Value("${rest.blog}")
     private String restBlog;
 
+    @Value("${rest.youtube}")
+    private String restYouTube;
+
     @Value("${rest.search}")
     private String restSearch;
 
@@ -68,6 +71,12 @@ public class FrontService {
         String url = restBlog + '/' + destId;
         List<Map<String, String>> result = restTemplate.getForObject(url, List.class);
         editLink(result);
+        return result;
+    }
+
+    public List<Map<String, String>> getDestinationYouTube(String destId) {
+        String url = restYouTube + '/' + destId;
+        List<Map<String, String>> result = restTemplate.getForObject(url, List.class);
         return result;
     }
 
