@@ -139,7 +139,7 @@ public class FrontController {
         if(userAgent == null) return false;
 
         userAgent = userAgent.toLowerCase();
-        return userAgent.contains("googlebot") || userAgent.contains("daum") || userAgent.contains("naver");
+        return userAgent.contains("googlebot") || userAgent.contains("daum") || userAgent.contains("naver") || userAgent.contains("bot");
     }
 
     @RequestMapping(value = {"/search-destinations"}, produces = "application/json; charset=utf8", method = {RequestMethod.GET})

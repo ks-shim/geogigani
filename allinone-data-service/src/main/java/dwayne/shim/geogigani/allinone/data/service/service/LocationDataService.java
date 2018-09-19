@@ -1,5 +1,7 @@
 package dwayne.shim.geogigani.allinone.data.service.service;
 
+import dwayne.shim.geogigani.allinone.data.service.entity.PageClickedEntity;
+import dwayne.shim.geogigani.allinone.data.service.repository.PageClickedTableRepository;
 import dwayne.shim.geogigani.common.code.AreaCode;
 import dwayne.shim.geogigani.common.data.TravelData;
 import dwayne.shim.geogigani.common.indexing.TravelDataIndexField;
@@ -16,12 +18,12 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Log4j2
 @Service
@@ -65,6 +67,9 @@ public class LocationDataService {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Autowired
+    private PageClickedTableRepository pageClickedTableRepository;
 
     public LocationDataService(SearchingExecutor searchingExecutor,
                                IdWeightStorage locationStorage) throws Exception {
@@ -151,6 +156,54 @@ public class LocationDataService {
         synchronized (cache) {
             cache.put(popularLocations, travelDataList);
         }
+        return travelDataList;
+    }
+
+    //***************************************************************************************
+    // Clicked location
+    //***************************************************************************************
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public List<TravelData> getClickedLocations() throws Exception {
+        // 1. get topN id-weights
+        List<PageClickedEntity> entities = pageClickedTableRepository.findTop100ByOrderByDateDesc();
+        if(entities.isEmpty()) return new ArrayList<>();
+
+        // 2. build key to search
+        int idCount = 0;
+        StringBuilder sb = new StringBuilder();
+        for (PageClickedEntity location : entities) {
+            if (++idCount > tinyTopN) break;
+            // 2-2. append keyword
+            sb.append(location.getContentId()).append(' ');
+        }
+        String ids = sb.toString().trim();
+
+        // 4. If cached data doesn't exist, search from lucene
+        SearchResult result = searchingExecutor.searchById(
+                fieldToGetForPopularLocations,
+                fieldToSearchForPopularLocations,
+                ids,
+                tinyTopN
+        );
+
+        Map<String, Map<String, String>> idDocMap = result.asMap(TravelDataIndexField.CONTENT_ID.label());
+
+        // 5. create TravelData list ...
+        List<TravelData> travelDataList = new ArrayList<>();
+        for (PageClickedEntity location : entities) {
+            String locationId = location.getContentId();
+            Map<String, String> docMap = idDocMap.get(locationId);
+            if (docMap == null) continue;
+            try {
+                travelDataList.add(new TravelData(locationStorage.getSnapshot(locationId), docMap));
+            } catch (Exception e) { continue; }
+        }
+
+        // 6. clear
+        idDocMap.clear();
+        idDocMap = null;
+        result.clear();
+
         return travelDataList;
     }
 
@@ -358,6 +411,7 @@ public class LocationDataService {
             TravelDataIndexField.TREAT_MENU.label(),
     };
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public TravelData getLocationDetail(String locationId,
                                         boolean skipScoring) throws Exception {
 
@@ -369,9 +423,30 @@ public class LocationDataService {
         );
 
         // 1. increment click count
-        if(!skipScoring && result.getTotalHits() > 0) locationStorage.click(locationId);
+        if(!skipScoring && result.getTotalHits() > 0) {
+            // increment click count
+            locationStorage.click(locationId);
+            // save clicked page info ...
+            saveClickedPage(locationId);
+        }
 
         return new TravelData(locationStorage.getSnapshot(locationId), result.mapAt(0));
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    private void saveClickedPage(String locationId) {
+        // save clicked page info ...
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            String formattedDate = formatter.format(new Date());
+
+            PageClickedEntity entity = pageClickedTableRepository.findOneByContentId(locationId);
+            if(entity == null) entity = new PageClickedEntity(locationId, formattedDate);
+            entity.setDate(formattedDate);
+            pageClickedTableRepository.saveAndFlush(entity);
+        } catch (Exception e) {
+            log.error(e);
+        }
     }
 
     public List<Map<String, String>> getLocationBlog(String locationId) throws Exception {

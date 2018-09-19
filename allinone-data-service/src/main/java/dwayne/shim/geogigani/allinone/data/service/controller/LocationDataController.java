@@ -59,6 +59,19 @@ public class LocationDataController {
         return new ResponseEntity(result, HttpStatus.OK);
     }
 
+    @RequestMapping(value = {"/clicked-recently"}, produces = "application/json; charset=utf8", method = {RequestMethod.GET})
+    public ResponseEntity<List<TravelData>> getRecentlyClickedLocations() {
+        List<TravelData> result;
+        try {
+            result = locationDataService.getClickedLocations();
+        } catch (Exception e) {
+            e.printStackTrace();
+            result = new ArrayList<>();
+        }
+
+        return new ResponseEntity(result, HttpStatus.OK);
+    }
+
     @RequestMapping(value = {"/popular-by-keywords"}, produces = "application/json; charset=utf8", method = {RequestMethod.GET})
     public ResponseEntity<?> getPopularLocationsByKeywords() {
         // * increment impress count !!
