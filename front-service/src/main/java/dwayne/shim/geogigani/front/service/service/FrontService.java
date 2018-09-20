@@ -51,6 +51,9 @@ public class FrontService {
     @Value("${rest.area}")
     private String restArea;
 
+    @Value("${rest.clicked-recently}")
+    private String restClickedRecently;
+
     @Autowired
     private RestTemplate restTemplate;
 
@@ -72,6 +75,17 @@ public class FrontService {
         List<Map<String, String>> result = restTemplate.getForObject(url, List.class);
         editLink(result);
         return result;
+    }
+
+    public List<Map<String, String>> getDestinationClickedRecently() {
+        TravelData[] result = restTemplate.getForObject(restClickedRecently, TravelData[].class);
+        if(result == null || result.length == 0) return new ArrayList<>();
+
+        List<Map<String, String>> list = new ArrayList<>();
+        for(TravelData td : result)
+            list.add(asMap(td));
+
+        return list;
     }
 
     public List<Map<String, String>> getDestinationYouTube(String destId) {

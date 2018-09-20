@@ -108,6 +108,21 @@ public class FrontController {
         return "fragments/dust-modal :: dustBasedDestList";
     }
 
+    @RequestMapping(value = {"/clicked-recently"}, produces = "application/json; charset=utf8", method = {RequestMethod.GET})
+    public String showDestinationClickedRecently(Model model) {
+        List<Map<String, String>> result;
+        try {
+            result = frontService.getDestinationClickedRecently();
+        } catch (Exception e) {
+            e.printStackTrace();
+            result = new ArrayList<>();
+        }
+
+        model.addAttribute(ModelField.DESTINATION_INFO.label(), result.isEmpty() ? null : result);
+
+        return "clicked-recently-page";
+    }
+
     @RequestMapping(value = {"/destination-detail/{destId}"}, produces = "application/json; charset=utf8", method = {RequestMethod.GET})
     public String showDestinationDetail(Model model,
                                         HttpSession session,

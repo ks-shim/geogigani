@@ -103,18 +103,17 @@
               <a class="nav-link js-scroll-trigger" href="#about" style="font-family: 'Noto Sans KR', serif;"><i class="fa fa-file-text-o fa-fw"></i>About</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#team" style="font-family: 'Noto Sans KR', serif;"><i class="fa fa-envelope-o fa-fw"></i>Helper</a>
-            </li>
-            <li class="nav-item">
               <a class="nav-link" th:onclick="'javascript:show_logo_progress()'" th:href="'javascript:getLocation()'" style="font-family: 'Noto Sans KR', serif;"><i class="fa fa-bullseye fa-fw"></i>내근처여행지</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" th:onclick="'javascript:show_logo_progress()'" th:href="@{/dust-info}" style="font-family: 'Noto Sans KR', serif;"><i class="fa fa-cloud fa-fw"></i>미세먼지예보</a>
+              <a class="nav-link" th:onclick="'javascript:show_logo_progress()'" th:href="@{/dust-info}" style="font-family: 'Noto Sans KR', serif;"><i class="fa fa-cloud fa-fw"></i>미세먼지</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" th:onclick="'javascript:show_logo_progress()'" th:href="@{/statistics}" style="font-family: 'Noto Sans KR', serif;"><i class="fa fa-bar-chart-o fa-fw"></i>통계</a>
             </li>
-
+            <li class="nav-item">
+              <a class="nav-link" th:onclick="'javascript:show_logo_progress()'" th:href="@{/clicked-recently}" style="font-family: 'Noto Sans KR', serif;"><i class="fa fa-history fa-fw"></i>조회된여행지</a>
+            </li>
           </ul>
         </div>
       </div>
@@ -124,10 +123,7 @@
     <nav class="navbar navbar-expand-lg fixed-bottom" id="bottomNav">
       <div class="container">
         <div class="logo">
-          <button type="button" style="border-radius: .25rem;color: #fff;background-color: #dd3806;font-family: Montserrat,'Helvetica Neue',Helvetica,Arial,sans-serif;font-size: 12px;">
-            <i class="fa fa-history"></i>
-            HISTORY
-          </button>
+
         </div>
 
         <form id="search_form" role="form" th:action="@{/search-destinations}" method="get">
@@ -230,7 +226,7 @@
                       <th:block th:each="doc,iterStat : ${list.value}" th:if="${list.value != null}">
                         <div class="col-md-4 col-sm-6 portfolio2-item">
 
-                          <div class="portfolio2-caption">
+                          <div class="portfolio2-caption" style="padding-top:10px;">
 
                             <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;line-height:18px;">
                               <a th:onclick="'javascript:show_detail(' + ${doc.contentid} + ')'" style="cursor:pointer;display:flex;font-size:14px;line-height:12px;">
@@ -338,7 +334,7 @@
                     <div class="row">
                     <th:block th:each="doc,iterStat: ${list.value}" th:if="${list.value != null}">
                       <div class="col-md-4 col-sm-6 portfolio-item">
-                        <div class="portfolio-caption">
+                        <div class="portfolio-caption" style="padding-top:10px;">
                           <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;line-height:18px;">
                             <a th:onclick="'javascript:show_detail(' + ${doc.contentid} + ')'" style="cursor:pointer;display:flex;font-size:14px;line-height:12px;">
                               <i class="fa fa-tasks" style="width:20px;"> </i>
@@ -522,6 +518,7 @@
     </script>
 
     <script th:inline="javascript">
+
       function sendLink(title, img, url) {
           var img_url = img.startsWith("http") ? '' : 'https://www.geogigani.com';
           img_url = img_url + img;
