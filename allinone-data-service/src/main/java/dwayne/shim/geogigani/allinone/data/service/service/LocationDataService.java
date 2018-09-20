@@ -437,7 +437,7 @@ public class LocationDataService {
     private void saveClickedPage(String locationId) {
         // save clicked page info ...
         try {
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String formattedDate = formatter.format(new Date());
 
             PageClickedEntity entity = pageClickedTableRepository.findOneByContentId(locationId);
