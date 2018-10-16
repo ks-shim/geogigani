@@ -222,15 +222,44 @@
                       <small th:text="${regionDustData.regionname}"></small>
                     </button>
                   </td>
-                  <td th:bgcolor="${regionDustData.pm10color}" style="opacity: .85;">
+                  <!--<td th:bgcolor="${regionDustData.pm10color}" style="opacity: .85;">
                     <small th:text="${regionDustData.pm10status}" style="color:white"></small>
-                  </td>
-                  <td th:bgcolor="${regionDustData.pm25color}" style="opacity: .85;">
+                  </td>-->
+                  <!--<td th:bgcolor="${regionDustData.pm25color}" style="opacity: .85;">
                     <small th:text="${regionDustData.pm25status}" style="color:white"></small>
-                  </td>
-                  <td th:bgcolor="${regionDustData.o3color}" style="opacity: .85;">
-                    <small th:text="${regionDustData.o3status}" style="color:white"></small>
-                  </td>
+                  </td>-->
+                  <th:block th:if="${regionDustData.get('pm10color')} != null">
+                    <td th:bgcolor="${regionDustData.pm10color}" style="opacity: .85;">
+                      <small th:text="${regionDustData.pm10status}" style="color:white"></small>
+                    </td>
+                  </th:block>
+                  <th:block th:if="${regionDustData.get('pm10color')} == null">
+                    <td bgcolor="#ffffff" style="opacity: .85;">
+                      <small text="" style="color:white"></small>
+                    </td>
+                  </th:block>
+
+                  <th:block th:if="${regionDustData.get('pm25color')} != null">
+                    <td th:bgcolor="${regionDustData.pm25color}" style="opacity: .85;">
+                      <small th:text="${regionDustData.pm25status}" style="color:white"></small>
+                    </td>
+                  </th:block>
+                  <th:block th:if="${regionDustData.get('pm25color')} == null">
+                    <td bgcolor="#ffffff" style="opacity: .85;">
+                      <small text="" style="color:white"></small>
+                    </td>
+                  </th:block>
+
+                  <th:block th:if="${regionDustData.get('o3color')} != null">
+                    <td th:bgcolor="${regionDustData.o3color}" style="opacity: .85;">
+                      <small th:text="${regionDustData.o3status}" style="color:white"></small>
+                    </td>
+                  </th:block>
+                  <th:block th:if="${regionDustData.get('o3color')} == null">
+                    <td bgcolor="#ffffff" style="opacity: .85;">
+                      <small text="" style="color:white"></small>
+                    </td>
+                  </th:block>
                 </tbody>
               </table>
             </div>
